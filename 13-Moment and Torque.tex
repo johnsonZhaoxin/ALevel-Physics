@@ -1,0 +1,213 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry}
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+\usepackage{siunitx}
+\usepackage[normalem]{ulem}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+
+%定理的运用
+\usepackage[english]{babel}
+\newtheorem{theorem}{Theorem}[section]      %定理
+\newtheorem{corollary}{Corollary}[theorem]  %结论
+\newtheorem{lemma}[theorem]{Lemma}          %引理
+\newtheorem{definition}[theorem]{Definition}%定义
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=green,
+}
+% Set up the images/graphics package
+\usepackage{graphicx}
+\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+
+\title{Moment and Torque}
+\author{Sanjin Zhao}
+\date{12th Sep, 2022}  % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+\usepackage{nicefrac} %比较好看的斜体分号
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$} %因为美元符号的问题。需要手动添加美元\square美元
+
+\usepackage{tikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+%\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+%\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+%\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+%\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+%\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item Define and apply the \emph{moment}\footnote{def:} of a force and the \emph{torque of a couple}\footnote{def:}
+  \item State and apply the principle of moments
+  \item Use the idea that, when there is no resultant force and no resultant torque, a system is in equilibrium.
+\end{todolist}
+\clearpage
+
+\section{Leadin}
+Sometimes there is no resultant force acting on the object while the object are still experiencing another type of motion - \textbf{Rotation}, what are the rationales behind it?
+\begin{marginfigure}
+\includegraphics[width=5cm]{torquesensor.jpg}
+\caption{Torque sensor in the steering wheel}
+\end{marginfigure}
+
+\section{Moment of a force}
+The kinematics that has been studies before is actually \emph{Translation}, there is also another branch in motional states - \emph{Rotation}, which is the \emph{turning effect} of forces. In IGCSE coursebook, a new physical quantity is introduced to quantify the turning effect. It's Moment (of force)
+
+\begin{definition}
+Moment of a force is the product of the magnitude of the force and the perpendicular distance of the pivot\footnote{def:} from the line of action of the force.
+\end{definition}
+If expressed in vector product, it is the cross product of the force and the vector from the pivot to the point of action of the force.
+\begin{equation}
+  \text{moment} = \vec{F}\times \vec{d} = F\cdot d \cdot \sin\theta_{\left( {F,d}\right)}
+\end{equation}
+\begin{TaskBox}
+Determine the SI base unit of moment.
+\vspace{0.3in}  
+\end{TaskBox}
+
+You might find that the base unit of moment is exactly the same as that of joule(\si{\J}), but the two things are completely different, we do not have a special name for \si{\N\m}, this unit can not be changed into joule because of the \textbf{Vector} nature of moment\footnote{the direction of moment actually comes from the rule of cross product, if you want to dig more into it, search right hand rule or refer to my handout-vectors}. Simply put, if the moment tend to turn object clockwise or anticlockwise. That would be the direction of moment\footnote{Not physically well defined}. And sometimes for convenience, we can define anticlockwise as postive.
+\begin{TaskBox}
+Determine the moment of each force about point $A$, and don not forget to state the directions. Ignore the weight of the balance.\\
+\includegraphics{balance.jpg}
+\vspace{1in} 
+\end{TaskBox}
+
+\section{Principle of Moments}
+If multiple forces actig on the same object, the resultant moment can be calculated easily by the \emph{principle of moments}, it states as following:
+\begin{definition}
+For any object, the resultant moment about the one point equals to the sum of the anticlockwise moments provided by the forces acting on the object minus the sum of the clockwise moments about that same point.
+\end{definition}
+\begin{TaskBox}
+Determine the resutlant moment of the forces acting on point $A$
+\tcblower
+what if the pivot now changed to point $B$, determine the resultant moment.
+\end{TaskBox}
+
+\section{Torque of Couple}
+A \emph{couple} consist of two forces with the following characteristic
+\begin{itemize}
+  \item equal in magnitude
+  \item parallel, but opposite in direction
+  \item separated by a distance $d$
+\end{itemize}
+
+\begin{marginfigure}[h]
+\includegraphics{couple.jpg}
+\caption{a couple of forces}
+\label{fig:couple}
+\end{marginfigure}
+
+The turning effect or moment of a couple is known as its \emph{torque}
+
+\begin{ExampleBox}
+Calculate the torque of the couple in the steering wheel.
+\tcblower
+\begin{align*}
+  \text{torque} &= (15\times 0.2)+(15\times0.2)\\
+       \text{or}&= 15\times 0.4\\
+                &= \SI{6}{\newton\metre}
+\end{align*}
+\end{ExampleBox}
+
+Because the forces form a couple must have same \uline{\hspace{0.5 in}} and \uline{\hspace{0.5 in}} direction, and usually, the pivot is right in the middle of their seperation\footnote{actually the pivot could be somewhere else while the torque can still be the same}, the torque is twice the moment of the single force. thus:
+\[
+  \text{torque of a couple} = \text{one of the forces} \times \text{perpendicular distance between the forces}
+\]
+And also, do not forget to specify the direction of the torque, clockwise or anticlockwise.
+
+\section{Condition for Static Equilibrium}
+If we say a body is in static equilibrium, that means:
+\begin{enumerate}
+  \item the object has no translation
+  \item the object has no rotation
+\end{enumerate}
+considering the dynamics reasons behind motion, the conditions for object to be in static equilibrium are summarised below:
+\begin{enumerate}
+  \item The resultant force acting on the object is zero.
+  \item The resultant moment(including torque) is zero.
+\end{enumerate}
+
+\begin{TaskBox}
+\includegraphics[width=0.7\linewidth]{flagpole.jpg}
+\newline
+A flagpole of mass \SI{25}{\kg} is held in a horizontal position by a cable as shown. The centre of gravity of the flagpole is at a distance of \SI{1.5}{\m} from the fixed end.
+
+(a). Write an equation to represent taking moments about the left-hand end of the flagpole. Use your equation to find the tension $T$ in the cable.\\
+\vspace{0.5in}
+(b). Determine the vertical component of the force at the left-hand end of the flagpole.\\
+\vspace{0.5in}
+\end{TaskBox}
+\end{document}

@@ -1,0 +1,126 @@
+\documentclass[11pt,tikz,border=3.14mm]{standalone}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17} 
+
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+\begin{document}
+\begin{tikzpicture}[scale=1, transform shape]  %horizontal projection
+%variable definitions
+\def\g{-9.8} %gravity
+\def\v{10} %velocity
+\def\ang{51} %angle
+\def\s{0.125}
+\pgfmathsetmacro{\c}{{(-1*(2/\g)*\v*sin(\ang))/2}}
+\pgfmathsetmacro{\a}{{(-1*(2/\g)*\v*sin(\ang))*.9}}
+
+\begin{axis}[
+width=.7\linewidth, %set bigger width
+height=4 in,
+xmin={{\v*cos(\ang)*\c}},xmax=10, %{\v*cos(\ang)*\a+\s*\v*cos(\ang)}
+ymin=0,ymax={\v*\c*sin(\ang)+0.5*\g*(\c^2)},
+xlabel=$x$,
+ylabel=$y$,
+axis x line = top,
+axis y line = left,
+y axis line style={stealth-},
+x axis line style={-stealth},
+ticks = none,clip=false,
+]
+
+\tikzset{every mark/.append style={fill=white}}
+
+%flight path
+\addplot[
+dashed,
+domain={\v*cos(\ang)*\c}:10,
+samples=100,
+r1,
+very thick
+]
+{{\g*(x^2)/(2*\v^2*cos(\ang)^2)+x*tan(\ang)}};
+
+%vector at end
+\pgfmathsetmacro{\a}{{(-1*(2/\g)*\v*sin(\ang))*.9}}
+\coordinate (E) at (axis cs:{\v*cos(\ang)*\a},{\v*\a*sin(\ang)+0.5*\g*(\a^2)}){};
+\coordinate (F) at (axis cs:{\v*cos(\ang)*\a+\s*\v*cos(\ang))}, {\v*\a*sin(\ang)+0.5*\g*\a^2+\s*(\v*sin(\ang)+\g*\a)});
+\draw[thick,-stealth](E)--(F)
+node[midway,sloped,above]{$\vec{v}$};
+\draw[densely dashed,thick,-stealth,b1](E)--(F |- E)
+node[midway,above]{$\vec{v}_x$};
+\draw[densely dashed,thick,-stealth,g1](E)--(F-| E)
+node[midway,left]{$\vec{v}_y$};
+
+\path plot[mark=*] coordinates {(E)};
+
+%vector at start
+\pgfmathsetmacro{\c}{{(-1*(2/\g)*\v*sin(\ang))/2}}
+\coordinate (L) at (axis cs:{\v*cos(\ang)*\c},{\v*\c*sin(\ang)+0.5*\g*(\c^2)});
+\coordinate (M) at (axis cs:{\v*cos(\ang)*\c+\s*\v*cos(\ang))},{\v*\c*sin(\ang)+0.5*\g*\c^2+\s*(\v*sin(\ang)+\g*\c)});
+\draw[thick,-stealth](L)--(M)
+node[midway,sloped,above]{$\vec{v}$};
+
+\path plot[mark=*] coordinates {(L)};
+
+%vector 1/2 down
+\pgfmathsetmacro{\d}{{(-1*(2/\g)*\v*sin(\ang))*0.6}}
+\coordinate (P) at (axis cs:{\v*cos(\ang)*\d},{\v*\d*sin(\ang)+0.5*\g*(\d^2)});
+\coordinate (Q) at (axis cs:{(\v*cos(\ang)*\d+\s*\v*cos(\ang))},{\v*\d*sin(\ang)+0.5*\g*\d^2+\s*(\v*sin(\ang)+\g*\d)});
+\draw[thick,-stealth](P)--(Q)
+%node[midway,sloped,above]{$\vec{V}$}
+;
+\draw[densely dashed,thick,-stealth,b1](P)--(Q|-P)
+node[midway,above]{$\vec{v}_x$};
+\draw[densely dashed,thick,-stealth,g1](P)--(Q-|P)
+node[midway,left]{$\vec{v}_y$};
+
+\path plot[mark=*] coordinates {(P)};
+
+%vector 3/4 down
+\pgfmathsetmacro{\f}{{(-1*(2/\g)*\v*sin(\ang))*0.7}}
+\coordinate (R) at (axis cs:{\v*cos(\ang)*\f},{\v*\f*sin(\ang)+0.5*\g*(\f^2)});
+\coordinate (S) at (axis cs:{(\v*cos(\ang)*\f+\s*\v*cos(\ang))},{\v*\f*sin(\ang)+0.5*\g*\f^2+\s*(\v*sin(\ang)+\g*\f)});
+\draw[thick,-stealth](R)--(S)
+node[midway,above,sloped]{$\vec{v}$};
+\draw[densely dashed,thick,-stealth,b1](R)--(S|-R)
+node[midway,above]{$\vec{v}_x$};
+\draw[densely dashed,thick,-stealth,g1](R)--(S-|R)
+node[midway,left]{$\vec{v}_y$};
+
+\path plot[mark=*] coordinates {(R)};
+
+%vector 1/4 down
+\pgfmathsetmacro{\e}{{(-1*(2/\g)*\v*sin(\ang))*0.8}}
+\coordinate (T) at (axis cs:{\v*cos(\ang)*\e},{\v*\e*sin(\ang)+0.5*\g*(\e^2)});
+\coordinate (U) at (axis cs:{(\v*cos(\ang)*\e+\s*\v*cos(\ang))},{\v*\e*sin(\ang)+0.5*\g*\e^2+\s*(\v*sin(\ang)+\g*\e)});
+\draw[thick,-stealth](T)--(U)
+node[midway,sloped,above]{$\vec{v}$};
+\draw[densely dashed,thick,-stealth,b1](T)--(U|-T)
+node[midway,above]{$\vec{v}_x$};
+\draw[densely dashed,thick,-stealth,g1](T)--(U-|T)
+node[midway,left]{$\vec{v}_y$};
+
+\path plot[mark=*] coordinates {(T)};
+
+%free fall comparison plots
+\pgfmathsetmacro{\z}{{(\v*cos(\ang)*\c+\v*cos(\ang)*\c+\s*\v*cos(\ang))*.5}}
+
+\draw[thick,-stealth] (axis cs:\z,{\v*\e*sin(\ang)+0.5*\g*(\e^2)}) -- (axis cs:\z,{\v*\e*sin(\ang)+0.5*\g*\e^2+\s*(\v*sin(\ang)+\g*\e)});
+\draw[thick,-stealth] (axis cs:\z,{\v*\f*sin(\ang)+0.5*\g*(\f^2)}) -- (axis cs:\z,{\v*\f*sin(\ang)+0.5*\g*\f^2+\s*(\v*sin(\ang)+\g*\f)});
+\draw[thick,-stealth] (axis cs:\z,{\v*\d*sin(\ang)+0.5*\g*(\d^2)}) -- (axis cs:\z,{\v*\d*sin(\ang)+0.5*\g*\d^2+\s*(\v*sin(\ang)+\g*\d)});
+\draw[thick,-stealth] (axis cs:\z,{\v*\a*sin(\ang)+0.5*\g*(\a^2)}) -- (axis cs:\z,{\v*\a*sin(\ang)+0.5*\g*\a^2+\s*(\v*sin(\ang)+\g*\a)})
+node[midway,right]{Vertical fall}
+;
+\path plot[mark=*] coordinates {(axis cs:\z,{\v*\e*sin(\ang)+0.5*\g*(\e^2)})};
+\path plot[mark=*] coordinates {(axis cs:\z,{\v*\f*sin(\ang)+0.5*\g*(\f^2)})};
+\path plot[mark=*] coordinates {(axis cs:\z,{\v*\d*sin(\ang)+0.5*\g*(\d^2)})};
+\path plot[mark=*] coordinates {(axis cs:\z,{\v*\a*sin(\ang)+0.5*\g*(\a^2)})};
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

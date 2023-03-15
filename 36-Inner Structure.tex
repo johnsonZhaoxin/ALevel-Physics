@@ -1,0 +1,269 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+
+
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry} %这个包已经在handout.cls使用过了，如果再调用一次会出问题
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+
+%\usepackage[LGR]{fontenc} %使用希腊字符。
+
+\usepackage{siunitx}
+\DeclareSIUnit\torr{torr} %声明新的单位torr
+\usepackage{mhchem}
+
+\usepackage{BOONDOX-cal} %为了花体的emf符号
+\usepackage[normalem]{ulem} %下划线
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+
+%定理的运用
+\usepackage[english]{babel}
+\newtheorem{theorem}{Theorem}[section]      %定理
+\newtheorem{corollary}{Corollary}[theorem]  %结论
+\newtheorem{lemma}[theorem]{Lemma}          %引理
+\newtheorem{definition}[theorem]{Definition}%定义
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=g1,
+}
+% Set up the images/graphics package
+\usepackage{graphicx}
+%\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+\usepackage{nicefrac} %比较好看的斜体分号
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$} %因为美元符号的问题。需要手动添加美元\square美元
+
+\usepackage{tikz}
+\usepackage{circuitikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+%\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+%\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+%\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+%\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+%\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+\title{Inner Structure of Atoms}
+\author{Sanjin Zhao}
+\date{22th Nov, 2022}  % if the \date{} command is left out, the current date will be used
+
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item describe the nuclear model of the atom and the evidence for it
+  \item understand and explain the $\alpha$ particle scattering experiment
+  \item understand and recall the properties of proton, neutron, and nucleon
+  \item recognize and label isotopes of same elements
+\end{todolist}
+\clearpage
+
+\section{Leadin}
+\begin{marginfigure}
+\centering
+\includegraphics[width=5cm]{auxi/plumpuddingmodel.png}
+\caption{electrons resemble the plum in the cake, while the remaining postive part is filled with positve-charged body}
+\end{marginfigure}
+As we talked before, \href{https://www.britannica.com/biography/J-J-Thomson}{J.J. Thomson}'s cathode ray tube has unveiled the mask of \emph{eletrons} and hence plum-pudding model\footnote{Such model is actually proposed by William Thomson, Baron Kelvin of Largs. Not J.J. Thomson} was put forward.
+
+Yet, this model has been refuted 40 years later by the Thomson's follower-Ernest Rutherford.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/CathodeRayTube.png}
+\caption{The cathode ray tube invented by Thomson}
+\end{figure}
+
+\section{$\alpha$-scattering}
+Ernest Rutherford works collabratively with Thomson in Cavendish Laboratory\footnote{Because he talked so loud, there is a joking sign aimed at him}, and his famous alpha scattering has led people to another step further in investigating the inner structure.
+\begin{marginfigure}
+\centering
+\includegraphics[width=3cm]{auxi/ThomsonRutherford.jpg}
+\caption{Rutherford is the student of Thomson}
+\end{marginfigure}
+
+\subsection{Expriment setup}
+The appratus is arranged as in Fig.\ref{fig:alpha scattering apparatus}. 
+\begin{marginfigure}
+\centering
+\includegraphics[width=5cm]{auxi/alphasideview.jpg}
+\caption{the side view for the apparatus}
+\label{fig:alpha scattering apparatus}
+\end{marginfigure}
+
+The microscope can be moved in a circular track to detect the alpha participles from any directions\footnote{sometimes, a circular screen replaces the circular track}. You can try it in the \href{https://phet.colorado.edu/sims/html/rutherford-scattering/latest/rutherford-scattering_en.html}{Phet-Rutherford scattering}
+
+\subsection{Result}
+The result of the so called gold-foil experiment is quite impressive. It is shown as below:
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\linewidth]{auxi/Gold-Foil-Experiment.jpg}
+\caption{The result of Rutherford Scattering}
+\label{fig:result}
+\end{figure}
+
+\begin{SummBox}
+You shall memorize the following famous phenomenon after the alpha particles is fired against the gold foil
+\begin{itemize}
+  \setlength\itemsep{1em}
+  \item Most of the $\alpha$-particles \uline{\phantom{went through the foil without any deflection}}
+  \item Some of the $\alpha$-particles \uline{\phantom{were deflected}} slightly
+  \item Few of the $\alpha$-particles, but always be, does \uline{\phantom{bounce}} back, or the deflection angle is larger than \uline{\hspace{5em}}.
+\end{itemize}
+\end{SummBox}
+
+Which observation do you think is the most striking result?
+
+In Rutherford's point of view, he assimilates the result with the following quote, `It was almost as incredible as if you fired a 15-inch shell at a piece of tissue paper and it came back and hit you.'
+
+\subsection{Explanation}
+Despite his quote, Rutherford was not as surprised as he meant to be, since the experiment was in fact designed to prove his theory that \emph{the atom is almost empty!}. Such result was can be perfectly explained by the \emph{Rutherford-Bohr Model}\footnote{a.k.a nuclear model of the atom}.
+\begin{marginfigure}
+\centering
+\includegraphics[width=5cm]{auxi/explanation.jpg}
+\caption{possible result of $\alpha$ particles when passing the gold foil}
+\end{marginfigure}
+
+\begin{SummBox}
+Explain each phenomenon listed above.
+\vspace{3in}
+\end{SummBox}
+
+
+\section{Atomic Model}
+Thomson has chopped the electrons, which carry negative charges, from the atoms; Rutherford has taken one step further, proposing that there is a tiny \emph{nucleus} that carries positive charge. And he futher proved that \textbf{proton} is present in all nuclei\footnote{plural form of nucleus}of any element in 1917.
+
+Fifteen years later,Sir James Chadwick\footnote{won Noble Prize in 1935} discovered \textbf{neutron} by firing alpha particles to Beryllium. There is nothing mysterious about the nuclues.
+
+The prevailing model of atom can be introduced now:
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/atomicmodel.jpg}
+\caption{A simple model of atom, figure not drawn to scale}
+\end{figure}
+
+\subsection{Nucleon}
+Nucleons refers to \uline{\hspace{1in}} and \uline{\hspace{1in}} in the nuclei.
+
+\subsection{Property of particles}
+Please finish the following tables of general information of tiny particles that consist an atom.
+\begin{table}[h]
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+name    & symbol & mass/\si{\kg} & charge/\si{\coulomb} &charge/in $e$\\ \hline
+proton   &        &      &       & \\ \hline
+neutron  &        &      &       & \\ \hline
+electron &        &      &       & \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{TaskBox}
+The relative atomic mass is commonly used to desribe the mass of tiny atoms or particles. The unit is called `amu'-atomic mass unit, which is the mass of 1/12 of mass of the Carbon-12 atom. Thus, $\SI{1}{\amu}=\SI{1.66054e-27}{\kg}$.
+
+State the relative atomic unit of proton and neutron in \si{\amu}.
+\vspace{1in}
+\end{TaskBox}
+
+\section{Notation System of Atoms}
+\subsection{Isotopes}
+Playing with the PhET simulation \href{https://phet.colorado.edu/sims/html/build-a-nucleus/latest/build-a-nucleus_en.html}{Build nucleus}. You might find that despite two nuclei with same number of protons but different number of neutrons can both be stable\footnote{Which means that they can be found in nature}. Besides that, the element name is exactly the same. So such atoms with the nuclei are said to be \emph{isotopes}\footnote{Firstly coined by Dr Margaret Todd}of same element. 
+
+\begin{TaskBox}
+Define: isotope 
+\vspace{1in}
+\end{TaskBox}
+
+\subsection{Labeling Isotopes}
+In order to distinguish the isotopes/nuclides, standard notation system\footnote{a.k.a AZE notation} is introduced here as shown in Fig\ref{fig:aze notation}
+\begin{marginfigure}
+\centering
+\includegraphics[width=5cm]{auxi/azenotation.png}
+\caption{The AZE notation}
+\label{fig:aze notation}
+\end{marginfigure}
+A represents the \uline{\hspace{1in}}\\
+Z represents the \uline{\hspace{1in}}\\
+E represents the \uline{\hspace{1in}}
+
+Besides, due to the fact that, proton and neutron are basically euqal-weighted, and accounts for the most of the mass of an atom. the nucleon number Z can be also used as an proxy of the relative atomic mass.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/peridoictable.png}
+\caption{The relative atomic mass of gold-173 is appriximately equal to 173}
+\label{fig:periodic table}
+\end{figure}
+
+\begin{TaskBox}
+The Uranium-235 is not abundant in nature, but it is the fuel of atomic bombs. It has 143 nutrons. Write down the notation for this isotope
+\end{TaskBox}
+\end{document}
+

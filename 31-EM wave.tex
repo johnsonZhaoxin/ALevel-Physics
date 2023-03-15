@@ -1,0 +1,296 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+
+
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry} %这个包已经在handout.cls使用过了，如果再调用一次会出问题
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+
+%\usepackage[LGR]{fontenc} %使用希腊字符。
+
+\usepackage{siunitx}
+\DeclareSIUnit\torr{torr} %声明新的单位torr
+\usepackage{mhchem}
+
+\usepackage{BOONDOX-cal} %为了花体的emf符号
+\usepackage[normalem]{ulem} %下划线
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+
+%定理的运用
+\usepackage[english]{babel}
+\newtheorem{theorem}{Theorem}[section]      %定理
+\newtheorem{corollary}{Corollary}[theorem]  %结论
+\newtheorem{lemma}[theorem]{Lemma}          %引理
+\newtheorem{definition}[theorem]{Definition}%定义
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=g1,
+}
+% Set up the images/graphics package
+\usepackage{graphicx}
+%\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+\usepackage{nicefrac} %比较好看的斜体分号
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$} %因为美元符号的问题。需要手动添加美元\square美元
+
+\usepackage{tikz}
+\usepackage{circuitikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+%\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+%\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+%\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+%\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+%\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+\title{Electromagnetic Wave}
+\author{Sanjin Zhao}
+\date{4th Oct, 2022}  % if the \date{} command is left out, the current date will be used
+
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item describe and understand \emph{electromagnetic waves}
+  \item recall that wavelengths in the range \SIrange{400}{700}{\nm} in free space are visible to the human eye
+  \item describe and understand \emph{polarisation}
+  \item use Malus’s law to determine the intensity of transmitted light through a polarising filter.
+\end{todolist}
+\clearpage
+
+\section{Leadin}
+\begin{marginfigure}
+\includegraphics[width=5cm]{auxi/Maxwell.png}
+\caption{James Maxwell\\1831-1879}
+\end{marginfigure}
+Sound waves and string waves are easy to understand, since the wavelength and wave speed is not too large to be shown. However, there do exist another type of wave which has tiny tiny wavelength and extraordinary large wave speed, and most dramatical thing about such wave is that they do not need any medium\footnote{although during some period, scientist believe that \emph{Ether} is the medium}. And this type of wave is called \emph{Electromagnetic Wave}. Lots of physicists have made their own contributions to the EM waves, but only one man has ruled the field---\href{https://en.wikipedia.org/wiki/James_Clerk_Maxwell}{James Clerk Maxwell}\footnote{undergraduate studies at Edinburgh, graduate studies at Cambridge. But died at a young age}, Maxwell's equations in describing EM fields was included as one of the most beautiful equations.\footnote{quite simple and beautiful yet powerful in ruling electromagnetic theory, we'll learn the four equations later}.
+
+\section{EM waves}
+Maxwell has combined the laws of describing \emph{electric field}, \emph{magnetic field} and the interaction between the two fields. Hence has predicted that EM waves do exist and it travels at the \textbf{speed of light}\footnote{$c=\frac{1}{\sqrt{\epsilon_0\cdot\mu_0}}$ derived from the Maxwell's Equation} in 1864. Thus visible light is since included as a type of EM waves.\footnote{why not the opposite way --- EM waves belongs to light?}
+
+\subsection{the nature of EM waves}
+A wave is the perioidic disturbance travellinig through the medium. while an electromagnetic wave is a combined disturbance in both the electric and magnetic fields. Since the propagation of fields do not need medium, the EM waves do not either. As shown in Fig.\ref{fig:EM fields}. 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/EMfields.jpg}
+\caption{a periodic variation in electric and magnetic fields}
+\label{fig:EM fields}
+\end{figure}
+As far as what is electric field and magnetic field, this would be discussed in Chapter 21, 22 \& 24. 
+
+\subsection{Discrete Findings in EM waves}
+By the end of 19th century, there are several EM waves found by various scientists, which strongly proves the correctness of Maxwell. there are listed below:
+\begin{itemize}
+  \item Radio wave, which is found by \uline{\hspace{0.7in}} in 1879. The main application of radio wave is \textbf{the broadcast and signaling system}.
+  \item infrared and ultravilet(UV) light, \href{https://astronomy.swin.edu.au/cosmos/i/Infrared}{Herschel} found infrared waves around 1800, and \href{https://pubmed.ncbi.nlm.nih.gov/3301744/}{Ritter} discovered UV light just 1 year after Hershcel when he want to find the cooling light. Infrared and UV has wide range of usage in our daily life.
+  %Ritter looked for an opposite (cooling) radiation at the other end of the visible spectrum. He did not find exactly what he expected to find, but after a series of attempts he noticed that silver chloride was transformed faster from white to black when it was placed at the dark region of the Sun's spectrum, close to its violet end. The "chemical rays" found by him were afterwards called ultraviolet radiation
+  \item X-ray, found by \uline{\hspace{0.7in}} in 1895, has been greatly used in medical imaging. At that time, X means unkown mysteries. 
+  \item $\gamma$-ray was first discovered by \href{https://link.springer.com/article/10.1007/s000160050028}{Paul Villard} around 1900\footnote{Henri Becquerel is famous for the term ``radioactivity'' and equipment for measuring it}. It comes naturally when nucleus experience $\gamma$ decay.
+  \item Microwave, Robert N. Hall and Percy Spencer were given credit to for the invention of microwave oven. But this great invention was first debut after the WWII. It was first discovered accidentally in 20th century, and the inventors passed away in 2016 and 1970 respectively. RIP
+\end{itemize}
+Here are some famous images relating to the discoveries of such \textbf{Nonvisible} EM waves.
+\begin{figure*} %这个图片可能出现问题了。
+\includegraphics[height=20em]{auxi/Heinrich_Rudolf_Hertz.jpg}
+\includegraphics[height=20em]{auxi/Herschel.jpg}
+\\
+\includegraphics[height=20em]{auxi/Ritter.jpg}
+\includegraphics[height=20em]{auxi/Xrayphoto.png}
+\end{figure*}
+
+\clearpage
+
+
+\subsection{EM spectrum}
+Then, All types of EM waves have been found, and are now included in the \emph{electromagnetic spectrum}\footnote{def: the family of waves that travel through a vacuum at a speed of $c$}.
+It is shown in Fig.\ref{fig:emspectrum}.
+\begin{figure}[h]
+\includegraphics[width=0.95\linewidth]{auxi/emspectrum.jpg}
+\caption{some regions between two types are fuzzy.}
+\label{fig:emspectrum}
+\end{figure}
+
+And the spectrum for visible light is shown in Fig.\ref{fig:rainbow}.
+\begin{figure}[h]
+\includegraphics[width=0.95\linewidth]{auxi/raninbow.jpg}
+\caption{A rainbow is just a spectrum of visible light}
+\label{fig:rainbow}
+\end{figure}
+
+
+\subsection{Frequency or Wavelength}
+The speed of the light(EM waves) in vacuum is determined to be
+\[
+   c = \SI{299792458}{\m\per\s}
+\]
+Since all kinds of EM waves tends to have same travelling speed, according to the formular $c=f\cdot \lambda$. We can distinguish different types of EM waves based on either 1)the wavelength, 2) the frequency.
+
+However, the speed of light will change in different media, for example, if light is transmitted in water, the speed will decrease to $c_w=\SI{225000000}{\m\per\s}$. and decrease to $c_f=\SI{199861638}{\m\per\s}$ if glass optical fiber is the medium\footnote{here, the existance of medium negatively influence the transmission of electromagnetic field, hence the speed is greates when EM waves are in vacuum or in air}.
+
+However, the thing is that, when the speed of light decreases as visible light travels in water, the visible light does not change the color, according to $c_w = f\cdot \lambda$, which means the either the frequency, the wavelength or both will change. 
+\begin{TaskBox}
+When a beam of red light pass through water, determine whether the frequency, or wavelegth or both change as the red light travels.
+\tcblower
+\vspace{0.5in}
+\end{TaskBox}
+
+\subsection{Typical Magnitude for EM waves}
+Search the book, fill in the tables below:
+\begin{table}[h]
+\begin{tabular}{|l|l|l|}
+\hline
+types of EM waves & frequency range/\si{\hertz} & wavelength range/\si{\m} \\ \hline
+radio wave        &                 &                  \\ \hline
+microwave         &                 &                  \\ \hline
+infrared          &                 &                  \\ \hline
+visible light     &                 &                  \\ \hline
+ultraviolet       &                 &                  \\ \hline
+X-ray             &                 &                  \\ \hline
+$\gamma$-ray              &                 &                  \\ \hline
+\end{tabular}
+\end{table}
+
+Several points to note:
+\begin{itemize}
+  \item the exact value does \textbf{NOT} matter, the order and  magnitude \textbf{DO} matter.
+  \item \SI{1}{\nm} = \SI{1e-9}{\m}
+  \item the visible light from red to purple is \SIrange{400}{700}{\nm}
+  \item for convience, \si{\mega\hertz} or \si{\giga\hertz} sometimes are used in describing the radio waves or visible light.
+\end{itemize}
+
+\section{Polarisation}
+Polarisation is a wave property associated with transverse waves only. It is actually a filtration of waves.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\linewidth]{auxi/polarisation.jpeg}
+\caption{Polarisation happens after the Polaroid}
+\label{fig:polarisation}
+\end{figure}
+The mechnism of polarisation is not required by A-Level syllabus, but if you are interested, you can refer to this \href{https://arago.elte.hu/sites/default/files/DSc-Thesis-2003-GaborHorvath-01.pdf}{reading material}
+
+\subsection{The phenonmenon and Application}
+Unpolarised light(waves)\footnote{which means the vibration of particles/fields have all various directions} will pass the filter, maybe a slit or a polaroid, and only when the direction is consistent with the direction of the slit or transmission axis, the wave could pass. As shown below:
+\begin{figure}[h]
+\includegraphics[width=0.8\linewidth]{auxi/Polarizacio.jpg}
+\caption{polarisation of transeverse waves}
+\end{figure}
+
+\begin{figure}[h]
+\includegraphics[width=0.8\linewidth]{auxi/polarisationoflight.jpg}
+\caption{polarisation of unpolarised light}
+\end{figure}
+
+So, generally speaking, the polarisation of waves is just a filtration of waves/light which only allows certain waves to pass through. And a famous application is the polaroid glass in sunglasses and photograph. Check those pictures
+\begin{figure}[h]
+\includegraphics[width=0.8\linewidth]{auxi/CircularPolarizer.jpg}
+\caption{some light did not pass the polaroid lense}
+\end{figure}
+
+\begin{figure}[h]
+\includegraphics[width=0.8\linewidth]{auxi/membrane.png}
+\caption{All screens have polaroid membrane installed}
+\end{figure}
+
+\subsection{Malus's Law}
+The first man ever describe the phenomenon of polarisation is \href{https://en.wikipedia.org/wiki/Étienne-Louis_Malus}{Louis Malus}, who rotated the polaroid and observed that the intensity of light will change with the angles.
+\begin{marginfigure}[-5cm]
+\includegraphics[width=3cm]{auxi/Etienne-Louis_Malus.jpg}
+\caption{Etienne Louis Malus\\1775-1812}
+\end{marginfigure}
+
+The experiment is quite simple, by rotating the analyser polaroid and measures the intensity of light after it $I$. Compare such intensity with the original intensity $I_0$, to check the variation, we found that:
+\begin{equation}
+ I = I_0 \cdot \cos^2 \theta
+\end{equation}
+in which, $\theta$ is the angle between the transmission axis and the plane of incident light.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/maluslaw.jpg}
+\caption{The intensity varies with the angle $\theta$}
+\end{figure}
+
+
+The most significant result is that, when $\theta=\ang{90}$, there is no light passing. The intensity becomes 0. As shown in the figure below:
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/functiongraph.jpg}
+\caption{The intensity varies with the angle $\theta$}
+\end{figure}
+
+\begin{ExampleBox}
+use the \href{https://www.desmos.com/calculator}{desmos} and the double angle formula $\cos 2\theta = 2\cos^2\theta -1$, to validate that Malus law can be rewrite into: $I = \frac{I_0}{2}\cdot \cos2\theta + \frac{I_0}{2}$. And know the sinosodial wave property.
+\tcblower
+\vspace{1in}
+\end{ExampleBox}
+
+\end{document}
+

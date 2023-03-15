@@ -1,0 +1,261 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry}
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+\usepackage{siunitx}
+\usepackage[normalem]{ulem}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+
+%定理的运用
+\usepackage[english]{babel}
+\newtheorem{theorem}{Theorem}[section]      %定理
+\newtheorem{corollary}{Corollary}[theorem]  %结论
+\newtheorem{lemma}[theorem]{Lemma}          %引理
+\newtheorem{definition}[theorem]{Definition}%定义
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=green,
+}
+% Set up the images/graphics package
+\usepackage{graphicx}
+\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+
+\title{Forces}
+\author{Sanjin Zhao}
+\date{10th Sep, 2022}  % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+\usepackage{nicefrac} %比较好看的斜体分号
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$} %因为美元符号的问题。需要手动添加美元\square美元
+
+\usepackage{tikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+%\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+%\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+%\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+%\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+%\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+% 这个章节涉及到 3.2Identifying forces; 4.1 Combining Forces; 4.2 Components; 3.4Mass and inertia 4.3 Centre of gravity
+
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item Define and distinguish different types of forces
+  \item Use a vector triangle to represent coplanar forces in equilibrium
+  \item Add two or more coplanar forces
+  \item Resolve a force into perpendicular components
+  \item Recognise that mass is a property of an object that resists change in motion
+  \item Recall that the weight of a body is equal to the product of its mass and the acceleration of free fall
+  \item Represent the weight of a body as acting at a single point known as its centre of gravity
+\end{todolist}
+\clearpage
+
+\section{Leadin}
+The Force from the movie ``Star War'' is not the force that physics world would discuss
+\begin{marginfigure}
+\includegraphics[width=5cm]{yoda-the-force-star-wars.jpg}
+\caption{Yoda}
+\end{marginfigure}
+
+\section{Forces}
+How to define force? What is Force? If you want to dig more, these questions can be of great concern in a much more precise sense. But generally speaking, forces could be defined as
+\begin{SummBox}
+Forces are the \uline{Interactions between Objects}
+\end{SummBox}
+\subsection{Types of Forces}
+The most common forces are classified into the following categories\footnote{We will talk about four fundamental forces/interaction later}.
+\begin{itemize}
+  \item Pushes and pulls, the most common forces that human or engine can exert on other objects.
+  \item Weight, or force of gravity.
+  \item Friction, this force arises when two surfaces rub over one another.
+  \item Drag, which is similar to frcition, but arise when object moving through \emph{fluids}\footnote{def:}
+  \item Upthrust, or Bouyance, arises from the \emph{difference in pressure} that a fluid exerts on an object. This is the reason why boat or ballon can float.
+  \item Normal Contact force, is one type of force which can support the objects to fight against the weight. It is always perpendicular to the surface of contact\footnote{that's what normal means}.
+  \item Tension, occurs in the string or rope when you pull the string or rope. Remeber that tension occurs everywhere in the tensile objects and it always tends to contract the objects.
+\end{itemize}
+
+\subsection{Resultant Force-Combining Forces}
+If two or more force are acting on the same object, due to the fact that forces are vectors, those forces can be added together in order to use just one \emph{resultant force} to substitue the original forces. The resultant force will actually have the same effect on the object as the two or more forces. This is the critical principle to dynamics\footnote{Analysing all forces and determine the resultant force is quite important to dynamics, and such content will be discussed later}.
+
+\begin{TaskBox}
+\includegraphics[width=0.7\linewidth]{twoforces.pdf}\\
+Draw the resultant forces of $F_1$ and $F_2$, you can use either \emph{triangle rule} or \emph{parallelogram rule}.
+\end{TaskBox}
+
+In the \emph{free body diagram}\footnote{def: a diagram which shows all the forces acting on the object} of the car, we could work out their combined effect on the car. And hence determine whether the car will accelerate or decelerates.
+\begin{figure}[ht]
+\includegraphics{fbdofcar.png}
+\caption{Four forces act on this car as it moves uphill.}
+\end{figure}
+
+\subsection{Coplanar Force Triangle}
+Recall what you've learned about the vector nature, as well as the addition rule, of forces. it is not difficult to learn this keypoint.
+
+Basically, if three \emph{coplanar} forces acting on the same object so that the object remain in \emph{equilibrium}\footnote{def: An object in equilibrium will keep stationary or uniform motion; The dynamics reason for equilibrium is that the \textbf{resultant force} on that object is zero}. Then the three forces will definitely form a \textbf{triangle} in which the ends and starts connect from one another.
+\begin{TaskBox}
+Try to explain why three forces will form such triangle
+\tcblower
+\includegraphics[width=0.7\linewidth]{twoforces.pdf}\\
+In the same graph, label a third force $F_3$ which will form a force triangle with $F_1$ and $F_2$, think about the relationship between $F_3$ and $F_1+F_2$.
+\end{TaskBox}
+
+Sometimes, the three forces may be arranged so that it will be starting from the samepoint, such as the \emph{centre of mass} of the object, illustrated in figure \ref{fig:3forcesamepoint}. 
+\begin{marginfigure}
+\includegraphics[width=5 cm]{threeforces.pdf}
+\caption{three forces from the same point}
+\label{fig:3forcesamepoint}
+\end{marginfigure}
+
+\begin{TaskBox}
+Using parallel movement of forces, show that $F_1+F_2+F_3 = 0$
+\tcblower
+Extended Task:\\
+Measure the length of $F_1$, $F_2$ and $F_3$, and hence calculate the value of $\nicefrac{F_1}{\sin\beta}$, $\nicefrac{F_2}{\sin\gamma}$, and $\nicefrac{F_3}{\sin\alpha}$. What did you find?
+\end{TaskBox}
+
+\subsection{Decompose of Forces}
+Have you ever got a feeling that, always using the addition graph to find the resultant forces is not mathematically elegant and fast enough. So decomposition of vectors has been introduced here again.
+\begin{marginfigure}
+\includegraphics[width=5cm]{elegance.jpg}
+\end{marginfigure}
+
+Ususally, vectors are decomposed into \emph{horizontal and vertical components}. And then, the addtion would be a piece of cake. Try to decompose $F_1$, $F_2$, $F_3$ into horizontal vectors and label the angles the force makes with positive horizontal direction respectively, and calculate the total horizontal and vertical components.
+
+\section{Mass \& Weight}
+Do you really understand what the mass represent? In the junior high schol level, you might know that mass is the physical quantity which measures how many substance in an object. For example, \SI{1}{\kg} of steel has more substance than \SI{0.9}{\kg} of steel. However, in this section, you will view mass from a brand new perspective.
+
+\subsection{Inertia}
+Galileo has proposed a mind experiment shown in figure \ref{fig:inertia experiment} in which a ball is released at certain height in an inclined plane, the ball always achieve the same height no matter the ramp's length. Thus, if the track is flat, the ball seems to move forever, and this property is called \emph{inertia}
+\begin{figure}
+\centering
+\includegraphics{inertiaexperiment.png}
+\caption{Galileo's Mind Experiment}
+\label{fig:inertia experiment}
+\end{figure}
+
+\begin{definition}
+The tendency of a moving object to \textbf{carry on moving} or the tendency of a stationary object to remain rest, is sometimes known as inertia. Alternatively, inertia is the property that object resist change in its motion state.
+\end{definition}
+
+And think a train compared with a tennis ball, which one is more likely to move if resistance is applied. And which one tends to remain rest if force is applied? Both answers are the train, because it tends to have much larger mass than the tennis ball, thus larger inertia. 
+
+\begin{SummBox}
+Mass is the measure of inertia, the larger the mass, the larger the inertia
+\end{SummBox}
+
+\subsection{Weight}
+Weight is the force that an astronomical body, like a planet or star,  exert on the object on the surface of it. The direction of the weight is always to the center of the celestial body.
+\begin{marginfigure}
+\includegraphics[width=5cm]{gravity.png}
+\caption{The direction of weight is always to the centre}
+\end{marginfigure}
+
+And we found that the weight of an object is always \emph{directly proportional} to the mass of the object, the coefficient of proportionality is $g$, the acceleration of free fall on the surface of the planet. Thus
+\begin{equation}
+  W = mg
+\end{equation}
+Try to explain the meaning of the symbols. And state the units for each quantity.
+
+As discussed above, the acceleration due to gravity on Earth is $g_{\text{Earth}}= \SI{9.81}{\m\per\square\s}}$. While the acceleration due to gravity on Moon is approximately $\nicefrac{1}{6}$ of that. The value is $g_{\text{Moon}}= \SI{1.62}{\m\per\square\s}}$. That means you can jump six times taller on the moon than what you can do on Earth, you'll definitely beat any Olympic champions ever.
+
+Despite the weight changes on the Moon, the mass never change. This is a key difference between mass and weight.
+\begin{figure}[h]
+\includegraphics[width=0.95\linewidth]{HighJumpMoon.jpg}
+\caption{An astronaut can jump easily on the Moon}
+\end{figure}
+
+\subsection{Centre of Gravity}
+When we talk about the weight, actually every part of our body - arms, legs, head - experiences the weight of gravity. However, it is much simpler to picture the overall effect of gravity as acting at a single point. And that point is called \emph{centre of gravity} \footnote{centre of mass is a similar concept but a little bit different}.
+\begin{marginfigure}
+\includegraphics[width=5cm]{cgbird.jpeg}
+\caption{This toy is popular in my childhood, where should the CG be?}
+\end{marginfigure}
+
+\begin{definition}
+Centre of Gravity is the point where all the weight of the object may be considered to act.
+\end{definition}
+
+Using CG can make things much more simpler, we can ignore the size, the shape, anything else but only the weight, the object can be treated as a single point. Sometimes it is also referred to as \emph{mass point model}
+\begin{figure}
+\includegraphics[width=0.8\linewidth]{cgofjumping.jpeg}
+\caption{Sometimes, the CG can be outside human's body}
+\end{figure}
+
+If an object is \emph{uniform in density} and in regular shape, such as an rectangle, circle, isoceles triangle in 2D, sphere, cube in 3D, both the CG and Centre of Mass lies in the geometric centre. However, life is so hard, nearly real life object is not in standard shape, such as human body. How could we find the CG? A techinique called `\emph{suspension}' is employed.
+\begin{figure}[h]
+\includegraphics[width=0.9\linewidth]{suspension.png}
+\caption{For any irregular static object, it is a simple way to determine the CG}
+\end{figure}
+\end{document}

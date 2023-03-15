@@ -1,0 +1,231 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+
+
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry} %这个包已经在handout.cls使用过了，如果再调用一次会出问题
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+
+%\usepackage[LGR]{fontenc} %使用希腊字符。
+
+\usepackage{siunitx}
+\DeclareSIUnit\torr{torr} %声明新的单位torr
+
+
+\usepackage{BOONDOX-cal} %为了花体的emf符号
+\usepackage[normalem]{ulem} %下划线
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+\usepackage[version=4]{mhchem}
+
+%定理的运用
+\usepackage[english]{babel}
+\newtheorem{theorem}{Theorem}[section]      %定理
+\newtheorem{corollary}{Corollary}[theorem]  %结论
+\newtheorem{lemma}[theorem]{Lemma}          %引理
+\newtheorem{definition}[theorem]{Definition}%定义
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=g1,
+}
+% Set up the images/graphics package
+\usepackage{graphicx}
+%\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+\usepackage{nicefrac} %比较好看的斜体分号
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$} %因为美元符号的问题。需要手动添加美元\square美元
+
+\usepackage{tikz}
+\usepackage{circuitikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+%\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+%\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+%\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+%\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+%\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+\title{Kirchhoff's Law}
+\author{Sanjin Zhao}
+\date{2nd Oct, 2022}  % if the \date{} command is left out, the current date will be used
+
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item recall and apply \emph{Kirchhoff’s laws}, KCL and KVL both
+  \item analyse the circuit using Kirchhoff's law
+  \item use Kirchhoff’s laws to derive the formulae for the combined resistance of two or more resistors \emph{in series and in parallel}
+  \item recognise that ammeters are connected in series within a circuit and therefore should have low resistance
+  \item recognise that voltmeters are connected in parallel across a component, or components, and therefore should have high resistance.
+\end{todolist}
+\clearpage
+
+\section{Leadin}
+Newton's Law has governed the the classic mechanics, then we can say that Kirchhoff's Law has governed the circuits. The law is vital for understanding the electrical circuits.
+\begin{marginfigure}
+\includegraphics[width=5cm]{auxi/Gustav_Robert_Kirchhoff.jpg}
+\caption{Kirchhoff\\1824-1887}
+\end{marginfigure}
+\href{https://en.wikipedia.org/wiki/Gustav_Kirchhoff}{Gustav Robert Kirchhoff} seems a name of Russian, but actually he was a Perussia or German. Besides his great contribution in Kirchhoff's Law, he also coined the term ``black-body radiation'' for the spectroscopy. What a great physicist!
+
+\section{Kirchhoff's First Law}
+The first law is about currents, thus it is also refers to KCL\footnote{Not the university KCL} which stands for the Kirchhoff's Current Law. Before the KCL, let's discuss the object this law is applied- \textcolor{r1}{\textsc{Junction}}.
+\begin{marginfigure}
+\includegraphics[width=5cm]{auxi/junction.jpg}
+\caption{The second point is treated as a junction}
+\end{marginfigure}
+
+\subsection{Junction}
+A junction is a point in the circuit where currents are split or meeting, And kirchhoff's first law studies the current which flows in or out the junction, it states as the following:
+\begin{SummBox}
+The sum of the currents entering any junction in a circuit is equal to the sum of the currents leaving that same junction.
+
+expressed in mathematic formula, KCL is:
+\[
+  \sum I_{\text{in}} = \sum I_{\text{out}}  \qquad \sum I = 0 
+\]
+\end{SummBox}
+
+\subsection{Essence of KCL}
+The KCL is an example of \emph{conservation of charges}. Such conservation states that:
+\begin{SummBox}
+Charges can neither be created nor be destroyed, the net charges in a closed is always conserved.
+\end{SummBox}
+
+\begin{marginfigure}
+\includegraphics[width=5cm]{auxi/practice-junction.png}
+\caption{A junction in the circuit}
+\label{fig:prac-junction}
+\end{marginfigure}
+
+\begin{ExampleBox}
+In Fig. \ref{fig:prac-junction} determining the current $I$
+\tcblower
+According to the KCL, the currents flow into that junction is $3.0+I$, the current flows out is $7.5$, thus $I=\SI{4.0}{\A}$.
+\end{ExampleBox}
+
+\section{Kirchhoff's Second Law}
+The second law is about p.d.s and e.m.f. in the circuit. The object being studied is \textcolor{r1}{\textsc{Loop}} in the circuit.
+\begin{marginfigure}
+\centering
+\includegraphics[width=5cm]{auxi/loop_def.pdf}
+\caption{an example of loops in circuits}
+\label{fig:loop_def}
+\end{marginfigure}
+
+\subsection{Loop}
+In Fig \ref{fig:loop_def}, three loops are present, acoording to the figure, try to explain what is loop in your own words.
+
+Several things about the loop in circuits are listed below:
+\begin{itemize}
+  \item a loop should be a closed pathway from the circuits
+  \item a loop may or may not include an e.m.f. or battery
+  \item if an e.m.f. or battery is included,it would be convenient to locate the starting point of loop  at the negative terminal of the battery\footnote{it is not compulsory work but would be much more reasonabless}
+  \item the direction of loop can be in align with the current direction, but if they are opposite, it does not matter
+\end{itemize}
+
+\subsection{Potential at Junctions, Voltage Drop}
+We already know that the voltage or potential difference exist when the currents flow through component in the circuit.
+
+\begin{marginfigure}
+\includegraphics[width=5cm]{auxi/potential_def.pdf}
+\caption{voltmeter actually measures the difference in two points}
+\end{marginfigure}
+
+Thus, from junction $A$ to junction $B$, the potential decreases\footnote{because potential is related with energy, currents or charges flows through the componets and energy is transferred to the component, thus potential decreases} by $V_{\text{AB}}=V_{\text{A}}-V_{\text{B}}$. Or this is can be denoted as $\Delta V$, such potental can be also called voltage drop or potential difference if it follows the direction of currents. For example, 
+in Fig \ref{fig:loop_def}, the loop $c$ start from the negative terminal, the potential will increase by $\mathcal{E}$, current being $I_0$, then the current flows into the junction $A$, part of which, measures $I_1$, flows into the resistor $R_1$ to junction $B$, thus the potental from $A$ to $B$ has then \textbf{decrease} by $V_{\text{AB}}$ which is exactly the p.d. across the resistor $R_1$. 
+
+\subsection{KVL}
+So KVL is the law that connecting the voltage drop or p.d. among all the components in the loop. It states that:
+\begin{SummBox}
+The sum of e.m.f.s  around any loop in a circuit is equal to the sum of the p.d.s around the loop. 
+
+expressed in mathematic formula, KVL is:
+\[
+  \sum E = \sum V \qquad \sum \Delta V = 0 
+\]
+\end{SummBox}
+
+\subsection{Essence of KVL}
+It seems reasonable since the KVL just states potential originating from one point finish a circuit path and back to the point the potential will remain unchanged. The Second law actually relates the energy, the charges will gain energy when it pass the battery, and then it would release energy to the components. So the two energies would be exactly same, divided by the charge itself, KVL can be deduced from it.
+
+
+\section{Application Kirchhoff's Law}
+The two simple laws has ruled any circuits, with KCL and KVL, we can decide the currents and p.d.s in any circuits, no matter simple or complex. The \href{https://phet.colorado.edu/sims/html/circuit-construction-kit-ac-virtual-lab/latest/circuit-construction-kit-ac-virtual-lab_en.html}{Phet Labs} is completely coded under the principle of Kirchhoff's Law.
+\begin{figure}
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/complex_circuits.png}
+\caption{A simulation of circuits}
+\end{figure}
+
+\end{document}

@@ -1,0 +1,312 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+
+
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry} %这个包已经在handout.cls使用过了，如果再调用一次会出问题
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+
+%\usepackage[LGR]{fontenc} %使用希腊字符。
+
+\usepackage{siunitx}
+\DeclareSIUnit\torr{torr} %声明新的单位torr
+\usepackage{mhchem}
+
+\usepackage{BOONDOX-cal} %为了花体的emf符号
+\usepackage[normalem]{ulem} %下划线
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+
+%定理的运用
+\usepackage[english]{babel}
+\newtheorem{theorem}{Theorem}[section]      %定理
+\newtheorem{corollary}{Corollary}[theorem]  %结论
+\newtheorem{lemma}[theorem]{Lemma}          %引理
+\newtheorem{definition}[theorem]{Definition}%定义
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=g1,
+}
+% Set up the images/graphics package
+\usepackage{graphicx}
+%\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+\usepackage{nicefrac} %比较好看的斜体分号
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$} %因为美元符号的问题。需要手动添加美元\square美元
+
+\usepackage{tikz}
+\usepackage{circuitikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+%\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+%\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+%\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+%\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+%\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+\title{}
+\author{Sanjin Zhao}
+\date{21st Nov, 2022}  % if the \date{} command is left out, the current date will be used
+
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item explain the formation of stationary waves using graphical methods
+  \item understand experiments to demonstrate stationary waves using microwaves, stretched strings and air columns
+  \item identify nodes and antinodes
+  \item determine the wavelength of sound using stationary waves
+  \item understand resonance and its relationship with stationary waves\footnote{not required by A-Level}
+\end{todolist}
+\clearpage
+
+\section{Leadin}
+The famous \href{https://www.youtube.com/watch?v=y0xohjV7Avo}{Tacoma Narrows Bridge} has become a famous example in both physics and engineering. The destruction vividly shows the power of wave from the wind.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/TacomaNarrowsBridge.jpg}
+\caption{A video has record the collapse of the bridge}
+\end{figure}
+
+Another famous experiment related with stationary wave is the \href{https://www.pasco.com/products/lab-apparatus/waves-and-sound/ripple-tank-and-standing-waves/se-7319}{Chladni Patterns}, which can be formed by the moving of sand from places which vibrates most to those speical positions that do not vibrate. And the changing of frequencies on the plates will definitely change the pattern.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/chladnipattern.png}
+\caption{Recall what we have achieved in summer camp}
+\end{figure}
+
+\section{Define ``stationary''}
+A wave is said to be ``\textbf{progressive}'' because it propogates to certain directions, the moving of crest from one place to another place is quite obvious. However, sometimes, you might find that a wave may not move at all, epscially for some positions, they seemed to be fixed. And such kind of waves are called ``stationary waves\footnote{def:}'' or ``standing waves''.
+
+\begin{SummBox}
+Define Stationary Wave
+\vspace{1in}
+\end{SummBox}
+
+\section{Play with Stationary waves}
+The best way in learning is through playing, Let's produce visualize the stationary waves with the common objects\footnote{if you have no access to real object, play with PhET-Wave on a String}.
+\subsection{Demonstrate with String/Spring}
+With one end of the string/spring fixed, vibrate the string/spring with a constant \uline{\hspace{1in}}, and the frequency are chosen properly, you will get an image in Fig.\ref{fig:standing wave on string}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/stringresult.jpg}
+\caption{standing waves formed on a string}
+\label{fig:standing wave on string}
+\end{figure}
+
+Since vibrating the string/spring by bare hand is not reliable enough, such pattern would be better achieved through the apparatus in Fig.\ref{fig:string experiment}. The signal generate can change the \uline{\hspace{1in}} of the vibration. 
+
+\begin{marginfigure}
+\includegraphics[width=5cm]{auxi/stringexperiment.jpg}
+\caption{Melde’s experiment setup to observe the standing waves on a string}
+\label{fig:string experiment}
+\end{marginfigure}
+
+\begin{TaskBox}
+By definition, two waves should superpositioned in order to generate the stationary wave patterns. Where is the second wave?
+\vspace{1in}
+\tcblower
+Why some blurred region are captured in Fig.\ref{fig:standing wave on string}
+\vspace{1in}
+\end{TaskBox}
+
+\subsection{Demonstrate with Sound}
+This is less observable yet with impressive result when using air column to demonstrate.
+\begin{marginfigure}[12cm]
+\includegraphics[width=5cm]{auxi/aircolumn.jpg}
+\caption{The fork will produce sound with constant frequency}
+\label{fig:forkcolumn}
+\end{marginfigure}
+When the length of the air column is adjusted to suitable length\footnote{we will determine the length later}, stationary waves of sound will form in the air column, the result is that you can hear a much louder sound than that produced by the fork itself. And such phenomenon is called \uline{\textbf{Resonance}}\footnote{Define resonance and its result for sound}.
+
+This is not as visible as the stationary waves on the string, but we can still use light particles to \href{https://www.douyin.com/video/7091918664261209374}{visualize} it, as illustrated in Fig.\ref{fig:sound wave}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{auxi/particleinsoundwave.jpg}
+\caption{A famous Kundt's tube demonstrating the standing waves}
+\label{fig:sound wave}
+\end{figure}
+
+Another example is the tuning fork with its resonance box.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{auxi/tuningfork.jpg}
+\caption{A resonance box is used to increase the loudness of the tuning fork}
+\label{fig:resonance box}
+\end{figure}
+
+With the resonance box\footnote{Think, why the length of the boxes will vary for different tuning forks}, the sound of the fork will cause the air in the box to vibrate, and stationary waves will form, thus the loudness will be enhanced significantly.
+
+\begin{TaskBox}
+Try to compare the resonance box and with the air column experiment. 
+\vspace{1in}
+\tcblower
+Try to compare the sound stationary wave with the string wave
+\vspace{1in}
+\end{TaskBox}
+
+\section{Explanation}
+After the beautiful demonstration, the sound 
+This \href{https://www.desmos.com/calculator/a6ipbupfqs}{standing waves} demonstration explain without words how stationary waves can be formed from two \uline{\hspace{2in}}.
+
+By adjusting the point in the space at which two waves meet, guessing the resultant displacement of the wave.
+\begin{figure*}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{auxi/redgreenwaves.png}
+\caption{two waves will superposition}
+\end{figure*}
+
+\begin{SummBox}
+A standing wave is formed because two progressive waves with \uline{same frequency} but \uline{opposite} direction. \uline{\hspace{1in}} will naturally occurs, and the resultant will be quite intriguing. At certain places, the waves arrive in \uline{(phase/antiphase)}, which will cause \uline{(constructive/destructive)} interference. Thus the two progressive seems does not travel in space, Only vibrates. This pattern is called stationary waves. 
+\end{SummBox}
+
+\section{Nodes and Antinodes}
+The most important sign of a stationary wave is the formation of \textbf{Nodes} and \textbf{Antinodes}.
+
+\subsection{In string}
+The node and antinode are easily identified. 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.45\linewidth]{auxi/stringnodes.jpg}
+\includegraphics[width=0.45\linewidth]{auxi/springnodes.jpg}
+\caption{A good illustration of string nodes}
+\end{figure}
+
+\begin{TaskBox}
+Label the nodes and antinodes in the figures above
+\end{TaskBox}
+
+
+\subsection{In air column}
+\begin{marginfigure}[35cm]
+\centering
+\includegraphics[width=2cm]{auxi/transformation.jpg}
+\caption{transform the longitudinal wave to sinusoidal pattern}
+\label{fig:transform l to t}
+\end{marginfigure}
+
+There are several conditions for the stationary waves. Close end v.s. Open end. It is shown below\footnote{the transverse wave pattern is converted from the perspective of displacement}:
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{auxi/airnode.jpg}
+\caption{The nodes and antinodes in air column}
+\label{fig:air nodes}
+\end{figure}
+For air at the position of closed end, since there is no room for the air molecules\footnote{wrong in Chemistry, but acceptable in Physics} to vibrate, thus, It is always the node\footnote{but it is the compression part in the sound wave}.
+
+\begin{SummBox}
+Define what is node and antinode
+\vspace{2in}
+\end{SummBox}
+
+\section{Formula}
+An important utilization of standing wave is find the wavelength of the source waves. Since the superposition will only change the resultant amplitude not the frequency. Thus the wavelength will much easier to measure. Combined with the following formulae, several quantities could be resolved. 
+\begin{align*}
+  v &= f\cdot \lambda\\
+  f\cdot T &= 1
+\end{align*}
+
+
+\subsection{Changing frequency}
+If you have a fixed air column, by changing the frequency of sound, different patterns of stationary waves would form.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/nodesclosedend.jpg}
+\caption{The 1st harmonic has the lowest frequency}
+\end{figure}
+
+\begin{TaskBox}
+Determine the wavelength of the $n$th harmonic, $\lambda_n$,given that the length is fixed as $\ell$
+\vspace{0.5in}
+\tcblower
+Express the frequency of the $n$th harmonic, $f_n$, in terms of the length $\ell$
+\vspace{0.5in}
+\end{TaskBox}
+
+
+\subsection{Changing Length}
+Given that the frequency is constant, you can change the legnth of the column in Fig.\ref{fig:forkcolumn} to obtain stationary wave patterns again. But this time, the wavelength is constant, the only changing property is the length of the column.
+\begin{marginfigure}
+\centering
+\includegraphics[width=3cm]{auxi/changeheight.png}
+\caption{By lowering the height of column, you will find stationary patterns again}
+\end{marginfigure}
+
+\begin{TaskBox}
+What is the difference between two successive stationary patterns.
+\vspace{0.5in}
+\end{TaskBox}
+
+There is a lot of fun in investigating the phenomena of resonance and stationary waves, try your best to discover in the nature.
+\end{document}
+

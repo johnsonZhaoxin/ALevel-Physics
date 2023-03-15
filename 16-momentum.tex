@@ -1,0 +1,279 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry}
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+\usepackage{siunitx}
+\usepackage[normalem]{ulem}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+
+%定理的运用
+\usepackage[english]{babel}
+\newtheorem{theorem}{Theorem}[section]      %定理
+\newtheorem{corollary}{Corollary}[theorem]  %结论
+\newtheorem{lemma}[theorem]{Lemma}          %引理
+\newtheorem{definition}[theorem]{Definition}%定义
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=green,
+}
+% Set up the images/graphics package
+\usepackage{graphicx}
+\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+
+\title{Momentum}
+\author{Sanjin Zhao}
+\date{17th Sep, 2022}  % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+\usepackage{nicefrac} %比较好看的斜体分号
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$} %因为美元符号的问题。需要手动添加美元\square美元
+
+\usepackage{tikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+%\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+%\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+%\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+%\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+%\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item Define and use \emph{linear momentum}
+  \item Define and use \emph{impluse}\footnote{not required by CAIE but by me}
+  \item Recall and use that the \textbf{area} under $F$-$t$ graph equals to the \textbf{change of momentum}
+  \item Relate force to the rate of change of momentum and state Newton’s second law of motion
+\end{todolist}
+\clearpage
+
+\section{Leadin}
+`People who succeed have momentum. The more they succeed, the more they want to succeed, and the more they find a way to succeed.' \\
+\hfill{} Tony Robbins
+
+In this quotes, momentum is defined as the inner state of mind. Like human, moving object also have momentum. So I change that quote into:
+
+\noindent `Objects which move has momenta, the more speed they have, the more momenta they get, and the more they will remain their momenta' \\
+\hfill{} Sanjin Zhao
+
+\section{Momentum}
+As mentioned before, momentum is a physical quantity related with a moving object. It is defined as the \uline{\hfill}.
+\begin{SummBox}
+If expressed in formula, the momentum $\vec{p}$ is :
+\[
+   \vec{p} = m \cdot \vec{v}
+\] 
+\end{SummBox}
+There are several things to notice:
+\begin{enumerate}
+  \item momentum is a \uline{\hspace{1 in}} quantity, the direction of which is defined by the direction of the \uline{\hspace{1 in}} of the object
+  \item momentum is a \uline{state/process} quantity.
+  \item the unit for momentum is \uline{\hspace{2 in}}, there is no other derived unit for momentum
+\end{enumerate}
+
+\begin{TaskBox}
+If a truck with a  total mass of \SI{2000}{\kg} is moving to east at a speed of \SI{80}{\kilo\metre\per\hour}, what is the momentum of the truck?
+\tcblower
+In order for a man with mass of \SI{60}{\kg} to have the same momentum as the truck in previous question, what should the velocity of the man be? state both magnitude and direction of velocity.
+\vspace{3 in}
+\end{TaskBox}
+
+\subsection{k.e. and momentum}
+Using the mass of the object and the velocity(speed), both k.e. and momentum can be calculated. 
+\begin{ExampleBox}
+Say a object with mass $m$ are having a momentum $p$. What is the velocity expressed in terms of $m$ and $p$, and hence derive a formula to determine the k.e. of the object, using $m$ and $p$ and necessary scientific constant only. 
+\vspace{2 in}
+\end{ExampleBox}
+Try to compare k.e. and momentum in the following aspect.
+\begin{itemize}
+  \item vector or scalar nature
+  \item process or state quantity
+  \item similarities between the two quantities from the defining formulae
+  \item difference between the two quantities
+\end{itemize}
+
+\section{Impulse}
+This section is not required by the CAIE, but if it would be better off to learn this
+\subsection{Impulse by a Constant Force}
+\begin{SummBox}
+Impulse is defined as the product of force and the time the force has been applied. Expressed in formula, that would be 
+\[
+   \text{Impulse} = \vec{F}\times \Delta t
+\]
+\end{SummBox}
+Several things to notice are that:
+\begin{enumerate}
+  \item impulse is a \uline{\hspace{1 in}} quantity, the direction of which is defined by the direction of the \uline{\hspace{1 in}}
+  \item impulse is a \uline{state/process} quantity.
+  \item the unit for impulse is \uline{\hspace{2 in}}, there is no other derived unit for impulse. The base SI unit for \si{\newton\second} is \uline{\hspace{1 in}}.
+\end{enumerate}
+
+\subsection{Impulse by a Varying Force}
+Recall the process of how we determine the displacement from a varying velocity-time graph. $v$-$t$ graph. 
+
+\noindent If velocity is constant, the displacement is $s= v \times \Delta t$\\
+\noindent If velocity is changing, the displacent is $s = \int v(t) \ \d t$, this formula means the area under the $v$-$t$ graph
+
+Now let's apply that \emph{integration} principle\footnote{which can be applied to every quantities having product relationship} to the impluse.
+
+\noindent If the force is constant, the impluse is $\vec{I} = \vec{F} \times \Delta t$\\
+\noindent If the force is changing with respect to time, the impulse that varying force exert to the object is $\vec{I} = \int \vec{F}(t)\ \d t$
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{ForceTime.pdf}
+\caption{Area under $F$-$t$ graph is impulse}
+\end{figure}
+Using a $F$-$t$ graph would make this process more clear.
+
+
+\section{Relationship Between Impulse and Mometum}
+As mentioned before, Impulse and Momentum have same SI base unit, and are both vectors, but impulse is a process quantity, while mometum is a state quantity. Do the special things reminds you the relationship between work and energy? Again, same process has been used, Let's look at the example of a UAM.
+\begin{ExampleBox}
+Suppose an object with mass $m$ is moving with a initial velocity $u$, and now a constant resultant force $F$ is acting on the object, the force has been applied on the object for a time period of $t$, the direction of the force is the same as the initial velocity.
+Calculate the impulse provided by the force $F$;\\
+Determine the final velocity of the object, and the \textbf{change of momentum}; 
+\tcblower
+The impulse provided is 
+\[I=Ft\]
+the direction of the impulse is the same as the resultant force.\\
+
+The acceleartion is 
+\[a=\nicefrac{F}{m}\]
+thus, the final velocity is 
+\[v=u+at=u+\nicefrac{F}{m}\cdot t\]
+the direction is the same as the initial velocity\\
+
+The final momentum 
+\[p_f= m\cdot \left(u+\nicefrac{F}{m}\cdot t\right)\]
+the initial momentum is 
+\[p_i= mu\]
+thus the change of momentum is 
+\[\Delta p =\uline{\hspace{2.5 in}}\]
+The direction of the change in momentum is the same as the initial velocity
+\end{ExampleBox}
+From the example, it not hard to deduce the following relationship\footnote{Depsite we use simple UAM, Calculus can prove the same conclusion even if the force is changing}
+\begin{SummBox}
+change in an object's momentum is equal to the area under the $F$-$t$ graph (impulse)
+\[
+  \Delta \vec{p} = \vec{F}\cdot \Delta t
+\]
+\end{SummBox}
+
+\begin{TaskBox}
+An object of mass \SI{70}{\g} is initially at rest. A force that varies with time is exerted on the object. The graph shows the how the force varies during the time of impact. What is the ﬁnal velocity of the object?\\
+
+\includegraphics{auxi/Ftgraph.png}
+\vspace{2in}
+% ans:12.5 m/s , \Delta p = 0.875
+\end{TaskBox}
+
+\section{Refine Force and NSL}
+In the previous handout, force is defined as an interaction between objects, as a strict future physicist, this definition is not a good one. It is not quantitative enough. But now, with the introduction of momentum. $\Delta p = F\cdot \Delta t$, Reformulate the relationship, $\vec{F}= \nicefrac{\Delta \vec{p}}{\Delta t}$ or expressed in differential form $\vec{F}=\nicefrac{\d \vec{p}}{\d t}$. Finally, we arrive at a much more quantitative definition form of foce.
+\begin{theorem}
+Force is defined as the rate of change in momentum. $\vec{F}= \nicefrac{\Delta \vec{p}}{\Delta t}$
+\end{theorem}
+
+And actually this is first introduced as Netwon's Second Law in his `Philosophiae Naturalis Principia Mathematica' 
+\begin{marginfigure}
+\includegraphics[width=4.5cm]{ziranzhexue.jpg}
+\caption{the title page of this GIANT book}
+\end{marginfigure}
+\begin{SummBox}
+The resultant force acting on an object is directly proportional to the rate of change of the linear momentum of that object. The resultant force and the change in momentum are in the same direction.
+\end{SummBox}
+This is the second form of NSL, which is also the original form proposed by Newton.
+
+
+
+\subsection{Average vs Instantaneous Force}
+According to NSL, average force equals to the total change in momentum divided by the total time. Using the \emph{differentiation} concept, what is the instantaneous force if a $p$-$t$ diagram is provided?
+\begin{figure}[ht]
+\includegraphics[width=0.92\linewidth]{ptandft.pdf}
+\caption{How to infer $F$ from $p$-$t$ graph?}
+\end{figure}
+
+
+\begin{marginfigure}[ht]
+\includegraphics[width=5cm]{vapormax.jpeg}
+\caption{the air max unit can reduce the average force when touching the ground}
+\end{marginfigure}
+
+\begin{TaskBox}
+Explain the principle of Nike vapormax shoes, or the air cushion to save life.
+\vspace{3in}
+\end{TaskBox}
+
+
+
+\end{document}

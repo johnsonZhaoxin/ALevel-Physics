@@ -1,0 +1,217 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry}
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+
+\usepackage{siunitx}
+\usepackage[normalem]{ulem}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+
+
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=green,
+}
+
+
+
+% Set up the images/graphics package
+\usepackage{graphicx}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+\graphicspath{{./auxi/}}
+
+\title{Vernier \& Micrometer Screw Gauge}
+\author{Sanjin Zhao}
+\date{1th Sep 2022}  % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+
+% 国际制单位，使用有点问题好像
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+
+\usepackage{tikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+
+\begin{document}
+
+\maketitle% this prints the handout title, author, and date
+
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+	\item Learn to read \emph{verniers} and \emph{microscrew gauge}
+	\item Know the \emph{absolute uncertaity} of the device
+	\item Use verniers and microscrew gauge to \textbf{measure} tiny length
+	\item Know the common \emph{measuring equipment} in the lab
+\end{todolist}
+\clearpage
+
+\section*{Leadin}
+\href{https://www.britannica.com/biography/Pierre-Vernier}{Pierre Vernier} invented the vernier caplipers in 1631, which enables human to explore the physical world in a more precise perspective. 
+\begin{marginfigure}
+\includegraphics{vernier.png}
+\caption{Pierre Vernier\\1584-1638}
+\end{marginfigure}
+I cannot find any self portarit of Pierre Vernier\footnote{becoming scientist is the easiest way to spread your name, no matter in units or equipments.}, what a pity\footnote{\href{https://www.vernier.com/product-category/?category=sensors}{Vernier} Education group has become an important lab sensor provider}!
+
+\section{Vernier}
+\subsection{Structure of vernier}
+The following illustrates the parts of a vernier caliper.
+\begin{figure*}[h]
+\includegraphics{vernier2.png}
+\caption{Consitutient part of a vernier}
+\end{figure*}
+It can measure internal,external length or depth because of the jaws and blade.
+
+\subsection{Rationale} %\footnote{I'll explain it in Chinese later}
+Because of the veriner caliper has two graduated scales - main scale or veriner scale, The veriner has $n$ divisions but the on the main scale, only $n-1$ division for the same length on veriner. Thus the vernier can meansure to as small as $\text{one division on main scale}/n$. 
+
+\begin{marginfigure}
+\includegraphics{digitalvernier.png}
+\caption{Digital Vernier Caliper}
+\end{marginfigure}
+
+
+\subsection{Read a Vernier}
+Just as we mentioned, the least length of a vernier is $\text{one division on main scale}/n$, usually, there are three types of vernier.$n=10$, $n=20$ and $n=50$ respectively. And the corresponding precision of the verniers are \uline{\hspace{0.5 in}}, \uline{\hspace{0.5 in}} and \uline{\hspace{0.5 in}} respectively. 
+Shown as the following figures.
+\begin{figure}[h]
+\includegraphics{vernier-0.1mm.jpg}
+\includegraphics{vernier-0.05mm.png}
+\includegraphics{vernier-0.02mm.jpg}
+%\caption{vernier with different precisions}
+\end{figure}
+
+The steps to read a vernier caliper, for example shown in figure\ref{fig:caliper reading}, is that:
+\begin{marginfigure}
+\includegraphics[width=5cm]{caliperreading.png}
+\caption{the main and vernier scale}
+\label{fig:caliper reading}
+\end{marginfigure}
+
+\begin{enumerate}
+  \item Determine the \emph{minimum division} of the vernier using $1/n$. In the figure, that would be $\SI{1}{\mm}/10 =\SI{0.1}{\mm}$
+  \item The main scale contributes the main number(s) and one decimal place to the reading (e.g.\SI{21}{\mm}, whereby 21 comes from the main scale according to the 0 in the vernier)
+  \item The vernier scale contributes the second decimal place to the reading (e.g. \SI{0.3}{\mm}).
+\end{enumerate}
+However, with the development, digital vernier calipers has already been invented, saving people out of the trouble of counting and reading, however, as ALevel candidates you shall grasp the way of reading mechanic vernier caliper.
+
+\section{Micro Srew Gauge}
+\begin{marginfigure}
+\includegraphics{gascoigne.jpg}
+\caption{A telescope with a micrometer installed}
+\end{marginfigure}
+William Gascoigne\footnote{born 1612,died at 1644, who also invented telescopic sight} follows Pierre Vernier's path and invented the micrometer screw gauge which has improved the \href{https://www.lindahall.org/about/news/scientist-of-the-day/william-gascoigne}{precision} to another level.
+
+Micrometer Screw Gauge is also called Micrometer, just as the name suggested, it can measure with precision to \SI{10}{\um} or \SI{0.01}{\mm}.
+\begin{figure}
+\includegraphics{Micrometer-Screw-Gauge.jpg}
+%\caption{A microscrew gauge} %???????
+\end{figure}
+
+\subsection{Structure}
+You shall know the key parts name of a microscrew gauge, listed below, fill in the blank of the following picture
+\begin{figure}[h]
+\centering
+\includegraphics{structure of micrometer.jpg}
+\caption{Stucture of a Microscrew Gauge}
+\end{figure}
+Generally, the least count is \uline{\hspace{0.7 in}} on the main scale while the circular scale is divided into \uline{\hspace{0.7 in}} or \uline{\hspace{0.7 in}} equal parts.
+
+A micrometer is composed of the following parts:
+\begin{itemize}
+  \item Frame -  It is the U-shaped or C-shaped body that holds the anvil and barrel in constant relation to each other. The frame is heavy and has high thermal mass. To prevent substantial heating up, it is covered by insulating plastic.
+  \item Anvil - \vspace{0.3 in}
+  \item Barrel - Stationary round component with a linear scale on it
+  \item Screw - \vspace{0.3 in}
+  \item Locknut -  Component that one can tighten to hold the spindle stationary.
+  \item Spindle - \vspace{0.3 in}
+  \item Ratchet - The device on the end of the handle that limits applied pressure by slipping at a calibrated torque.
+\end{itemize}
+
+\subsection{Rationale}
+The micrometer screw gauge working principle is based on the \emph{conversion of small distances into larger ones by measuring the rotation of the screw}. One revolution of screw represent \uline{\SI{0.5}{\mm}}.
+
+\subsection{Read a Micrometer}
+You'll be required to read a micrometer
+\begin{figure*}[h]
+\includegraphics{microscrew-vir.pdf}
+\caption{A virtual microscrew gauge}
+\end{figure*}
+
+\begin{enumerate}
+  \item Read the Sleeve Scale, count how many divisions that displays in the sleeve.
+  \item Read the Thimble Scale, count how many sub-divisioons that displays in the thimble.
+  \item Approximate on the thimble scale.
+  \item Main divisions$\times$\SI{0.5}{\mm} $+$ Sub-division$\times$ \SI{0.01}{\mm}+ approximation$\times$\SI{0.001}{\mm}
+\end{enumerate}
+\end{document}

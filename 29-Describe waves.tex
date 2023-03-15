@@ -1,0 +1,335 @@
+ \documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+
+
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry} %这个包已经在handout.cls使用过了，如果再调用一次会出问题
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+
+%\usepackage[LGR]{fontenc} %使用希腊字符。
+
+\usepackage{siunitx}
+\DeclareSIUnit\torr{torr} %声明新的单位torr
+\usepackage{mhchem}
+
+\usepackage{BOONDOX-cal} %为了花体的emf符号
+\usepackage[normalem]{ulem} %下划线
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+\usepackage[version=4]{mhchem}
+
+%定理的运用
+\usepackage[english]{babel}
+\newtheorem{theorem}{Theorem}[section]      %定理
+\newtheorem{corollary}{Corollary}[theorem]  %结论
+\newtheorem{lemma}[theorem]{Lemma}          %引理
+\newtheorem{definition}[theorem]{Definition}%定义
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=g1,
+}
+% Set up the images/graphics package
+\usepackage{graphicx}
+%\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+\usepackage{nicefrac} %比较好看的斜体分号
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$} %因为美元符号的问题。需要手动添加美元\square美元
+
+\usepackage{tikz}
+\usepackage{circuitikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+%\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+%\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+%\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+%\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+%\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+\title{Mechanic Waves}
+\author{Sanjin Zhao}
+\date{4th Oct, 2022}  % if the \date{} command is left out, the current date will be used
+
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item describe a progressive wave
+  \item describe the motion of transverse and longitudinal waves
+  \item describe waves in terms of their wavelength, amplitude, frequency, speed, phase difference and intensity
+  \item use the time-base and y-gain of a cathode-ray oscilloscope (CRO) to determine frequency and amplitude
+  \item use the wave equation $v = f\cdot \lamba$ and $f =\nicefrac{1}{T}$
+  \item use the equations of intensity and its relationship with amplitude.
+\end{todolist}
+\clearpage
+
+\section{Leadin}
+Vibration in matters can \textbf{transfer energy} through the media. Let's give your several examples: \emph{ripple}, \emph{sound} and \emph{seismic waves}\footnote{def:}
+\begin{marginfigure}
+\includegraphics[width=5cm]{auxi/ripple.jpg}
+\caption{The ripples is a vibration of water molecules}
+\end{marginfigure}
+But we have more to explore in a quantitative way. In this chapter we need to define waves, and describe waves.
+
+
+\section{Progressive Waves}
+Waves can be classified, based on whether the propogation needs medium or not, into \emph{Mechanical Waves} and \emph{Eletromagnetic Waves}. And if a wave carries energy from one place to another, such wave is called ``\textbf{progressive}''
+
+\subsection{Vibration and Pulse}
+In the \href{https://phet.colorado.edu/sims/html/waves-intro/latest/waves-intro_en.html}{Phet} simulation, by vibrating the water by droplet or vibrating the drum, we can create a pulse. As time pass by, the single pulse can spread to further place.
+
+Another case is on spring, play the \href{https://phet.colorado.edu/sims/html/wave-on-a-string/latest/wave-on-a-string_en.html}{pulse on string} simulation. and you will find it is no different from the water surface example.
+
+As we vibrate some matter, we can see a \emph{pulse}\footnote{def:} forms on the matter and the pulse can spread.
+
+As long as we keep the vibration on the matterial, the wave patterns will form in that matterial. And such phenomonon is called waves.
+
+\begin{SummBox}
+wave is \uline{\phantom{a periodic disturbance        }} travelling through space, characterised by a vibrating medium.
+\end{SummBox}
+
+\subsection{Transverse Wave}
+A wave has a direction of \emph{propagation}, but another direction exist at which the particles in the medium is vibrating. When the two direction are \emph{perpendicular}, the wave is defined as \emph{transverse wave}.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/transverse.png}
+\caption{a transverse wave on a slinky spring}
+\label{fig:transverse}
+\end{figure}
+
+\begin{TaskBox}
+On Fig.\ref{fig:transverse}, label the direction of propagation and the direction of vibration, accroding to this characteristic, define what is Transverse wave.
+\vspace{0.5 in}
+\end{TaskBox}
+
+\subsection{Longitudinal Wave}
+There is another way to vibarate the slinky spring, as illustrated in Fig.\ref{fig:longitudinal}. 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/longitudinal.png}
+\caption{a longitudinal wave on a slinky spring}
+\label{fig:longitudinal}
+\end{figure}
+This time, the vibration direction is \uline{\textbf{parallel to}} the direction of spread. Hence, such wave is called \emph{Longitudinal Wave}.
+
+A most common longitudinal wave is sound, think what is the medium that sound can spread by?
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/sound.png}
+\caption{Small dots represent air molecules}
+\label{fig:sound wave}
+\end{figure}
+The answer is the air molecules\footnote{In chemistry, there is no air molecules, since it is a mixture. The small dots represents\ce{O2},\ce{N2},\ce{Ar},\ce{CO2},\ce{H2O}, which are the consituents of the air.}.
+
+\subsection*{Surface Wave}
+The seismic waves are spreading in all directions, thus we call it a surface wave. It is a little complicated since both transverse and longitudinal waves exist. But it is not the focus in this lesson. 
+\begin{marginfigure}
+\includegraphics[width=3cm]{auxi/seismicwaves.jpg}
+\caption{P-wave and S-wave in an earthquake}
+\end{marginfigure}
+
+
+\subsection{Wave as form of energy transfer}
+No matter in which type of waves, the matter itself only vibrates in limited region, it cannot spread with the wave. So pulse or wave \textbf{can transfer energy} but \textbf{can not transfer matter}.
+
+\section{CRO}
+\emph{Cathode-Ray Oscilloscope(CRO)} is an important instrument in studying the waves, AC currents.
+
+\begin{marginfigure}
+\includegraphics[width=5cm]{auxi/CRO.jpg}
+\caption{A CRO measuring the variation of air with time.}
+\end{marginfigure}
+
+The main function is to show the variation of voltage, or vibration of a \textbf{fixed point} on the way of wave propagation.
+
+\subsection{$d$-$t$ graph of a point}
+With CRO, a $d$-$t$ graph of a point can be determined, as shown in Fig.\ref{fig:result on oscilloscope}. 
+\begin{figure}
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/Oscilloscope.jpg}
+\caption{A sine pattern in an oscilloscope}
+\label{fig:result on oscilloscope}
+\end{figure}
+The buttons on oscilloscope can adjust the \textbf{time-base} and \textbf{$\mathbf{y}$-gain} of the graph to have a more comfortable diagram when studying the wave patterns. This is the $d$-$t$ graph of a fixed point on wave.
+
+You can play with the \href{https://physics-zone.com/sim/virtual-oscilloscope/}{virtual oscilloscope} to grasp the skill to operate with CRO.
+
+\subsection{$d$-$x$ graph of the wave}
+In Fig.\ref{fig:transverse}, A similar sinusoidal pattern resembles \ref{fig:result on oscilloscope}. However, the mechansim of forming such pattern is completely different. 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/dxgraph.jpg}
+\caption{a $d$-$x$ graph of a wave}
+\label{fig:dxgraph}
+\end{figure}
+It shows the displacement of all position in a wave within the same time momement. CRO couldn't achieve such. 
+\begin{TaskBox}
+Compare $d$-$t$ graph of a point v.s. $d$-$x$ graph of a wave.
+\vspace{1in}
+\end{TaskBox}
+
+
+\section{Describing Waves}
+With the help of CRO or other devices, now the wave patterns can be studies thoroughly from a quantitative perspective. All the physical quantities can be obtained either from the $d$-$x$ graph or the $d$-$t$ graph.
+
+\subsection{Equilibrium Position}
+When there is no vibration source, all the point in the medium are said to be in equilibrium position. 
+\begin{TaskBox}
+Label the equilibrium positions in Fig.\ref{fig:dxgraph}.
+\end{TaskBox}
+
+\subsection{Peak and Trough}
+When a progressive wave forms in a medium, peak and trough are speical controlling points in the wave.
+\begin{TaskBox}
+Label the crests and troughs in Fig.\ref{fig:dxgraph}.
+\end{TaskBox}
+
+\subsection{Compression and Rarefraction}
+In Fig.\ref{fig:longitudinal} and Fig.\ref{fig:sound wave}, since the direction of vibration is parallel to the direction of propagation, the pattern is different from the transverse wave, But the Compression and Rarefraction are similar to the peak and trough in transverse waves. 
+\begin{TaskBox}
+Label the crests and troughs in Fig.\ref{fig:sound wave}.
+\end{TaskBox}
+With the help of CRO, the pattern can be transformed into a sine wave by measuring the \textbf{displacement} or \textbf{air pressure}\footnote{this needs further explaination}.  
+
+\subsection{Amplitude}
+The amplitude is the \uline{\hfill}.
+\begin{TaskBox}
+Label the amplitude in Fig.\ref{fig:transverse} and Fig.\ref{fig:sound wave}(b).
+\end{TaskBox}
+
+\subsection{Wavelength,$\lambda$}
+wavelength, $\lambda$, is the distance between two adjacent points on a wave oscillating \textbf{in step with} each other.
+\begin{TaskBox}
+please explain how to define the phrase ``in step with'' by your own word.
+\vspace{1in}
+\end{TaskBox}
+And wavelength can only be obtained through \uline{($d$-$t$ graph/$d$-$x$ graph)}. 
+
+\subsection{Phase Differnce}
+As sinuosoidal function is a periodic function, which means after $2\pi$ or \ang{360}, the function will repeat itself. This properties can be shown in $d$-$x$ graph, in which certain points will vibrate \emph{in phase}, while some point will vibrate \emph{out of phase}. And most position are having phase difference\footnote{it is related with the sine function, which may require your deep understanding in trigonometric function}.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/phase.jpg}
+\end{figure}
+So when two points in the material vibrate \textbf{in phase}, that means they are vibrating with same dispalcement at any time, the phase differnce between them is a \textbf{multiple of \ang{360}}.
+
+When two points in the material vibrate \textbf{out of phase}, that means they are vibrating with completely opposite dispalcement at any time, the phase differnce between them is a \textbf{odd multiple of \ang{180}}.
+
+\subsection{Period}
+\begin{SummBox}
+Define Period.
+\tcblower
+Period is the time taken to \uline{\hfill}
+\end{SummBox}
+Keep in mind that, period, $T$, can only be found on the $d$-$t$ graph.\footnote{some question in AS Level paper1  will ask you to determine the period from a CRO diagram.}
+
+\subsection{Frequency}
+Frequncy, $f$, is the number of oscillations per unit time of a point in a wave. The unit for frequency is \si{\hertz}, and the SI base unit for \si{\hertz} is \uline{\hspace{1in}}.
+According to the relationship between \textbf{Period} and \textbf{Frequency}, the larger the period is, the smaller frequency is.
+\[
+  f= \frac{1}{T} \qquad T=\frac{1}{f}
+\]
+
+\subsection{Wave Speed}
+How fast that a wave can spread in the unit time is called the wave speed. For example, the sound wave can have a typical speed of \SI{330}{\m\per\s} at normal temperature.
+\begin{ExampleBox}
+Let's determine the wave speed from wavelength $\lambda$ and frequency, $f$ or period $T$.
+\tcblower
+\[
+  \text{speed} = \frac{\text{wavelength}}{\textbf{}}
+\]
+Hence:
+\begin{align*}
+        v & = \frac{\lambda}{T}\\
+          & = \frac{1}{T}\cdot\lambda \\
+          & = f\cdot \lambda
+\end{align*}
+\end{ExampleBox} 
+The equation holds true for any wave.
+
+\section{Wave Intensity}
+\subsection{intensity def}
+As told before, the wave is a way of transferring energy, not matters. Thus the rate of energy transmitted (power) \uline{\phantom{per unit area     }} at right angles to the wave velocity is defined as \emph{intensity}.
+\[
+  \text{intensity} = \frac{}{\hspace{1in}}
+\]
+
+\subsection{intensity and amplitude}
+with the case of sound, if you beat a drum or pluck the strings of a guitar more violently, you would hear a much louder sound, which means larger energy is transferred hence large intensity.
+\begin{TaskBox}
+which property of wave changes when you beat a drum more violently?
+\end{TaskBox}
+Hence, the relationship is deduced, the larger the amplitude of a wave, the larger of the intensity. Moreover, a square rule exist, which is:
+\[
+  \text{intensity} \propto \text{amplitude}^2 \qquad I \propto A^2
+\]
+\end{document}
+

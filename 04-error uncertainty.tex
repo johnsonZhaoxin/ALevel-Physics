@@ -1,0 +1,262 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry}
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+
+\usepackage{siunitx}
+\usepackage[normalem]{ulem}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+
+
+
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=green,
+}
+
+
+
+% Set up the images/graphics package
+\usepackage{graphicx}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+%\graphicspath{{graphics/}}
+
+\title{Error and Uncertainty}
+\author{Sanjin Zhao}
+\date{1th Sep 2022}  % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+
+% 国际制单位，使用有点问题好像
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+
+\usepackage{tikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+
+\begin{document}
+
+\maketitle% this prints the handout title, author, and date
+
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+	\item Distinguish \textbf{true value} and readings.
+	\item Know the difference between \emph{accuracy} and \emph{precision}
+	\item Distinguish between \emph{Random Error} and \emph{Systematic Error}\footnote{def:}
+	\item State methods to minimize such errors
+	\item Express uncertainty in both \emph{absolute} and \emph{relative} forms
+	\item Grasp the operation rules for uncertainty
+\end{todolist}
+\clearpage
+
+\section*{Leadin}
+Why so serious?   About sciences.
+\begin{marginfigure}
+\includegraphics{why so seirous.jpeg}
+\caption{Why so serious about science?}
+\end{marginfigure}
+Despite we want exact value of measurement, but life is so hard. You can not claim your observation or measurement is the \emph{true value}\footnote{def:} of the object being measured. So we need to discuss errors, presions, and uncertainty during measurement\footnote{You can refer to this 
+\href{https://www.savemyexams.co.uk/a-level/physics/cie/22/revision-notes/1-physical-quantities--units/1-2-measurements--errors/1-2-1-errors--uncertainties/}{error and uncertainty linkage} to find more information.}.
+
+\section{Accuracy vs Precision}
+In physics and chemistry related subjects, Two quality is taken into consideration, Accuracy(Accurate)\footnote{def:The closeness of the measured value to a standard or true value} and Precision(Precise)\footnote{def:The closeness of two or more measurements to each other is known as the precision}.
+\begin{center}
+\centering
+\includegraphics{accurate.pdf}
+\caption{Matrix of accuracy and precision}
+\label{fig:acc vs pre}
+\end{center}
+
+\begin{SummBox}
+Try to compare accuracy and precision according to the figure \ref{fig:acc vs pre}
+\vspace{0.5in}
+\end{SummBox}
+
+
+\section{Errors}
+If we know the exact value, the difference between your reading and the exact value can be explained by \emph{errors}.
+\subsection{Random Error}
+\begin{itemize}
+	\item Random errors cause \textbf{unpredictable} fluctuations in an instrument’s readings as a result of uncontrollable factors, such as environmental conditions
+	\item This affects the \textbf{precision of the measurements} taken, causing a wider spread of results about the mean value
+\end{itemize}
+In figure \ref{fig:acc vs pre}, all of them are showing random error.
+
+
+\subsection{Systematic Error}
+\begin{itemize}
+	\item Systematic errors arise from the use of faulty instruments used or from flaws in the experimental method.
+	\item Systematic errors are biased\footnote{which means it always increased or decreased the reading value}
+	\item This type of error is repeated every time the instrument is used or the method is followed, which affects the \textbf{accuracy of all readings} obtained
+\end{itemize}
+In figure \ref{fig:acc vs pre}, (a) and (c) are showing systematic error.
+
+\subsection{Zero Error}
+Zero error is a classic systematic error, in which an instrument gives a reading when the true reading at that time is zero. This can be mitigated by \textbf{recalibrating} the instrument\footnote{ususally press the zero button}.
+
+\begin{SummBox}
+List the methods that random error and systematic error can be reduced or eliminated
+\vspace{1in}
+\end{SummBox}
+
+\section{Uncertainty}
+In order to solve the problem of reading, uncertainty is introduced. Just in the marginfigure, percentage or absolute uncertainty is introduced in labelling the mass or the volume of foods
+\begin{marginfigure}
+\includegraphics[width=5cm]{shortage.jpeg}
+\caption{shortage are allowed in foods labelling}
+\end{marginfigure}
+It is usually be expressed by:
+\begin{center}
+	reading value $\pm$ uncertainty
+\end{center}
+For example, if you measure the mass of an apple, with uncertainty of \SI{1}{\gram}. The result would be:
+\begin{center}
+		\SI[multi-part-units = single]{200(1)}{\gram}
+\end{center}
+This means the \textbf{true value} of the mass of the apple is some value within the range of \SIrange{199}{201}{\gram}.
+
+\subsection{Absolute uncertainty}
+The above is an expression for \textbf{absolute uncertainty}. And usually the absolutely uncertainty is defined as half of the precision of the instrument. For example the precision of the micrometer is \SI{0.01}{\milli\metre}, thus the uncertainty is  \SI{0.005}{\milli\metre}
+
+\subsection{Fractional uncertainty}
+Another form is \textbf{fractional uncertainty}, which gives the perception of the uncertainty relative to the reading. For example, The reading of the apple could also be written as:
+\begin{center}
+	\SI{200}{\gram} $\pm 0.5\%$
+\end{center}
+
+\begin{SummBox}
+How the absolute uncertainty \SI{1}{\gram} can be changed into percentage uncertainty
+\vspace{0.5in}
+\end{SummBox}
+
+\section{Operation Rules}
+The last thing is to calculate the combined uncertainty when dealing with multiple readings. The following are some rules to be utilized.
+\subsection{Addition or Subtraction}
+Serveral thing have to be kept in mind to deal with the addition or subtraction of uncertainty.
+\begin{enumerate}
+	\item absolute uncertainty should be used, that means if percentage uncertainty is used, you must convert it before calculation, the fomula for converting is:
+	\[
+		\text{percentage uncertainty} = \frac{\hspace{1.5  in}}{} \times 100\%
+	\]
+	\item no matter addition or subtraction, always \textbf{ADD} the uncertainties to determine the absolute uncertainty of the final result
+\end{enumerate}
+
+\begin{ExampleBox}
+The length and width of an rectangle, with uncertainty, are measured to be \SI[multi-part-units = single]{4.0(4)}{\m} and \SI[multi-part-units = single]{3.0(3)}{\m}. What is the perimeter with uncertainty
+\vspace{0.5in}
+\end{ExampleBox}
+
+\subsection{Multiplication or Division}
+To determine the uncertainty of products or quotients, \textbf{Percentage Uncertainty} should be used
+\begin{enumerate}
+	\item No matter multiplication or division, always \textbf{ADD} the uncertainties to determine the absolute uncertainty of the final result.
+	\item if not specified, the final result can be expressed in percentage. However, if absolute uncertainty is required, the formula for converting is:
+	\[
+		\text{absolute uncertainty} = \frac{\hspace{1.5  in}}{}
+	\]
+\end{enumerate}
+
+If any physical quantites is multiplied or divided by an exact value or scientific constant. the final result would share same percentage uncertainty as orignial. 
+
+\begin{ExampleBox}
+The length and width of an rectangle, with uncertainty, are measured to be \SI[multi-part-units = single]{4.0(4)}{\m} and \SI[multi-part-units = single]{3.0(3)}{\m}. What is the area with uncertainty
+\vspace{0.5in}
+\tcblower
+The radius of a circle is measured to be \SI[multi-part-units = single]{10.0(5)}{\m}. What is the circumference of the cirle with uncertainty?
+\vspace{0.5in}
+\end{ExampleBox}
+
+
+\subsection{Powers or Roots}
+Since powers can be viewd as advanced multiplication, it follows the rule of multiplication. For example, the reading is $x$ and the absolute uncertainty is $\Delta x$, if $r = x^n$, then
+\[
+	\frac{\Delta r}{r} = n \times \frac{\Delta x}{x} \footnote{That is because $r=\underbrace{x\cdot x \cdot \ldots\cdot x}_{n}$, the percentage of each term should be added}
+\]
+
+\begin{ExampleBox}
+The radius of a circle is measured to be \SI[multi-part-units = single]{10.0(5)}{\m}. What is the area of the cirle with uncertainty?
+\vspace{0.5in}
+\end{ExampleBox}
+
+And because of the law of exponent\footnote{Ask your mathematics teacher}. $\sqrt[n]{x} = x^\frac{1}{n}$. If $r=\sqrt[n]{x}$, then:
+\[
+	\frac{\Delta}{r} = \frac{1}{n} \cdot \frac{\Delta x}{x}
+\]
+
+\begin{ExampleBox}
+The area of a square is measured to be \SI{25.0}{\square\m} with 10\% of uncertainty. What is the side length of the square and its corresponding uncertainty?
+\vspace{0.5in}
+\tcblower
+The side length of a square is measured to be \SI{5.0}{\m} with 10\% of uncertainty. What is the area of the square and its corresponding uncertainty?
+\vspace{0.5in}
+\end{ExampleBox}
+\end{document}

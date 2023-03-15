@@ -1,0 +1,321 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry}
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+\usepackage{siunitx}
+\usepackage[normalem]{ulem}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+
+%定理的运用
+\usepackage[english]{babel}
+\newtheorem{theorem}{Theorem}[section]      %定理
+\newtheorem{corollary}{Corollary}[theorem]  %结论
+\newtheorem{lemma}[theorem]{Lemma}          %引理
+\newtheorem{definition}[theorem]{Definition}%定义
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=green,
+}
+% Set up the images/graphics package
+\usepackage{graphicx}
+% \graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+
+\title{Momentum}
+\author{Sanjin Zhao}
+\date{17th Sep, 2022}  % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+\usepackage{nicefrac} %比较好看的斜体分号
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$} %因为美元符号的问题。需要手动添加美元\square美元
+
+\usepackage{tikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+%\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+%\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+%\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+%\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+%\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item state and apply the principle of conservation of momentum to collisions in one and two dimensions
+  \item apply the principle of conservation of momentum to solve simple problems, including elastic and inelastic interactions between objects in both one and two dimensions\footnote{knowledge of the concept of \emph{coefficient of restitution} is not required. But Sanjin Zhao would be much happier if you dig into that.}
+  \item solve the velocity after elastic and total inelastic collision
+  \item recall that, for a perfectly elastic collision, the relative speed of approach is equal to the relative speed of separation
+  \item discuss energy changes in perfectly elastic and inelastic collisions
+\end{todolist}
+\clearpage
+
+\section{Leadin}
+In the story of ``The Three Body'', Dong Yang and lots of physicists committed suicide because of the result from the \href{https://home.cern/news/news/knowledge-sharing/image-capital-new-exhibition-featuring-cern-science-and-history}{Large Hardon Colider} does not obey the \emph{principle of conservation of momentum}, which means the whole physics may not exist.
+\begin{marginfigure}
+\includegraphics[width=3cm]{auxi/santi.jpeg}
+\caption{The cover page of ``The Three Body'' by Cixin Liu} 
+\end{marginfigure}
+
+\section{Principle of Conservation of Momentum}
+So, the principle states that:
+\begin{theorem}
+For a closed system, the total momentum before an interaction (e.g., collision) is equal to the total momentum after the interaction.
+\end{theorem}
+For the term of a closed system, it means there is \emph{no external} resultant force acting on the system.
+
+And don't worry, only in the imaginary world, could this conservation fail. It is an unbreakable rule governing everything in the physical world, from giant galaxies to microscopic particles.
+
+\begin{ExampleBox}
+For a single object, if no external force exists, the resultant force is 0, according to the Newton \uline{\hspace{1.5 in}} Law, the velocity of the object will remain the same. Thus, the velocity is always the same, even the direction keeps the same, so do momentum.
+\tcblower
+For a closed system, for example, two objects moving in a horzitonal \textbf{smooth} track. and make on a \textbf{head-on collision}. \\
+\includegraphics[width=0.9\linewidth]{auxi/collision.pdf}\\
+For single objects, it is definitely not conserved. Because for the object, the forces from the other box is external force. Besides, the initial and final velocity are not the same(it seems nonsense, but the rationale of judging whether a object or system's momentum is conserved are not is critical).
+
+Now let's look at the system's momentum. the way is by checking the impulse of single object.
+\[
+  \Delta p = F\cdot \Delta t
+\]
+Suppose the time the collision takes is $\Delta t$, assuming the force is constant through the process (It is not possible, but let's suppose that). Making the direction to the right is positive,\\
+The impulse that $m_1$ exerted on $m_2$ is \uline{\hfill};\\
+The impulse that $m_2$ exerted on $m_1$ is \uline{\hfill};\\
+
+Thus the total impulse of the whole is system is \uline{\hfill}. Thus, the change of total momentum is \textbf{ZERO}. The total momentum is conserved.
+
+Let's prove the principle through experiments later. But this can be used through \href{https://phet.colorado.edu/sims/html/collision-lab/latest/collision-lab_en.html}{Phet Simulation}
+\end{ExampleBox}
+
+\section{Collision}
+With the principle, the motional states after collison can be investigated.
+\begin{figure}
+\centering
+\includegraphics[width=0.9\linewidth]{auxi/snooker.jpg}
+\caption{Who player snooker well will grasp collision well}
+\end{figure}
+
+\begin{TaskBox}
+List several possible scenarios of collision:
+\begin{itemize}
+  \item two cars 
+  \item hockey
+  \item comet or asteroid
+  \item hadrons in LHC
+  \item galaxies
+\end{itemize}
+\end{TaskBox}
+
+\subsection{Perfect Elastic Collision}
+It is the ideal situation of collision, in which 
+\begin{SummBox}
+\begin{itemize}
+   \item The momentum is conserved
+   \item The kinetic energy is conserved
+ \end{itemize} 
+\end{SummBox}
+
+\begin{ExampleBox}
+Two identical balls A and B about to make a head-on perfect elastic collision. The mass of each ball is \SI{4.0}{\kilogram}. Determine the velocity of each ball, state the direction of the velocity as well
+\includegraphics[width=0.8\linewidth]{auxi/collisionball.pdf}\\
+\tcblower
+Before collision:
+The momentum and k.e. of A before collision is:
+\[
+  p_{Ai} = m_A\cdot u_A = \hspace{1 in}  KE_{Ai} = \hspace{2 in}
+\]
+The momentum k.e. of B before collision is:
+\[
+  p_{Bi} = m_B\cdot u_B = \hspace{1 in}  KE_{Bi} = \hspace{2 in}
+\]
+The total momentum and total k.e. of the \textbf{closed system} is
+\[
+  \sum p =  \hspace{1 in}  \sum KE =\hspace{2 in}
+\]
+
+After Collision:
+\vspace{5in}
+\end{ExampleBox}
+
+
+\subsection{Inelastic(Sticky) Collision}
+If two objects with equal mass and velocity but the direction are opposite, they are experiencing head-on collision. After the collision, the two objects will stick together. Let's investigate the momentum and k.e. of such collision before and after. 
+\begin{figure}
+\centering
+\includegraphics[width=0.9\linewidth]{auxi/stickycollision.pdf}
+\caption{two objects stick together after collision}
+\end{figure}
+Please finish the table below
+\begin{table}[h]
+\begin{tabular}{lllll}
+Before Collision             &                           &                               &                               &                           \\ \hline
+\multicolumn{1}{|l|}{Object} & \multicolumn{1}{l|}{Mass} & \multicolumn{1}{l|}{Velocity} & \multicolumn{1}{l|}{Momentum} & \multicolumn{1}{l|}{k.e.} \\ \hline
+\multicolumn{1}{|l|}{A}      & \multicolumn{1}{l|}{}     & \multicolumn{1}{l|}{}         & \multicolumn{1}{l|}{}         & \multicolumn{1}{l|}{}     \\ \hline
+\multicolumn{1}{|l|}{B}      & \multicolumn{1}{l|}{}     & \multicolumn{1}{l|}{}         & \multicolumn{1}{l|}{}         & \multicolumn{1}{l|}{}     \\ \hline
+After Collision              &                           &                               &                               &                           \\ \hline
+\multicolumn{1}{|l|}{A}      & \multicolumn{1}{l|}{}     & \multicolumn{1}{l|}{}         & \multicolumn{1}{l|}{}         & \multicolumn{1}{l|}{}     \\ \hline
+\multicolumn{1}{|l|}{B}      & \multicolumn{1}{l|}{}     & \multicolumn{1}{l|}{}         & \multicolumn{1}{l|}{}         & \multicolumn{1}{l|}{}     \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{SummBox}
+In an inelastic collision,
+\begin{itemize}
+  \item The total momentum is \uline{\hspace{2in}}
+  \item The total k.e. is  \uline{\hspace{2in}}
+\end{itemize}
+\end{SummBox}
+
+
+You can use the use the \href{https://phet.colorado.edu/sims/html/collision-lab/latest/collision-lab_en.html}{Phet Simulation}, and adjusting the \emph{coefficient of elasticity}\footnote{AKA, coefficient of restitution}. Validate the head-on elastic collision
+\begin{TaskBox}
+In the game of bowls, a player rolls a large ball towards a smaller, stationary ball. A large ball of mass \SI{5.0}{\kg} moving at \SI{10.0}{\metre\per\second} strikes a stationary ball of mass \SI{1.0}{\kg}. The smaller ball flies off at \SI{10.0}{\metre\per\second}.
+\begin{enumerate}
+  \item Determine the final velocity of the large ball after the impact
+  \item Calculate the kinetic energy before and after the impact.
+  \item Stete whether the collision is elastic or inelastic
+\end{enumerate}
+\vspace{5in}
+\end{TaskBox}
+
+\subsection{Two Dimension Collision}
+Have the word ``two dimension'' remind you something in projectile motion? What is the rationale how we analyze the motion in two dimension? Now what am I going to elicit?
+\begin{marginfigure}
+\includegraphics[width=4cm]{auxi/twodimension.jpg}
+\caption{Such collision happens in two dimension}
+\end{marginfigure}
+
+\begin{SummBox}
+Momentum is a vector, it can be resolved. And depsite in two dimension collision, the total momentum is also conserved, which means the components in two directions must remain the same as well.
+\end{SummBox}
+
+
+Look at the example:
+\begin{ExampleBox}
+A snooker ball collides with a second identical ball as shown below
+\includegraphics[width=0.9\linewidth]{auxi/lianxiti.png}\\
+\begin{enumerate}
+  \item Determine the components of the velocity of the first ball in the $x$- and $y$-directions.
+  \item Hence, determine the components of the velocity of the second ball in the $x$- and $y$-directions.
+  \item Hence, determine the velocity (magnitude and direction) of the second ball.
+\end{enumerate}
+\tcblower
+\begin{enumerate}
+  \item 
+  \[v_{1_x} = v\cdot \cos\ang{20} = 0.8\times \cos{\ang{20}}= \uline{\hspace{2in}}\] 
+  \[v_{1_y} = v\cdot \sin\ang{20} = 0.8\times \sin{\ang{20}}= \uline{\hspace{2in}}\] 
+
+  \item suppose the mass of the two balls are identical, denoted as $m$. 
+  the inital momentum in $x$-direction is 
+  \[
+    p_{x_i} = m\cdot u + m\cdot 0 = m\cdot 1.0 = 
+  \]
+  the final mometum in $y$-direction is 
+  \[
+  p_{x_f} = m\cdot v_{1_x} + m\cdot v_{2_x} = 
+  \]
+  By due to the conservation of linear momemtum (component as well)$p_{x_{i}}=p_{x_{f}}$
+  \[
+  m\cdot 1.0 = m\cdot 0.75 +m\cdot v_{2_{x}}
+  \]
+  $v_{2_{x}}= \uline{\hspace{2in}}$
+
+  Repeat the same process
+  \vspace{3in}
+
+  \item Since the 
+  \[v_{2_x} = \uline{\hspace{1in}}\]
+  \[v_{2_y} = \uline{\hspace{1in}}\].
+  The velocity of the second ball after collision is:
+  \[
+   v_2 = \sqrt{\hspace{2in}} = \uline{\hspace{0.6in}}
+  \]
+  The angle it makes with the horizontal is \uline{\hspace{1 in}} and \uline{above/downward}
+\end{enumerate}
+\end{ExampleBox}
+
+\section{Explosion and more cases}
+\begin{marginfigure}
+\includegraphics[width=4cm]{auxi/fireworks.jpg}
+\caption{Is momentum in fireworks conserved?}
+\end{marginfigure}
+
+During a explosion, a whole object will split into two or more pieces, each pieces will have different direction, thus having different momentum. However, what we are sure is that the \text{total momentum} must be zero after the explosion since the momentum before explosion is zero.
+\begin{figure}
+\includegraphics[width=0.9\linewidth]{auxi/romancandle.jpg}
+\caption{Roman Candle is a easier firework to investigate on the conservation of momentum}
+\end{figure}
+
+\begin{TaskBox}
+Suppose the candle sent from the firework has mass $m$, and the velocity is $v$ after the ignition, the direction is slanted upward with an angle $\theta$. The mass of the remaining part of the fireworks is $M$, Determine the velocity of the remaining part.
+\vspace{3in}
+\end{TaskBox}
+
+\end{document}

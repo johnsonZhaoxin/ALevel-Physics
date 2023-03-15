@@ -1,0 +1,24 @@
+\documentclass[11pt,tikz,border=10pt]{standalone}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.9}
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+\usepackage{mathptmx}
+
+\begin{document}
+  \begin{tikzpicture}
+  \begin{axis}[
+  		axis lines = left, 
+  		xlabel = {Extension, $x$}, 
+  		ylabel = {Force, $F$},
+  		xmin = 0, 
+  		xmax = 3.1,
+  		ymin = 0,
+  		ymax = 1.1,];
+	\end{axis}
+  \end{tikzpicture}
+\end{document}

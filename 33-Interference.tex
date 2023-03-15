@@ -1,0 +1,267 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+
+
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry} %这个包已经在handout.cls使用过了，如果再调用一次会出问题
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+
+%\usepackage[LGR]{fontenc} %使用希腊字符。
+
+\usepackage{siunitx}
+\DeclareSIUnit\torr{torr} %声明新的单位torr
+\usepackage{mhchem}
+
+\usepackage{BOONDOX-cal} %为了花体的emf符号
+\usepackage[normalem]{ulem} %下划线
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+
+%定理的运用
+\usepackage[english]{babel}
+\newtheorem{theorem}{Theorem}[section]      %定理
+\newtheorem{corollary}{Corollary}[theorem]  %结论
+\newtheorem{lemma}[theorem]{Lemma}          %引理
+\newtheorem{definition}[theorem]{Definition}%定义
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=g1,
+}
+% Set up the images/graphics package
+\usepackage{graphicx}
+%\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+\usepackage{nicefrac} %比较好看的斜体分号
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$} %因为美元符号的问题。需要手动添加美元\square美元
+
+\usepackage{tikz}
+\usepackage{circuitikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+%\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+%\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+%\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+%\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+%\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+\title{}
+\author{Sanjin Zhao}
+\date20th Nov, 2022}  % if the \date{} command is left out, the current date will be used
+
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item explain and use the principle of superposition
+  \item explain the meaning of interference, path difference and coherence
+  %\item understand experiments that demonstrate two-source interference
+  %\item understand the conditions required if two-source interference fringes are to be observed
+  %\item recall and use 
+\end{todolist}
+\clearpage
+
+\section{Leadin}
+This is where magic of waves begin to explode. Two waves might have speical physical reaction with each other. 
+
+\section{Superposition}
+It all starts from the ``superpostion'', which can be explained as the addition of displacement of different waves. 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{auxi/superposition.jpg}
+\caption{the sum of green and blue waves is red wave}
+\label{fig:superposition}
+\end{figure}
+
+As illustrated in Fig.\ref{fig:superposition}, two waves meeting at the same position in space. And the $d$-$t$ graphs\footnote{Why $d$-$t$ graph is used instead of $d$-$x$ graph} of the point when two waves arrives at are presented as green and blue lines respectively. You might find it very intuititve that the particle at that point can not vibrate with two different displacement, what really happens here is that the particle at the point will vibrate with one and only one displacement at any given time. So what is the displacement? The answer is quite simple, \textbf{at any given time, the displacement of the particle when two waves arrives is the sum of the displacement of each wave.} For exmaple, at time $A$, both waves are experiencing \textbf{zero} displacement, thus, the total displacement at that time is also \uline{\hspace{0.5in}}. At time $C$, the displacement from the green wave is postive, and the displacement from the blue wave is negative, and the magnitude of which is slightly smaller than that of the green one, leading to \textbf{positive total displacement} but smaller than green wave if the blue wave does not exisit.
+
+\subsection{definiton}
+\begin{SummBox}
+principle of superposition of waves is defined as:
+\vspace{1in}
+\end{SummBox}
+
+\begin{TaskBox}
+Draw the possible total $d$-$t$ graph of two waves meeting at the same point in space.\\
+\includegraphics[width=0.5\linewidth]{auxi/inphasesuper.png}\\
+\includegraphics[width=0.5\linewidth]{auxi/outphasesuper.png}\\
+\includegraphics[width=0.5\linewidth]{auxi/noncoherent.png}\\
+You can check your answer in \href{https://www.desmos.com/calculator/ooybmqnwgq}{desmos example}. 
+\end{TaskBox}
+
+\subsection{phase difference of two waves}
+We've talked about the phase difference of two different points on the path in the direction of a wave. To put it forward, the phase difference deferred from the $d$-$x$ graph for a single wave.
+In this subsection, the concept can be established for two waves meeting at the same point, or from the $d$-$t$ graphs of two waves\footnote{Try to compare and explain the phase difference in two different scenarios to your classmates as clearly as possbile. This is vital in understanding the latter phenomenon}.
+Take the previous Task Question as an example, in the first figure, despite the two waves vibarates with different \uline{\hspace{1in}}, the period (or \uline{\hspace{1in}}) of the two waves are identical. Most obvious, the two waves will reach either crest or trough at the same time, thus the phase difference for the two waves are \ang{0} or a multiple of \ang{360}\footnote{path difference has not been introduced yet.}. And we say that the two waves are vibrating \textbf{IN Phase}. And in the second graph, The phase difference is \ang{180} or $(2k+1)\times\ang{180}$\footnote{$k$ is an integer for clarification}. the two waves are vibrating \textbf{IN ANTIPhase} or \textbf{OUT of Phase}.
+\begin{TaskBox}
+What is the phase difference of the third graph? or does it exist any phase difference?
+\tcblower
+Phase difference of two waves might not be \ang{180} or \ang{360}, try to draw the $d$-$t$ graphs of two waves which are vibrating with a phase difference of 1)\ang{90}; 2)\ang{45}; 3)\ang{60}.
+\vspace{2in}
+\end{TaskBox}
+
+\section{Interference}
+after learning the most fundamental concept of superposition of waves, the next section is the interference of two waves\footnote{despite three sources are not difficult to handle, only two sources are examined in test}.
+
+In this section, we will wander around the most common phenonmenon of interference.
+\subsection{water dripple}
+The surface wave of water is a good example when illustrate the interference.
+\begin{marginfigure}
+\centering
+\includegraphics[width=5cm]{auxi/ripple.jpg}
+\caption{two waves interfere in the tank}
+\label{fig:ripple}
+\end{marginfigure}
+
+If the two \emph{dippers}\footnote{def:} are vibrating in phase, interference patterns can be observed for the wave, especially for those region where the two waves meet
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/realrippler.jpg}
+\caption{Interference pattern of water ripples}
+\end{figure}
+
+Another way to generate the interference patterns using water tank is the combination of diffration, which is quite similar to the most famous Youn's Double Slit Experiment. Plane waves passing through two gaps in a barrier, and will generate two diffracted waves after each gap, and the two waves will interfere with each other to generate the similar \emph{interference patterns}, as show in \href{}
+
+\subsection{louder speaker}
+The previous example is interference from transverse waves, as mentioned before, sound wave is one the few common longitudinal waves, would such phenomenon occurs with sound wave? The answer to this question is quite the same, since the principle of superpositon deals with the displacement of each wave, there is nothing different whether the direction of displacement is perpendicular or parallel to the direction of 
+the direction of propogation. However, since the displacement of sound is not as easy to observe by human eye as the transverse wave. One important conversion is required.
+\begin{TaskBox}
+What is the property of sound wave is related with the displacement(or amplitude) of sound wave?
+\tcblower
+What should you expect at certain positions in space where the total displacement is 0 and where the total displacent is at its maximum value?
+\vspace{1in}
+\end{TaskBox}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/sound.jpg}
+\caption{where the two waves comes from?}
+\label{fig:sound interference}
+\end{figure}
+But to tell the difference clearly, oscilloscope detector should be applied to give quantitative result.
+
+Besides, the noise cancelling techinique is an example of \textbf{destructive} interference.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{auxi/airpods.png}
+\caption{AirPods Pro can make antiphase sound wave in order to cancel the nosie wave}
+\end{figure}
+
+
+\subsection{Light or double Slit}
+This is vital in this lesson, the interference of visible or nonvisible EM waves, the set up of experiment is shown in Fig.\ref{fig:microwave}
+\begin{marginfigure}
+\centering
+\includegraphics[width=5cm]{auxi/microwave.jpg}
+\caption{setup for microwave interference}
+\label{fig:microwave}
+\end{marginfigure}
+
+Alternatively, beam light or laser of visible light can be used to show interference pattern
+
+In the Fig.\ref{fig:redlight}, the ray model\footnote{which shows the direction of propogation of light while does not emphasize the wave property of light} is not good enough to explain the behavior of the light.
+\begin{marginfigure}
+\centering
+\includegraphics[width=5cm]{auxi/redlight.jpg}
+\caption{interference from two red light source}
+\label{fig:redlight}
+\end{marginfigure}
+
+\begin{TaskBox}
+Descirbe the light appears on the screen behind the slits.
+\vspace{1in}
+\tcblower
+Expalin with your observation, what is interference pattern.
+\vspace{1in}
+\end{TaskBox}
+
+\subsection{Coherent Source}
+Have your ever notice that, the dippers, the sound sources, and the light, no matter in which form, are always conveying the wave with \uline{(same/different)} frequency.
+\begin{SummBox}
+Two sources are coherent when they emit waves that have a \emph{constant phase difference}. (This can only happen if the waves have the same \uline{frequency} or \uline{wavelength}.)
+\end{SummBox}
+
+If a light source emit coherent light, it means that the light waves from the source must have identical phase difference, same frequency or wavelength.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{auxi/Coherent-vs-incoherent-light-wave.png}
+\caption{Coherence is easy to understand but hard to describe}
+\end{figure}
+
+\begin{TaskBox}
+\includegraphics[width=0.8\linewidth]{auxi/coherentlight.png}
+\end{TaskBox}
+
+
+\subsection{Interference Pattern}
+When interference occurs, at certain point in the space, the two waves may always arriving at this point in phase or out of phase, causing such points to be at \emph{maxima} or at \emph{minima}. A step further, such locations are located with quite logic ways. These patterns are called inteference pattern. We will dig it out from a more quantitative perspective.
+\end{document}
+

@@ -1,0 +1,26 @@
+\documentclass
+%[tikz,circuitikz]
+[border=3mm]{standalone}
+%\usepackage{xcolor}
+%\definecolor{lava}{rgb}{0.81, 0.06, 0.13}
+%\definecolor{myblue}{rgb}{0.0, 0.30, 0.60}
+%\usepackage{tikz-3dplot} 
+%\usetikzlibrary{angles, arrows.meta,}  
+\usepackage{mathptmx}
+\usepackage[siunitx,cuteinductors,european]{circuitikz}
+
+
+\begin{document}     
+    \begin{circuitikz}
+        \draw (0,-2) to [battery2] (0,0);
+        \ctikzset{resistors/scale=0.5}
+        \draw (0,0)  to [R,l_=$r$](0,2)
+            to [short] (4,2)
+            to [lamp]  (4,-2)
+            to [switch] (0,-2);
+        \draw (4,2) to [short,*-] (6,2)
+              to [voltmeter] (6,-2)
+              to [short,-*](4,-2);
+        \draw[dashed] (-0.6,-1.5) rectangle (0.6,1.6);
+    \end{circuitikz}
+\end{document}

@@ -1,0 +1,249 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+
+
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry} %这个包已经在handout.cls使用过了，如果再调用一次会出问题
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+
+%\usepackage[LGR]{fontenc} %使用希腊字符。
+
+\usepackage{siunitx}
+\DeclareSIUnit\torr{torr} %声明新的单位torr
+
+
+\usepackage{BOONDOX-cal} %为了花体的emf符号
+\usepackage[normalem]{ulem} %下划线
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+\usepackage[version=4]{mhchem}
+
+%定理的运用
+\usepackage[english]{babel}
+\newtheorem{theorem}{Theorem}[section]      %定理
+\newtheorem{corollary}{Corollary}[theorem]  %结论
+\newtheorem{lemma}[theorem]{Lemma}          %引理
+\newtheorem{definition}[theorem]{Definition}%定义
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=g1,
+}
+% Set up the images/graphics package
+\usepackage{graphicx}
+%\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+\usepackage{nicefrac} %比较好看的斜体分号
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$} %因为美元符号的问题。需要手动添加美元\square美元
+
+\usepackage{tikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+%\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+%\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+%\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+%\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+%\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+\title{Potential Difference}
+\author{Sanjin Zhao}
+\date{2nd Oct, 2022}  % if the \date{} command is left out, the current date will be used
+
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item define the potential difference across a component as the energy transferred per unit charge
+  \item understand the terms \emph{potential difference}\footnote{def:}, e.m.f. and the volt
+  \item use energy considerations to distinguish between p.d. and e.m.f. ($\mathcal{E}$)
+  \item recall and use $\Delta V=\nicefrac{W}{Q}$
+  \item recall and use $P = VI$
+\end{todolist}
+\clearpage
+
+\section{Leadin}
+Alessandro Volta has invented the ``\emph{voltaic pile}'' from the oberservation of twitching frogs, and even showed that device to the conquerer-\href{https://en.wikipedia.org/wiki/Napoleon}{Napoleon Bonaparte}. And that earns him the right to record any potential differnece as volt, \si{\V}. And with the invention of such batteries could \emph{electrolysis}\footnote{exp:} of water can be carried out. Science is combined with history, how amazing!
+%Volta是意大利人，1745–1827
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/voltaandnapoleon.png}
+\caption{Volta showing his voltaic pile to Napoleon}
+\end{figure}
+
+\begin{marginfigure} %偏移量[-3cm]
+\centering
+\includegraphics[width=4cm]{auxi/voltaicpile.png}
+\caption{Votaic Pile is consist of zinc and copper and saltwater}
+\end{marginfigure}
+
+\section{Voltage}
+Now can you see the connection between Volta and Voltage? When the voltaic pile(battery) was invented, the voltage is around \SI{1.1}{\volt}. What is voltage in describing the batteries? Let's dig into that.
+
+\subsection{Lemon Battery}
+Let's make our own Lemon battery, and do not be shocked, that's a homemade version of voltaic battery, because we are still using zinc and copper, but the saltwater is replaced by the lemonade, serving as the \emph{electrolyte}\footnote{exp:}.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/lemonbattery.png}
+\caption{lemon battery}
+\end{figure}
+
+\begin{TaskBox}
+Why in the \href{https://www.youtube.com/watch?v=XtHt00AN0pU}{youtube video}, four lemons are used? 
+\end{TaskBox}
+
+\subsection{Let's blow up the Capacitor!}
+A \emph{capacitor} is a quite common electric components which is used to store and release charges.
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.9\linewidth]{auxi/capacitors.JPG}
+\end{figure}
+And every capacitors has it voltage tolerance, Let's see what's happening if I \href{https://www.youtube.com/watch?v=6WUxgmMDts4&t=362s}{rise the voltage across the capacitor}.
+
+\subsection{Meaning of p.d.}
+The voltage, a.k.a potential difference, across an electric components seems related with energy. It is used when charge transfers energy to the component or the surroundings. 
+\begin{SummBox}
+Potential Difference, $V$, between two points $A$ and $B$, is the \uline{\hspace{0.7 in }} transferred per unit \uline{\hspace{1 in }} as it moves from point $A$ to point $B$.\\
+\[
+  V = \nicefrac{\hspace{1in}}{\hspace{1 in }}
+\]
+\end{SummBox}
+The unit for voltage(p.d.s) is \uline{\hspace{1 in }}. And thus the SI base unit is \uline{\hspace{1 in }}.
+
+
+
+And very obviously, if a component has larger potential difference, charges can do more work (transfer more energy) just as illustrated in Fig.\ref{fig:lamps}
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=0.8\linewidth]{auxi/lamp.jpg}
+ \caption{two identical lamps but with different luminosity}
+ \label{fig:lamps}
+\end{figure}
+
+\begin{TaskBox}
+\begin{itemize}
+  \item Why four lemon batteries are used?
+  \item Why the voltage should exceed the \emph{threshold} or maximum voltage to explode the capacitors?
+  \item Which lamp has higer potential difference?
+\end{itemize}
+\end{TaskBox}
+
+\subsection{e.m.f.}
+\emph{ElectroMotive Force}\footnote{It has nothing at all to do with force, it is actually a kind of voltage} is abbreviated into e.m.f., the symbol for it is $\mathcal{E}$. Such term is used when we are describing the power supply or battery, galvanic cells\footnote{You shall see this chemistry terms quite frequently in chapter ElectroChemistry}, etc.
+\begin{SummBox}
+The electromotive force (e.m.f.), $\mathcal{E}$, of the supply is also defined as the energy transferred per unit charge in driving charge round a complete circuit. 
+\end{SummBox}
+
+\begin{TaskBox}
+Compare p.d. and e.m.f. using the following circuits diagram
+\begin{center}
+\includegraphics[width=0.5\linewidth]{auxi/simplecircuit.png}
+\end{center}
+\vspace{1in}
+\end{TaskBox}
+
+\subsection{Analogy p.d. to gravity}
+If an object lies in higer place, the object has higher gravitational potential energy. Similarily, if a \textbf{postive} charge is located at higher electical potential, it does have higher energy.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/potential.png}
+\caption{higher to lower}
+\label{fig:waterfall}
+\end{figure}
+Just as illustrated in Fig.\ref{fig:waterfall}, when the water molecules goes from higher places to lower places,the change in gravitational potential energy will converted to other forms of eneryg. Now let's look how this process be applied into calculating the energy in electric circuits.
+\begin{itemize}
+  \item electrons carries \uline{positive/negative} charge, and are free to move if e.m.f. are applied
+  \item the positive terminal of a battery has a \uline{larger/smaller} potential than the negative terminal, thus the difference is defined as the e.m.f.
+  \item when one single electron starts its journey from the \uline{positive/negative} terminal, it has larger energy, But when it arrives at the \uline{positive/negative} terminal, the energy is reduced just as the water molecules in waterfall
+  \item change in the energy is equal to the amount of charge multiplied by the e.m.f.
+\end{itemize}
+That's How a battery can supply energy to any electric components. and why e.m.f. or p.d. is used to describe energy related with electricity.
+
+\section{Electric Power}
+Now, the Power in electric circuits can be deduced:
+\begin{align*}
+  W &= Q\cdot V\\
+  P &=\nicefrac{\hspace{1in}}{\hspace{1in}}\\
+    &= V\cdot \frac{}{\hspace{1in}}\\
+    &=VI
+\end{align*}
+Actually, differentiation should be employed. But now, we can assume the current is constant. 
+\begin{SummBox}
+The instaneous power of a components in the circuits is the product of the potential difference across the component and the current through the component.
+\end{SummBox}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/USBtester.png}
+\caption{A USB power tester connected in a powerbank}
+\label{fig:USBtester}
+\end{figure}
+According to the Fig.\ref{fig:USBtester}, what is the power from the powerbank?
+\end{document}

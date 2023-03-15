@@ -1,0 +1,39 @@
+\documentclass[11pt,tikz,border=3.14mm]{standalone}
+\usepackage{xcolor}
+
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+\usetikzlibrary{arrows.meta}
+
+\begin{document}
+\begin{tikzpicture}[path image/.style={ path picture={ \node at (path picture bounding box.center) { \includegraphics[height=2cm]{#1} };}}]
+
+%5个路径点构成贝塞尔曲线
+\draw[color=r1,line width=3pt] 
+	(0,0) .. 	controls (2,10) and (4,7) .. 
+	(5,8) .. 	controls (8,6) and (12,20) .. 
+	(15,12).. 	controls (20,19) and (28,5) ..
+	(30,6) .. 	controls (33,9) and (36,19) ..
+	(40,20);
+
+
+%初末位置	
+\draw[path image=zhaosanjin,draw=b1,thin] (0,0) circle (1);
+\node at(1,0) [right] {Initial}; 
+\draw[path image=gaoyuanyuan,draw=b1,thin] (40,20) circle (1); 
+\node at(41,20) [right] {Final};
+\node at(20,15) [above,r1] {Distance};
+
+%位移矢量
+\draw [dashed,-{Stealth[scale=2]},very thick,b1] (0,0)--(40,20) node[near end,anchor=south east]{Total Displacement};
+\draw [dashed,-{Stealth[scale=2]},thick,b1!50] (0,0)--(5,8);
+\draw [dashed,-{Stealth[scale=2]},thick,b1!50] (5,8)--(15,12);
+\draw [dashed,-{Stealth[scale=2]},thick,b1!50] (15,12)--(30,6);
+\draw [dashed,-{Stealth[scale=2]},thick,b1!50] (30,6)--(40,20);
+
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,228 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+
+
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry} %这个包已经在handout.cls使用过了，如果再调用一次会出问题
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+
+%\usepackage[LGR]{fontenc} %使用希腊字符。
+
+\usepackage{siunitx}
+\DeclareSIUnit\torr{torr} %声明新的单位torr
+\usepackage{mhchem}
+
+\usepackage{BOONDOX-cal} %为了花体的emf符号
+\usepackage[normalem]{ulem} %下划线
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+
+%定理的运用
+\usepackage[english]{babel}
+\newtheorem{theorem}{Theorem}[section]      %定理
+\newtheorem{corollary}{Corollary}[theorem]  %结论
+\newtheorem{lemma}[theorem]{Lemma}          %引理
+\newtheorem{definition}[theorem]{Definition}%定义
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=g1,
+}
+% Set up the images/graphics package
+\usepackage{graphicx}
+%\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+\usepackage{nicefrac} %比较好看的斜体分号
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$} %因为美元符号的问题。需要手动添加美元\square美元
+
+\usepackage{tikz}
+\usepackage{circuitikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+%\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+%\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+%\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+%\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+%\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+\title{Diffraction}
+\author{Sanjin Zhao}
+\date{5th Oct, 2022}  % if the \date{} command is left out, the current date will be used
+
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item explain the meaning of diffraction
+  \item understand experiments that demonstrate diffraction
+\end{todolist}
+\clearpage
+
+\section{Leadin}
+all waves, no matter which type- sound, EM wave, string waves-, can be \emph{reflected} and \emph{refracted}\footnote{def:distinguish the two phenomena}. And now \emph{Diffraction} can also occur in all type of waves.
+
+\section{Diffraction of Radio Waves}
+Suppose there is a moutain between the radio station and the receiver, could light pass through the hill? The answer is no. However, could the radio wave pass through the hill? The answer is yes. As shown in Fig.\ref{fig:radiowave}.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/radiowave.png}
+\caption{radio waves can pass the mountain}
+\label{fig:radiowave}
+\end{figure}
+That's because the wavelength of light is so small compared to the width of the moutain, while the wavelength of the radio waves are comparable to that, thus, diffraction can occur naturally. The wavefront seems bent in diffraction, which can be explained by Huygens' Principle.
+
+\section{Demonstration using water}
+An \href{https://phet.colorado.edu/sims/html/wave-interference/latest/wave-interference_en.html}{experiment} can be setup as shown in Fig.\ref{fig:water ripple}.
+\begin{marginfigure}
+\includegraphics[width=5cm]{auxi/ripple.jpg}
+\caption{Water ripple can be used to show diffraction}
+\label{fig:water ripple}
+\end{marginfigure}
+The ripple pass through the slit, but it can spread to someplaces right behind the barriers. 
+And if the slit is smaller, such spreading can be viewed more directly.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/diffractionofripple.jpg}
+\caption{The bent of wavefront is more obvious when the slit is smaller}
+\label{fig:diffraction of waves}
+\end{figure}
+
+\section{Diffraction of Light}
+Hence, the wavelength from radiowaves to wavelength of water ripple becomes smaller, the condition for diffraction (the width of obstacle or slit) is also becoming smaller. What if the diffraction of light were to occur? The slit width should become narrow\footnote{Think: How narrow should the width of slit be}. You can actually try this at home.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/handdiffraction.jpg}
+\caption{You can see the effects of diffraction by looking at a bright source (lamp) through a narrow slit.}
+\label{fig:hand diffraction}
+\end{figure}
+What you see after the light having past your hand slit is not a single light band but multiples of light bands. Think the light band is the wavefront of water ripples.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/diffractionoflight.jpg}
+\caption{Light can be diffracted to places right behind the slit. The brightest band is the light which passes the slit directly.}
+\label{fig:diffraction of light}
+\end{figure}
+
+\section{Define Diffraction}
+Hence, no matter the wavelength is, \textbf{diffraction} can occur in all type of waves.
+\begin{SummBox}
+Define \emph{Diffraction} of waves.
+\tcblower
+Diffraction is the spreading of 
+\vspace{6ex}
+\end{SummBox}
+And diffraction is most obvious when waves pass through a gap or obstacle with a width \textbf{roughly equal to} their wavelength of the waves.
+
+\section{Huygens' Principle}
+\begin{marginfigure}
+\includegraphics[width=5cm]{auxi/Huygens.jpg}
+\caption{Christiaan Huygens\\1629-1695} %他也提出过动量守恒原则，制造了摆钟
+\end{marginfigure}
+
+This is not required by A-Level, but \href{https://byjus.com/physics/the-huygens-principle-and-the-principle-of-a-wave-front/#defining-the-huygens-principle}{it} is a vital theory in explaining the behavior of light in reflection, refraction. The concepts like diffraction of light, as well as \emph{interference} of light, were proved by Huygens.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/Huygens.png}
+\caption{it explains why curved wavefront can form}
+\label{fig:huygens}
+\end{figure}
+The Huygens-Fresnel principle states that:
+\begin{SummBox}
+Every point on a wavefront is in itself the source of spherical wavelets which spread out in the forward direction at the speed of light. The sum of these spherical wavelets forms the wavefront
+\end{SummBox}
+
+\section{Explain Diffraction}
+Using Huygens' Principle, we can explain diffraction using the following Fig.\ref{fig:explain diffraction}.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/explaindiffraction.jpg}
+\caption{the bent comes from the wavefront}
+\label{fig:explain diffraction}
+\end{figure}
+
+\begin{SummBox}
+Explain the bent of wavefront (diffraction)
+\tcblower
+\begin{itemize}
+  \item Each point on the surface of the water in the gap is moving up and down.
+  \item According to Huygens' Principle, Each of these moving points can be thought of as a \uline{\phantom{source   }} of new ripples spreading out into the space beyond the barrier.
+  \item using the principle of \emph{superposition}. the wave from A B C generates a new bent wavefront. 
+\end{itemize}
+\end{SummBox}
+
+\begin{TaskBox}
+What's the function of the metal grid and why microwave can not pass the grid.
+\includegraphics[width=0.8\linewidth]{auxi/microwaveoven.png}
+\vspace{6ex}
+\end{TaskBox}
+\end{document}
+

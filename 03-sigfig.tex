@@ -1,0 +1,199 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry}
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+
+\usepackage{siunitx}
+\usepackage[normalem]{ulem}
+\usepackage{wrapfig}
+\usepackage{caption}
+
+
+
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=green,
+}
+
+
+
+% Set up the images/graphics package
+\usepackage{graphicx}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+%\graphicspath{{graphics/}}
+
+\title{Preparations for A-Level Physics}
+\author{Sanjin Zhao}
+\date{1th Sep 2022}  % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+
+% 国际制单位，使用有点问题好像
+\usepackage{siunitx}
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+
+\usepackage{tikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+
+\begin{document}
+
+\maketitle% this prints the handout title, author, and date
+
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the leanring objectives.
+\begin{todolist}
+	\item Grasp \emph{Scientific Notation}
+	\item Read and count significant figures
+	\item \emph{Mathematic Rules} for sig fig calculations
+	\item Do \emph{Rounding} of values
+\end{todolist}
+\clearpage
+
+\section*{Leadin}
+You know $\pi \approx 3.141592653589793238\ldots$, to how many decimal places do we need to achieve a satisfying value? Let's talk about the \emph{significant figures}\footnote{def}
+
+\section{Scientific Notation}
+I think you would grasp all in scientific notation, let's jsut skip this section. 
+
+\section{Significant Figures}
+The number of significant figures in a result is simply the number of ﬁgures that are known with some degree of reliability. The number 13.2 is said to have 3 significant figures. The number 13.20 is said to have 4 significant figures.
+\subsection{Rules for counting}
+There are several rules for deciding the number of significant figures in a value. They are listed below:
+\begin{enumerate}
+	\item All nonzero numbers are \uline{significant}
+	\begin{itemize}
+		\item 1.234 has \uline{\hspace{0.1 in}} sig fig
+		\item 22,112,133.565 has \uline{\hspace{0.1 in}} sig fig
+		\item $3.5678\times 10^8$ has \uline{\hspace{0.1 in}} sig fig
+	\end{itemize}
+
+	\item Zeroes between nonzero digits are significant:
+	\begin{itemize}
+		\item \SI{1002}{\kg} has \uline{\hspace{0.1 in}} sig fig
+		\item \SI{3.07}{\mL} has \uline{\hspace{0.1 in}} sig fig
+	\end{itemize}
+
+	\item Zeroes to the left of the ﬁrst nonzero digits are not significant; such zeroes merely indicate the position of the decimal point\footnote{think scientific notation}:
+	\begin{itemize}
+		\item \SI{0.001}{\degreeCelsius} has \uline{\hspace{0.1 in}} sig fig
+		\item \SI{0.001}{\ampere} has \uline{\hspace{0.1 in}} sig fig
+	\end{itemize}
+
+	\item Zeroes to the right of a decimal point in a number are significant:
+	\begin{itemize}
+		\item \SI{0.00200}{\m} has \uline{\hspace{0.1 in}} sig fig
+		\item \SI{1.00200}{\m} has \uline{\hspace{0.1 in}} sig fig
+	\end{itemize}
+
+	\item When a number ends in zeroes that are not to the right of a decimal point, the zeroes are not necessarily significant:
+	\begin{itemize}
+		\item \SI{190}{\g} has 2 sig fig
+		\item \SI{190.}{\g} has 3 sig fig
+	\end{itemize}
+	Think, what makes the difference?
+
+	\item any exact value or scientific constant has \textbf{infinitely many} sig figs
+	\begin{itemize}
+		\item $\pi$
+		\item our class consist of 21 students
+	\end{itemize}
+\end{enumerate}
+
+\section{Mathematics Rules}
+The general rule is that the accuracy of a calculated result is limited by the least accurate measurement involved in the calculation\footnote{You can use this \href{https://www.sigfigscalculator.com}{website} to verify your answer}.
+
+In addition and subtraction, round by the least number of decimals. For example, 100. (assume 3 significant figures) + 23.643 (5 significant figures) = 123.643, which should be rounded to 124 (3 significant figures).
+
+In multiplication and division, the result should be rounded off so as to have the same number of significant figures as in the component with the least number of significant figures. For example, 3.0 (2 significant figures ) 12.60 (4 significant figures) = 37.8000 which should be rounded off to 38 (2 significant figures).
+
+There are some further rules:
+\begin{enumerate}
+	\item \textbf{Logarithm ($\log$, $\ln$)} uses the input's number of significant figures as the result's number of decimals.
+	\item \textbf{Exponentiation ($n^x$)} only rounds by the significant figures in the base, which is the sig fig of $n$.
+\end{enumerate}
+
+\section{Rounding Off}
+\begin{enumerate}
+	\item If the digit to be dropped is greater than 5, the last retained digit is increased by one
+	\item If the digit to be dropped is less than 5, the last remaining digit is left as it is
+	\item If the digit to be dropped is 5, and if any digit following it is not zero, the last remaining digit is increased by one
+	\item If the digit to be dropped is 5 and is followed only by zeroes, the last remaining digit is increased by one if it is odd, but left as it is if even\footnote{This rule means that if the digit to be dropped is 5 followed only by zeroes, the result is always rounded to the even digit. The rationale is to avoid bias in rounding: half of the time we round up, half the time we round down}.
+	\item the simpliest statement of rounding is \emph` round to the nearest thousandth decimal places'
+\end{enumerate}
+
+\begin{TaskBox}
+count the sig fig each and calculate the result thereof rounding to the correct sig fig .
+\tcblower
+$076.0128076 \times 02000$\\
+$1123.20 \times 2000.$\\
+$(61.29 \times 10^7) \times (12.01 \times 10^6)$
+$(5.7 + 12.26) \times 3.11$\\
+$64450 + 1$\\
+$64450.0 \div 1.0$\\
+\end{TaskBox}
+\end{document}

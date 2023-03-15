@@ -1,0 +1,17 @@
+\documentclass[11pt,tikz,border=10pt]{standalone}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.9}
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+\usepackage{mathptmx}
+
+\begin{document}
+  \begin{tikzpicture}
+  \draw[-stealth] (-5.1, 0) -- (5.1,0) node[right]{Voltage, $V$};
+  \draw[-stealth] (0,-3.1) -- (0, 3.1) node[above]{Current, $I$};
+  \end{tikzpicture}
+\end{document}

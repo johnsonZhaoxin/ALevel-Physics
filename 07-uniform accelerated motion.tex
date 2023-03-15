@@ -1,0 +1,286 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry}
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+\usepackage{siunitx}
+\usepackage[normalem]{ulem}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=green,
+}
+
+
+
+% Set up the images/graphics package
+\usepackage{graphicx}
+\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+%\graphicspath{{graphics/}}
+
+\title{Uniformly Accelerated Motion}
+\author{Sanjin Zhao}
+\date{5th Sep 2022}  % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+
+\usepackage{tikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item Determine displacement from the \textbf{area} under a \emph{velocity–time graph}.
+  \item Determine velocity using the \textbf{gradient} of a \emph{displacement–time graph}.
+  \item Determine acceleration using the \textbf{gradient} of a \emph{velocity–time graph}.
+  \item Derive, from the definitions of velocity and acceleration, equations that represent uniformly accelerated motion in a straight line.
+  \item Solve problems using equations of uniformly accelerated motion. including free fall
+  \item Draw $d$-$t$, $v$-$t$ and $a$-$t$ for stationary, uniform motion, uniformly acclerated motion, free fall or thrown up. 
+  \item Describe an experiment to determine the acceleration of free fall using a falling object
+  \item Describe and explain motion due to a uniform velocity in one direction and a uniform acceleration in a perpendicular direction
+\end{todolist}
+\clearpage
+
+\section*{Leadin}
+Check the last section in Describe Motion, Calculus has been introduced in analysing the kinematics. Let's dig into how this can be applied.
+
+\section{Uniform Motion}
+A motion is said to be uniform when the velocity remains constant, this means not only the direction but also the magnitude of velocity is constant.
+\begin{TaskBox}
+\includegraphics[width=0.9\linewidth]{motion graph.pdf}\\
+draw the $d$-$t$, $v$-$t$, and $a$-$t$ graph of an object experiencing uniform motion.
+\tcblower
+What will the graph look like if the velocity is said to be \emph{`negative'}
+\end{TaskBox}
+
+\section{Uniformly Accelerated Motion}
+However, uniform motion is not the most important topic today. We are talking about the Uniformaly Accelerated Motion\footnote{def:}.
+% \begin{marginfigure}
+% \centering
+% \includegraphics{fallingapple.jpg}
+% \caption{feather and apple falling with same acceleration}
+% \end{marginfigure}
+\subsection{$a$-$t$ graph}
+Draw the $a$-$t$ graph of a unifrom accelerated motion,using the space below:\\
+\vspace{0.5 in}
+due to the acceleration is constant, the $a-t$ graph is also a \\
+\uline{\hspace{0.8 in}} straight line. Has anyone draw a line which is negative? Does that make any sense?
+
+\subsection{$v$-$t$ graph}
+The most import graph of a uniform accelerated motion must be $v$-$t$ graph. Please draw the $v$-$t$ graph of a unifrom accelerated motion,using the space below:\\
+\vspace{0.5 in}
+
+Recall how we can deduce the acceleration from $v$-$t$ graph.
+\begin{SummBox}
+Acceleration is the gradient of the $v$-$t$ graph.
+\end{SummBox}
+
+\begin{marginfigure}
+\includegraphics{different acceleration.png}
+\caption{different $v$-$t$ graphs}
+\label{fig:multiple vt graghs}
+\end{marginfigure}
+
+For the initial velocity, $u$ is utilized to resemble it. and $v$ is used to symbolize the final velocity
+
+\section{Derivation of displacement}
+The most important aspect of \emph{integration} when Newton applied to analyze kinematics is find displacement when given velocities.
+
+\subsection{dispalcement when speed is constant}
+check the $v$-$t$ graph of a uniform motion, it is not hard to deduce that the if the velocity is constant throughout the whole period of motion, then the displacement would be calculated as:
+\[
+  s = v\cdot t
+\]
+
+Because $v$ is the height of the $v$-axis, and $t$ is the width in the time axis. thus the product of the two would be the \emph{AREA} of the rectangle enclosed by the following:
+\begin{enumerate}
+  \item $v$-$t$ graph
+  \item $t$-axis
+  \item $v$-axis
+  \item another vertical line defining the end time of the motion
+\end{enumerate}
+
+\begin{TaskBox}
+In figure \ref{fig:multiple vt graghs} (c),  color the area which represent the displacement of the uniform motion. 
+\end{TaskBox}
+
+\subsection{displacement when velocity is changing constantly}
+Apply the process, but in a much more microscopic perpective. 
+\begin{figure}[h]
+\includegraphics{vt-segmented.png}
+\caption{the $v$-$t$ graph of a uniformly accelerated motion}
+\label{fig:uam vt}
+\end{figure}
+If I divide the motion process into 9 segment, and for each segment, treat it like the object is keeping the motion using the initial velocity. Then each slim rectangle represent the `displacement' of  each segment, adding them together will lead us to an \emph{approximation} of the total displacement. But that's not what we want, we need exact displacement not just the approximation. The process can move on to an \textbf{INIFINITELY SMALL} time interval, we denote it as $\d t$, all the `slim' rectangles will look like a slim straight line which will have \textbf{INIFINITELY SMALL} area which can be denoted as $\d x$. The relationship between the $\d x$ and $\d t$ is now quite clear.
+\begin{equation*}
+  \d s = v(t) \d t
+\end{equation*}
+The last step is to adding infinitely many small displacement together, to determine the total displacement, in \href{https://faculty.atu.edu/mfinan/2243/business23.pdf}{Leibniz}'s notation system, it is written as:
+\begin{equation*}
+  s =\int (\d s)  =  \int v(t) \d t
+\end{equation*}
+However, you are not required to grasp this at this stage\footnote{Watch \href{https://www.bilibili.com/video/BV1cx411m78R}{3B1B} essence of calculus.}. Back to the $v$-$t$ graph, we find that the small straight line(with infnitely small area) will form a \emph{trapezoid}\footnote{def} or a triangle. No matter which type, it is always the \textbf{Area Under the $v$-$t$ graph}. That's the only thing to be used in deriving the displacement from the $v$-$t$ graph is:
+\begin{SummBox}
+  Area Under the $v$-$t$ graph represent the \uline{\hspace{0.5 in}} of a motion. no matter the velocity is changing or not changing.
+\end{SummBox} 
+
+\begin{TaskBox}
+Determine the displacement of the motion show in figure \ref{fig:uam vt}. 
+\vspace{0.2 in}
+\end{TaskBox}
+
+\subsection{displacement when velocity is changing but not constantly}
+In the figure \ref{fig:multiple vt graghs} (e), the velocity is not changing with a constant acceleration, but the principle of integration can still be used. Thus, label the area which represent the displacement of such motion.\footnote{In ALevel, if $v(t)$ is not provided, students will not be required to give exact value of displacement in such scenario}
+
+\begin{SummBox}
+
+\end{SummBox}
+
+\section{Equation of Motion in UAM}
+There is a set of equations that allows us to calculate the kinematics quantities involved when an object is moving with a \emph{constant acceleration}. Those quantities include:
+\begin{itemize}
+  \item $u$:\uline{\hfill}
+  \item $v$:\uline{\hfill}
+  \item $a$:\uline{\hfill}
+  \item $t$:\uline{\hfill}
+  \item $s$:\uline{\hfill}
+\end{itemize}
+
+Everything strats from the $v$-$t$ graph of a uniformly accelerated motion:
+\begin{figure}[ht]
+\includegraphics{equationgraph.png}
+\end{figure}
+Several things have to be kept in mind in order for using equations:
+\begin{enumerate}
+  \item the path of the motion should be a straight \uline{\hspace{0.5in}}
+  \item the object's  acceleration must be \uline{\hspace{0.5in}}
+  \item all vector quantities's directions are shown as $+$ or $-$, and such sign can not be ignored when using the equation.
+\end{enumerate}
+
+\subsection{Acceleration}
+Since the acceleration is the \textbf{Gradient}:
+\begin{equation}
+  a = \frac{v-u}{t}
+\end{equation}
+
+\subsection{Velocity}
+Reformulate the acceleration formula, the initial velocity or final velocity or average velocity of the motion.
+\begin{align}
+  v &= u+at\\
+  u &= v-at\\
+  \bar{v} &= \frac{u+v}{2}
+\end{align}
+
+\subsection{Time}
+The moving time can also be derived if you change the side of the formula:
+\begin{equation}
+  t = \frac{v-u}{t}
+\end{equation}
+
+\subsection{Displacement}
+It all starts with the conclusion from integration, displacement is the area of the $v$-$t$ graph. Therefore, the easiest equation to determine displacement is:
+\begin{equation}
+  s = \frac{v+u}{2} \cdot t
+\end{equation}
+
+Also, we can substitue any quantities, therefore, more equations can be deduced.
+\begin{align}
+  s &= \frac{v^2-u^2}{2a}\\
+  s &= u^2+\frac{1}{2}at^2\\
+  s &= v^2-\frac{1}{2}at^2
+\end{align}
+
+\begin{SummBox}
+It seems there exist so many equations derived from the UAM, only four of them are of the greatest value,(or we can call them the mother formulae), they are:
+\begin{enumerate}
+  \item $a = \uline{\hspace{1 in}}$
+  \item $s = \frac{u+v}{\hspace{0.5in}} \cdot \uline{\hspace{0.8 in}}$
+  \item $s = u\cdot \uline{\hspace{0.5 in}}+ \frac{1}{2}\cdot \uline{\hspace{0.3in}}$
+  \item $v^2 = \uline{\hspace{1.2 in}}$
+\end{enumerate}
+\end{SummBox}
+
+\begin{TaskBox}
+A cyclist is travelling at \SI{15}{\m \per \second}. The distance between her and the wall is \SI{18}{\m}. If she brakes now so that she wouldn't collide with wall, what should the deceleration be?
+\vspace{0.5in}
+\end{TaskBox}
+
+\end{document}

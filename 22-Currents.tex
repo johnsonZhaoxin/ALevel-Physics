@@ -1,0 +1,234 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+
+
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry} %这个包已经在handout.cls使用过了，如果再调用一次会出问题
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+
+%\usepackage[LGR]{fontenc} %使用希腊字符。
+
+\usepackage{siunitx}
+\DeclareSIUnit\torr{torr} %声明新的单位torr
+
+\usepackage[normalem]{ulem}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+\usepackage[version=4]{mhchem}
+
+%定理的运用
+\usepackage[english]{babel}
+\newtheorem{theorem}{Theorem}[section]      %定理
+\newtheorem{corollary}{Corollary}[theorem]  %结论
+\newtheorem{lemma}[theorem]{Lemma}          %引理
+\newtheorem{definition}[theorem]{Definition}%定义
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=g1,
+}
+% Set up the images/graphics package
+\usepackage{graphicx}
+%\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+\usepackage{nicefrac} %比较好看的斜体分号
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$} %因为美元符号的问题。需要手动添加美元\square美元
+
+\usepackage{tikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+%\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+%\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+%\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+%\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+%\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+
+\title{Currents}
+\author{Sanjin Zhao}
+\date{1st Oct, 2022}  % if the \date{} command is left out, the current date will be used
+
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item understand of the nature of electric current
+  \item solve problems using the equation $Q = It$ or $I=\nicefrac{\Delta Q}{\Delta t}$
+  \item solve problems using the formula $I = nqvA$ or $I=nAve$
+  \item solve problems involving the mean drift velocity of charge carriers
+\end{todolist}
+\clearpage
+
+\section{Leadin}
+The word currents means something that can flow, for example, water in a river or stream, seawater, and as of today's topic - the electric currents.
+
+
+\section{Electric Current}
+In last topic, we've discussed the \emph{electrostatics}\footnote{def:}. But when talking about the electric currents, the charges are moving.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/directedflow.png}
+\caption{A current forms when the direction of electron are regular}
+\end{figure}
+
+\subsection{Essence of Currents}
+So electric current are in essence the \emph{directed, regular flow of charge}. Which means any \textbf{charge carriers} has a regular moving will form a current in the interior of the material itself.
+\begin{marginfigure}[-3cm]
+\includegraphics[width=4cm]{auxi/flowcarriers.jpg}
+\caption{the direction of current may or may not be consistent with the direction of charge carriers}
+\end{marginfigure}
+Thus, the direction of currents are defined as following:
+\begin{itemize}
+  \item if the charge carriers are positive, the direction of current is \uline{\hspace{1in}} with the direction of the carriers
+  \item if the charge carriers are \uline{\hspace{1in}}, the direction of current is opposite as the direction of the carriers
+\end{itemize}
+
+\begin{TaskBox}
+Specify the direction of cations and anions in the galvanic cells.
+Specify the direction of the electrons in the circuits
+Specify the direction of currents, and determine whether the circuit is closed or not?\\
+
+\includegraphics[width=0.6\linewidth]{auxi/ions.jpg}
+\vspace{1in}
+\end{TaskBox}
+
+\subsection{The unit of coulomb and ampere}
+How to qualitatively describe the currents, it will naturally come to your mind that if more charges flows through a surface, the currents will be larger. Thus, the definition of current is stated below:
+\begin{SummBox}
+Current, $I$, is the rate of flow of electric \uline{\hspace{1in}} past a point\\
+\[
+  I = \frac{}{\hspace{1in}}
+\]
+\end{SummBox}
+Rewrite the expression, we will achieve the equivalent expression $\Delta Q=I \cdot \Delta t$, because the ampere,\si{\A}, is the SI base unit, thus \SI{1}{C} = 1\uline{\hspace{1in}}.
+
+So \SI{1}{\coulomb} is defined as the charge that flows past a point in a circuit in a time of \SI{1}{\s} when the current is \SI{1}{\ampere}.
+
+\begin{TaskBox}
+How many electrons flow past a point when the current is \SI{1}{\A}.
+\vspace{1in}
+\tcblower
+A power bank is labelled `\SI{10000}{\milli\ampere\hour}' which means that it can supply a current of \SI{1000}{\milli\A} for 10 hours. For how long could the power bank supply a continous current of \SI{2}{\A}?
+\vspace{1in}
+\end{TaskBox}
+
+\section{Microscopic Perspective}
+Since electron is the most frequent case when talking about the currents.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/microexp.jpg}
+\caption{A microscopic view of currents}
+\label{fig:microscopic view}
+\end{figure}
+Before eliciting the formula for current, several concept shall be introduced.
+
+\subsection{Number Density,$n$}
+Silver, Copper, and nearly almost metal are good conductors because of the ``sea of electron'' exist in the metal, which has provided enough free electron to move, to form current in the metal wire. And 
+\begin{SummBox}
+the \emph{number density} is \uline{the number of conduction electrons(charge carriers) per unit volume}.
+\end{SummBox}
+Metals have a high electron number density–typically of the order of $10^{28}$ or $10^{29}$ \si{\m^{-3}} . Semiconductors, such as silicon and germanium, have much lower values of n–perhaps $10^{23}$ \si{\m^{-3}}. while electrical insulators, such as rubber and plastic, have very few conduction electrons per unit volume to act as charge carriers.
+
+\subsection{Drift Velocity}
+It will be apparent that if electron flows faster, the current it forms would be larger, but the problem is that not all electrons' velocities are exactly the same. Scientists has perfectly solved that problem by introducing the statistical method- average value. And specifically, such velocity is called mean drift velocity, which defined as:
+\begin{SummBox}
+mean drift velocity, $v_d$,  is the average speed of a collection of charged particles when there is current in a conductor.
+\end{SummBox}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/driftvelocity.png}
+\caption{drift velocity is not the real speed of single electrons, but the average speed of a collection of electrons}
+\end{figure}
+
+\subsection{Equation for Currents}
+In the Fig.\ref{fig:microscopic view}, several factors seem to be the deciding factors of currents- the number density, the drift velocity. Starting from the definiton $I = \nicefrac{\Delta Q}{\Delta t}$.
+\begin{itemize}
+  \item the amount of eletron passing a cross section of the conductor can be denoted as $N$
+  \item due to the number density of electrons, $N=n\cdot V$
+  \item in the time period of $\Delta t$, with the drift velocity being $v$, the cross sectional area being $A$. Thus the volume is $V=\uline{\hspace{1in}}$
+  \item thus, the total charge passing through the cross section is $\Delta Q= N\cdot e = \uline{\hspace{2in}}$
+\end{itemize}
+With the whole process, the currents can be expressed by
+\begin{SummBox}
+  \[
+    I = n e v A 
+  \]
+\end{SummBox}
+Sometimes, the charge carrier may not be the electrons, so the equation can be rewritten as $I=n q v A$, in which $q$ is the charge for single carrier. it is usually a multiple of $e$.
+\begin{TaskBox}
+Check the homogeneity of the equation $I = n e v A$
+\vspace{1in}
+\tcblower
+Calculate the mean drift velocity of electrons in a copper wire of diameter \SI{1.0}{\mm} with a current of \SI{5.0}{\A}. The electron number density for copper is \SI{8.5e28}{\m^{−3}}.
+\vspace{1in}
+\end{TaskBox}
+
+\end{document}

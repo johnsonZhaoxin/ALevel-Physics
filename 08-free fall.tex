@@ -1,0 +1,224 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry}
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+\usepackage{siunitx}
+\usepackage[normalem]{ulem}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=green,
+}
+% Set up the images/graphics package
+\usepackage{graphicx}
+\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+%\graphicspath{{graphics/}}
+
+\title{Free Fall}
+\author{Sanjin Zhao}
+\date{5th Sep 2022}  % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$} %因为snippet当中美元符号的问题。需要手动添加美元\square美元
+
+\usepackage{tikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+% \newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+% \newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+% \newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+% \newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+% \newcommand{\docenv}[1]{\textsf{#1}}% environment name
+% \newcommand{\docpkg}[1]{\texttt{#1}}% package name
+% \newcommand{\doccls}[1]{\texttt{#1}}% document class name
+% \newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item Recognize the kinematic characteristics of \emph{free fall}
+  \item Draw $v$-$t$ graph of free fall or thrown up
+  \item Deduce the equation of motion for the free falling object from the equation of motion of UAM
+  \item Using equations to solve free fall problems
+  \item Recognize the kinmatic characteristics of throwning upward
+  \item Using equations to solve upward throwing problems
+  % \item Recognize \emph{Projectile Motion}
+  % \item Grasp the decomposition of projectile motion
+  % \item Using equations to solve projectile motion
+\end{todolist}
+\clearpage
+
+\section{Leadin}
+Everyone seems to hear about Galileo Galilei's experiment in Leaning Tower of Pisa.
+\begin{figure}[h]
+\includegraphics{pisa.jpg}
+\caption{illustration dipicts the experiment}
+\end{figure}
+However,most historians agree that Galileo's famous experiment atop the Leaning Tower of Pisa never took place. But Galilei was correct by refuting old Aristotelian dogma. That's the start of kinematics and even the start of physics. So he is memorized as the father of physics.
+\begin{marginfigure}
+\includegraphics[width=5cm]{galileo.jpg}
+\caption{Galileo Galilei\\1564-1642}
+\end{marginfigure} 
+
+\section{Free Fall}
+An object which is only subject to the gravity or weight will experience free fall motion.
+\begin{marginfigure}
+\includegraphics{fallingapple.jpg}
+\caption{both feather and apple are free falling}
+\end{marginfigure}
+Watch this \href{https://www.bilibili.com/video/BV1YW411t76q}{video} to correct the wrong concept that heavier object will fall faster than the light one.
+
+\subsection{Acceleration of Free Fall}
+In the video, the feather is always in align with the bowling ball during the whole process, what's more, if $v$-$t$ relationship\footnote{we will carry out the experiment to determine the relationship and acceleration}  is found to be a UAM. Such acceleration is caused by the gravity, thus it is named as `\emph{acceleration due to gravity}' or `\emph{acceleration of free fall}', the value of which is measured to be:
+\begin{SummBox}
+\[
+	g = \SI{9.81}{\m\per\square\second}
+\]
+\end{SummBox}
+But two things to mention are that: 1) sometimes we utilize $g=\SI{10}{\m\per\square\second}$ for calculating convenience; 2) acceleration is not constant on Earth, in high altitude region or low latitude region, the acceleration is slightly lower than \SI{9.81}{\m\per\square\second}. 
+
+\section{Equation of Motion for free fall}
+The $v$-$t$ graph for free fall is quite similar to UAM, but usually an object is released \emph{from rest}, which means the initial velocity , $u$, is 0. which lead to the following $v-t$ graph.
+\begin{figure}[h]
+\includegraphics{freefallvt.pdf}
+\caption{the $v$-$t$ graph of free fall}
+\label{fig:freefall vt}
+\end{figure}
+
+\begin{TaskBox}
+In figure \ref{fig:freefall vt}, label the $u$, $v$, $t$, $h$and $g$. 
+\tcblower
+According to the figure, which direction is considered to be the positive direction? Why?
+\end{TaskBox}
+%\footnote{repalce $s$ with $h$ to show this is vertical displacement} 
+
+\begin{marginfigure}[ht]
+\includegraphics[width=3cm]{ticktimeroffreefall.pdf}
+\caption{the time lapses between any two consecutive positions are the same}
+\label{fig:multiflash of free fall}
+\end{marginfigure}
+
+Because $u=0$, and using $g$ as the acceleration, using $h$ as the displacement, the equation from UAM can be changed as the following:
+\begin{align}
+	v &= 0 + gt = gt\\
+	h &= \frac{1}{2} \uline{\hspace{0.5 in}}\\
+	v^2 &= \uline{\hspace{0.5 in}}
+\end{align}
+
+Still, there are more formulae to be derived. If we take multiflash photo of an free falling object. A clearly pattern can be seen
+
+\begin{TaskBox}
+In figure \ref{fig:multiflash of free fall}, determine the time lapse.\\
+\vspace{0.6 in}
+\tcblower
+If a stone is released from rest from a cliff with a height of \SI{88.88}{\m}, and air resistance can be ignored. Determine:\\
+a). After how many seconds did the stone hit the sea.\\
+b). The velocity at which the stone hit the sea.\\
+\vspace{0.6 in}
+\end{TaskBox}
+
+
+\section{Thrown Up}
+In the edge of the cliff, you might not release the stone from rest, maybe you just throw it upward with an initial velocity, just as dipictured in figure \ref{fig:up and down}. Let's discuss how such motion can be investigated.
+\begin{marginfigure}
+\includegraphics[width=5cm]{verticallyup.png}
+\caption{A stone will go up and then down}
+\label{fig:up and down}
+\end{marginfigure}
+
+\subsection{Qualitative Analysis}
+Describe the motion of the stone after it has been thrown from hand.
+\vspace{0.5 in}
+
+\subsection{Another Perspective}
+You might seperate the motion into two parts, which is quite intuitive and easy. One is the slowing down phase, or \emph{decelerating phase}; The other is speeding up phase or \emph{accelerating phase}.
+\begin{TaskBox}
+Under which circumstance would an object will accelerate or decelerate?
+\end{TaskBox}
+
+However, with the vector nature of displacement, velocity, and acceleration as well as using $pm$ sign to show direction, The process can be viewed as a whole, if we set up is the positive direction. Then the acceleration of free fall can be denoted as \SI{-9.81}{\m\per\square\second}.
+
+\subsection{$v$-$t$ graph of throwing upward}
+If an object is thrown upward with an initial velocity $u$, then the $v$-$t$ graph descibing the motion would be:
+\begin{figure}[ht]
+\includegraphics{thrownupvt.pdf}
+\caption{the $v$-$t$ graph of throwing upward}
+\label{fig:upward vt}
+\end{figure}
+
+\begin{TaskBox}
+Label the time when the object is at its heighest position, and determine the velocity accordingly
+\tcblower
+a) Express the time, in terms of $u$ and $g$, which is required for an object to reach the highest position\\
+b) Express the time needed for an object to come back the starting position. The answer should be expressed in terms of $u$ and $g$ and any other coefficients or consant needed.
+\end{TaskBox}
+
+\end{document}

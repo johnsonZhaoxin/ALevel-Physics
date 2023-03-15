@@ -1,0 +1,263 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+
+
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry}
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+\usepackage{siunitx}
+\DeclareSIUnit\torr{torr} %声明新的单位torr
+
+\usepackage[normalem]{ulem}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+
+%定理的运用
+\usepackage[english]{babel}
+\newtheorem{theorem}{Theorem}[section]      %定理
+\newtheorem{corollary}{Corollary}[theorem]  %结论
+\newtheorem{lemma}[theorem]{Lemma}          %引理
+\newtheorem{definition}[theorem]{Definition}%定义
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=g1,
+}
+% Set up the images/graphics package
+\usepackage{graphicx}
+%\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+
+\title{Tensile and Spring}
+\author{Sanjin Zhao}
+\date{20th Sep, 2022}  % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+\usepackage{nicefrac} %比较好看的斜体分号
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$} %因为美元符号的问题。需要手动添加美元\square美元
+
+\usepackage{tikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+%\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+%\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+%\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+%\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+%\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item explain how tensile and compressive forces cause deformation
+  \item describe the behavior of springs and use Hooke's Law\footnote{formula?}
+  \item distinguish between elastic and plastic deformation, limit of proportionality and the elastic limit
+  % \item define and use \emph{stress, strain} and the \emph{Young Modulus}
+  % \item describe an experiment to measure the Young Modulus
+  % \item calculate the energy stored in a deformed materials, from both Hooke's Law and Young Modulus perspective.
+\end{todolist}
+\clearpage
+
+\section{Leadin}
+In this chapter, a university-level concept has introduced, the \emph{stress}\footnote{def:}. An common test of the concret is maximum stress
+\begin{marginfigure}
+\includegraphics[width=3cm]{auxi/concretetest.jpg}
+\caption{A machine used to increase the stress to test the limit of concrete column}
+\end{marginfigure}
+
+\section{Tensile and Compressive Force}
+For any materials, if a force tend to stretch the object, such force are said to be `tensile forces' and by contrast, any forces resulting contraction of the object is said to be `compressive force'. It would be easy to memorize the compressive, but for tensile you need to keep notice of the spelling, it actually comes from the same as `Tension'.
+\begin{figure}
+\centering
+\includegraphics[width=0.7\linewidth]{auxi/tensileforces.jpg}
+\caption{compressive forces and tensile forces acting on same object}
+\end{figure}
+
+However, things become more complicated when a couple of force is acting on the object, causing \emph{bend}\footnote{def:} of the beam as shown in Fig \ref{fig:bend}
+\begin{figure}
+\centering
+\includegraphics{auxi/bent.jpg}
+\caption{forces on both end of the beam cause bending}
+\label{fig:bend}
+\end{figure}
+
+\begin{TaskBox}
+According to Fig \ref{fig:bend}, state the type of inner force in the beam.
+\vspace{0.5in}
+\end{TaskBox}
+
+\section{Spring and Hooke's Law}
+When different load is hung on a spring, the \emph{extension}\footnote{def:} of the spring will obviously change. From a \textbf{qualitative perspective}, it must follows the rule:
+\begin{center}
+the larger the mass is (or tensile forces $F$), the longer the extension($x$) is 
+\end{center}
+However, that's not enough in the standard of \textbf{quantitative research}. Let's carry out the following experiment and record the data below:
+\begin{table}[]
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+\hline
+Trial              & \multicolumn{1}{c|}{1} & \multicolumn{1}{c|}{2} & \multicolumn{1}{c|}{3} & \multicolumn{1}{c|}{4} & \multicolumn{1}{c|}{5} & \multicolumn{1}{c|}{6} & \multicolumn{1}{c|}{7} & \multicolumn{1}{c|}{8} \\ \hline
+number of masses   &                        &                        &                        &                        &                        &                        &                        &                        \\ \hline
+Forces on spring/N &                        &                        &                        &                        &                        &                        &                        &                        \\ \hline
+Extension/m        &                        &                        &                        &                        &                        &                        &                        &                        \\ \hline
+\end{tabular}
+\end{table}
+
+Plot the Froce versus extension graph in the following coordinate system, you'll reach the following $F$-$x$ diagram:
+\begin{figure}
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/coordinatesystem.pdf}
+\end{figure}
+
+\begin{TaskBox}
+Label your experiment data in the coordinate system, and use a smooth line or curve to connect your data.  
+\end{TaskBox}
+
+After such investigation, your result will look like in Fig \ref{fig:Fx}.
+\begin{marginfigure}
+\includegraphics[width=5cm]{auxi/springfxdiagram.jpg}
+\caption{A perfect relationship in a ideal spring}
+\label{fig:Fx}
+\end{marginfigure}
+
+There are two thing we'll pay special attention, they are Hooke's Law and \emph{Limit of Proportionality}.
+
+\subsection{Hooke's Law}
+We've finally achieve the Hooke's Law finally, It has quantitatively states the relationship between forces exerted on the spring and the extension caused by the force, which states as following:
+\begin{SummBox}
+Provided the \emph{elastic limit} is not exceeded, the extension of a spring is \uline{\hspace{2in}} to the applied force(load)
+
+\[
+x\propto F \text{ or } F=kx
+\]
+\end{SummBox}
+Such law comes so naturally from the \uline{\hspace{1.5 in}}
+in the graph. and the coefficient $k$ is called\footnote{some might refer it to as coefficient of stiffness}  \uline{\hspace{1.5 in}}
+The unit for $k$ is \uline{\hspace{1.3in}} while to express it in SI base unit, that would be \uline{\hspace{1.3in}}.
+
+
+\begin{TaskBox}
+What is elastic limit?
+\tcblower
+Has your spring exceeded the limit during your experiment?
+\end{TaskBox}
+
+\subsection{Limit of Proportionaity}
+If you put too much load on the spring, the spring may be broken, as it can not restore to its original length when no load is carried. Thus, the point of no return is exactly what we want to find
+\begin{TaskBox}
+label the point of \emph{limit of proportionality} in Fig \ref{fig:Fx}
+\tcblower
+Try to define \emph{limit of proportionality} in your language.
+\vspace{2in}
+\end{TaskBox}
+
+Take the limit of proportinality as a \emph{demarcation point}\footnote{def:}, when the load or extension does not exceed it, \emph{elastic deformation} occurs, which means:\uline{\hspace{1.5 in}}. 
+By contrast, if this is exceeded, \emph{plastic deformation} is incurred in the spring, which means \uline{\hspace{1.5 in}}
+And Hooke's Law \uline{is/is not} applicable to the spring. So if load is removed, the Force-Extension diagram will look like this:
+\begin{figure}
+\includegraphics[width=0.5\linewidth]{auxi/exceedlimit.jpg}
+\caption{The arrows shows the prcocess of adding and removing loads}
+\label{fig:exceed limit}
+\end{figure}
+
+\begin{TaskBox}
+Explain the behavior of the spring in the Fig \ref{fig:exceed limit}
+\vspace{2in}
+\end{TaskBox}
+
+\subsection{Series and Parallel Connection of Springs}
+You are required to calculate the \emph{equivalent} spring constant when two springs are connect in (a).series and (b).parallel just as shown in Fig \ref{fig:connections}. 
+\begin{marginfigure}
+\includegraphics[width=5cm]{auxi/connection.jpg}
+\caption{two types of connection of springs}
+\label{fig:connections}
+\end{marginfigure}
+
+If the springs has different spring constant $k_1$ and $k_2$. Let's deduce the equivalent spring constant in parallel:
+\vspace{2in}
+
+
+Similarily, the equivalent spring constant in series are calculated through the following way:
+\vspace{2in}
+
+
+\begin{SummBox}
+Two springs with spring constant $k_1$ and $k_2$ are connected in series, the equivalent spring constant of the system is:
+\[
+ k_{\text{eq}} = \frac{}{\hspace{1.5in}}
+\]
+or alternatively,
+\[
+  \frac{1}{ k_{\text{eq}}} = \hspace{1.5in}
+\]
+
+And if they are connected in parallel, the equivalent spring constant of the sytem is:
+\[
+   k_{\text{eq}} = \hspace{1.5in}
+\]
+\end{SummBox}
+\end{document}

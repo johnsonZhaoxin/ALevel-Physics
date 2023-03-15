@@ -1,0 +1,267 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry}
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+\usepackage{siunitx}
+\usepackage[normalem]{ulem}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+
+%定理的运用
+\usepackage[english]{babel}
+\newtheorem{theorem}{Theorem}[section]      %定理
+\newtheorem{corollary}{Corollary}[theorem]  %结论
+\newtheorem{lemma}[theorem]{Lemma}          %引理
+\newtheorem{definition}[theorem]{Definition}%定义
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=green,
+}
+% Set up the images/graphics package
+\usepackage{graphicx}
+\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+
+\title{Work and Energy}
+\author{Sanjin Zhao}
+\date{15th Sep, 2022}  % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+\usepackage{nicefrac} %比较好看的斜体分号
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$} %因为美元符号的问题。需要手动添加美元\square美元
+
+\usepackage{tikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+%\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+%\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+%\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+%\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+%\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item Use the concept of work and energy
+  \item Derive and use the formulae for \emph{kinetic energy}(k.e.) and \emph{gravitational potential energy}(g.p.e.).
+  \item Recall and apply the \emph{principle of conservation of energy}\footnote{conservation is a quite important law in physics}
+  %\item Recall and understand that the \emph{efficiency} of a system
+  %\item Use the concept of efficiency to solve problems
+\end{todolist}
+\clearpage
+
+\section{Leadin}
+You parents might tell you to work hard in order not to be a manual hard-worker\footnote{no offense, every hard-worker derseves respect}. But in physics, you brain's activity does not do work, labor work such as moving a box is actually the `work' in physics. And also, speaking of energy, it is the catalyst for two industrial revolutions, it is also the pearl that human might even start a war to capture.
+
+\section{Work Done}
+If you \href{https://phet.colorado.edu/sims/html/energy-skate-park/latest/energy-skate-park_en.html}{Push a Box} without moving a distance, you are pretending to do work. 
+
+\subsection{Work Done by Constant Force}
+Since work done by a \textbf{constant} force is defined as
+\begin{definition}
+work done is the product of \uline{\hfill}\\
+\uline{\hfill}
+\end{definition}
+
+If expressed in formula
+\begin{equation}
+  W = \vec{F}\cdot\vec{s} = F \cdot s \cdot \cos\theta_{\left(F,s\right)}
+\end{equation}
+
+\begin{figure}[h]
+\includegraphics[width=0.7\linewidth]{workdone.pdf}
+\caption{The force has to pass a displacement in order to do work to object}
+\end{figure}
+
+\begin{marginfigure}
+\includegraphics[width=5cm]{multipleforce.jpg}
+\caption{Multiple forces acting on the box}
+\label{fig:force on slope}
+\end{marginfigure}
+
+\begin{TaskBox}
+Figure \ref{fig:force on slope} shows the forces acting on a box that is being pushed up a slope. Calculate the work done by each force if the box moves \SI{0.50}{\m} up the slope.
+\vspace{0.5in}
+Calculate the resultant force and determine the work done by the resultant force.
+\vspace{0.5in}
+\end{TaskBox}
+
+\subsection{Work Done by Varying forces}
+As I mentioned, life is so hard. sometimes, the force might be changing in magnitude, for example you are lifting a barbell against the weight. How could I solve the work done by the pulling force. The concept of of \emph{Integration} has again come to our mind. Think about the fomula for $s=vt$ and $s=\int v \d t$. How would you apply the integration in determine the work done by a changing force\footnote{This will be explained later}. 
+\begin{marginfigure}
+\includegraphics[width=5cm]{ForceDisplacement.pdf}
+\caption{$F$-$s$ graph helps to determine the work done}
+\end{marginfigure}
+
+\begin{SummBox}
+there are several important concepts or formulae to be emphasized. 
+\begin{itemize}
+   \item the formula for deciding the work done by a constant force is $W = \hspace{1 in}$
+   \item the unit for work is \uline{\hspace{0.5in}}, the SI base unit is  \uline{\hspace{0.7in}}
+   \item if the force is changing, while the $F$-$s$ graph is provided, then the \uline{\hspace{0.5 in}}
+   \item work is a \uline{\emph{scalar quantity}}, it can be positive or negative. The sign means such amount of work tends to \uline{\hspace{1 in}} of the object
+ \end{itemize} 
+\end{SummBox}
+
+
+\section{Energy}
+It may be not a suprising thing that the label on food use the same unit \si{\kilo\J} as the work done.
+\begin{marginfigure}
+\includegraphics[width=5cm]{nutrients.png}
+\caption{The nutrition in a buckwheat noodles}
+\end{marginfigure}  
+The two concept are really closely related. But one thing to k.e.ep in mind is that, the work done is a so-called `process quantity', while Energy is `state quantity'\footnote{it deserves further study}. But let's now look at two forms of physics energy. 
+
+\subsection{Gravitaional Potential Energy}
+\emph{Gravitaional Potential Energy}(g.p.e.) is the energy used to quantify the energy related to gravity of the object. with the rise of height, the object tends to have more g.p.e.. Thus the formula of g.p.e. is defined as following:
+\begin{marginfigure}
+\includegraphics[width=4cm]{auxi/reference.png}
+\caption{three books with difference reference}
+\label{fig:threebooks}
+\end{marginfigure}
+
+\begin{equation}
+  E_p = mg\Delta h
+\end{equation}
+The only thing need to pay attention is the meaning of $\Delta h$. Please articulate your understanding of $\Delta h$ in figure \ref{fig:threebooks}. As for the derivation of 
+
+\subsection{Kinetic Energy}
+\emph{Kinetic Energy}(k.e.), just as its name suggest, is a type of energy related to an object with their motions.
+\begin{equation}
+  E_k = \nicefrac{1}{2} m v^2
+\end{equation}
+Here, it is quite intuitious that kinetic energy is related to the \uline{mass} and \uline{velocity} of the object. But why square and why the coefficient of $\nicefrac{1}{2}$ exist. Let's go digger further in the work and energy relationship section.  
+\begin{TaskBox}
+Car A is twice the mass of another car B, if the kinetic energy is the same for the both cars. How many times larger should the car B be than that of car A?
+\vspace{0.5 in}
+\end{TaskBox}
+
+\section{Conservation of Energy}
+By just giving you the fomulae of k.e. and g.p.e., I am behavioring like a knowledge bullier. Learning process is never memorizing the tedious formulae. Now, let's discover how the physics giants derive such units. But we have start from the relationship between work and energy. 
+\subsection{Transform and Transfer}
+When warmer object are in contact with a colder object, the colder one will gain some temperature and we know that energy is \textbf{transfered} from the warmer one to the colder one.
+When an object falls from a height, the g.p.e. will decrease, but the k.e. will increase, that pheonomenon is called \textbf{transform}. Beside, the weight seems to do \uline{postive} work on the object.
+\begin{figure}[h]
+\includegraphics[width=0.95\linewidth]{rollercoaster.jpg}
+\caption{a roller coaster actually does not rely motor to move}
+\label{fig:rollercoaster}
+\end{figure}
+
+\begin{TaskBox}
+Use the figure \ref{fig:rollercoaster} to explain the transformation of energy.
+\end{TaskBox}
+
+\subsection{Relationships between Work and Energy}
+Due to people's or being's `intelligence', each forms of energy can be transformed or transferred through \textbf{doing work}. Thus you are now supposed to understand why both work and energy are expressed in jouels. Because, 
+\begin{SummBox}
+\begin{center}
+Work done $=$ Energy transferred
+\end{center}
+\end{SummBox}
+Based on this principle, we can follow Coriolis's path to derive the g.p.e. and k.e. formula
+\begin{marginfigure}
+\includegraphics{Coriolis.jpg}
+\caption{Gaspard-Gustave de Coriolis\\1792-1843}
+\end{marginfigure}
+
+If an object with mass $m$ are lifted upward to a height of $\Delta h$ with a \emph{constant} velocity\footnote{why require constant velocity} from the ground. According to NFL, the force that applied to the object is equivalent to the weight, $F=mg$, Thus the work done by the force is $W=F\cdot \Delta h = mg\Delta h$. It is postive, which means that the g.p.e. has increased by that amount. Sincee on the ground, g.p.e. can be viewed as $0$. Thus the g.p.e. at height $\Delta h$ is equal to $0+mg\Delta h = mg\Delta h$\footnote{why so stictly add 0?}.
+
+To determine k.e., assuming there is a resultant force $F$ acting on an object with mass $m$, which is initally at rest\footnote{For convenience calculation},The force causes the object to accelerate with an accleration of $a=\frac{F}{m}$. The final velocity is $v$ after moving a displacement of $s$. So, accrording to UAM equations. $s=\nicefrac{v^2}{2a}$, the work done by the force is $W=F\cdot s =F\cdot\nicefrac{v^2}{2a} = ma \cdot \nicefrac{v^2}{2a} = \nicefrac{1}{2}\cdot mv^2$. Because the object is initially at rest, the k.e. can be assummed to be $0$. Thus at the final state, the k.e. is $0+\nicefrac{1}{2}\cdot mv^2=\nicefrac{1}{2}\cdot mv^2$. 
+
+Have such process made you feel satisfied with the rigidity and precision of physics?
+
+\subsection{Conservation}
+Like in the roller coaster example, g.p.e. decreases when the coaster fall down through the track, while the k.e. increases. If all resistance can be ignored, it is not hard to imagine the relationship between the two changes in a quantitative way, which is
+\begin{SummBox}
+\begin{center}
+decrease in g.p.e = increase in k.e.
+\end{center}
+\end{SummBox}
+
+It seems that the total energy is fixed, one type increases, the other types decreases. That's the rudimentary glimpse of \emph{conservation}. Watch this \href{https://www.bilibili.com/video/BV12V411k72P}{video} to further understand the conservation of energy.
+\begin{marginfigure}
+\includegraphics[width=4cm]{pendulum.jpg}
+\caption{a pendulum}
+\label{fig:pendulum}
+\end{marginfigure}
+
+\begin{ExampleBox}
+A pendulum consists of a brass sphere of mass 5.0 kg hanging from a long string (see Figure \ref{fig:pendulum}).The sphere is pulled to the side so that it is \SI{0.15}{\m} above its lowest position. It is then released. How fast will it be moving when it passes through the lowest point along its path?
+\tcblower
+You might find it difficult to determine the velocity through the traditional kinematics perspective. But using energy transformation and conservation could be quite a boost. Because only two things needed is the initial and final states quantities.
+
+Step1: determine the loss in g.p.e.\\
+\vspace{0.4in}
+Step2: determine the final velocity from the equivalence between gain in k.e. and loss in g.p.e
+\vspace{0.4in}
+\end{ExampleBox}
+
+\end{document}

@@ -1,0 +1,240 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+
+
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry}
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+\usepackage{siunitx}
+\DeclareSIUnit\torr{torr} %声明新的单位torr
+
+\usepackage[normalem]{ulem}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+
+%定理的运用
+\usepackage[english]{babel}
+\newtheorem{theorem}{Theorem}[section]      %定理
+\newtheorem{corollary}{Corollary}[theorem]  %结论
+\newtheorem{lemma}[theorem]{Lemma}          %引理
+\newtheorem{definition}[theorem]{Definition}%定义
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=g1,
+}
+% Set up the images/graphics package
+\usepackage{graphicx}
+%\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+
+\title{Young Modulus}
+\author{Sanjin Zhao}
+\date{20th Sep, 2022}  % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+\usepackage{nicefrac} %比较好看的斜体分号
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$} %因为美元符号的问题。需要手动添加美元\square美元
+
+\usepackage{tikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+%\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+%\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+%\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+%\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+%\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item define and use \emph{stress, strain} and the \emph{Young Modulus}
+  \item describe an experiment to measure the Young Modulus
+  \item calculate the energy stored in a deformed materials, from both Hooke's Law and Young Modulus perspective.
+\end{todolist}
+\clearpage
+
+\section{Leadin}
+Young is not Yang in Chinese, the first time I saw, I mistakenly regard it as a Chinese Scientist. But actually, he is TThomas Young, British scientist, and we will study his famous \href{https://www.britannica.com/biography/Thomas-Young}{Double Slit Experiment} later.
+\begin{marginfigure}
+\includegraphics[width=5cm]{auxi/young.jpg}
+\caption{Thomas Young\\1773-1829}
+\end{marginfigure}
+
+\section{Determine the stiffness of any materials}
+The stiffness of a spring can be determined through the force applied on it divided by the extension caused by that force, so what is the stiffness of an material itself?\footnote{The shape should not be a factor, the question is that, we want the stiffness of `material' not just a single object made from that material}? Is force divided by extension enough for determine the stiffness of material?
+
+The answer is definely no, because very obviously, two wires with different \emph{cross-sectional area}\footnote{def:} will have different applying force to stretch them to same extention, not to mention when the orginial length can vary. Therefore, to avoide the influence of shape and length. Two concept has been introduced, \emph{Stress} and \emph{Strain}
+
+\subsection{Stress}
+Stress is defined as \uline{\hfill{}}. If expressed in formula:
+\begin{SummBox}
+\[
+  \text{stress} = \frac{}{\hspace{1 in}}
+\]
+
+\[
+  \sigma = \nicefrac{F}{A}
+\]
+\end{SummBox}
+
+The unit for stress $\sigma$ is \uline{\hspace{1in}}, the SI base unit is \uline{\hspace{1in}}.
+
+\begin{TaskBox}
+Try to compare stress with pressure, in physical meaning.
+\vspace{1 in}
+\end{TaskBox}
+By calculating the \textbf{Force Per Unit Area}, we can exclude the influence of the cross-sectional area.
+
+\subsection{Strain}
+The next factor is the length of the wire itself. Obviously, forces with same magnitude will not incur same extension on a longer and a shorter wire. A way to solve this problem is considering the ``the proportion relative to original length'', which is the \emph{Strain} in this case.
+\begin{SummBox}
+Strain is defined as \uline{\hfill{}}.\\
+
+\[
+  \text{strain} = \frac{}{\hspace{1in}}
+\]
+
+\[
+  \epsilon = \nicefrac{x}{L}
+\]
+\end{SummBox}
+The unit for strain is \uline{\hspace{1in}}. 
+
+You may find that the basic route of studying the stiffness of materials resembles that in studying the spring, but cross-sectional area and orginial length are taken inton consideration. The two concept of force and extension can now be transformed to the two counterparts:stress and strain.
+
+
+\section{Young Modulus}
+The whole experiment is set up as in Fig \ref{fig:experiment}.
+\begin{figure}
+\centering
+\includegraphics[width=0.9\linewidth]{auxi/experiment.jpg}
+\caption{Stretching a wire in the laboratory}
+\label{fig:experiment}
+\end{figure}
+After the orginial length and cross-sectional area are measured. Instead of Force versus Extension, A Stress versus Strain diagram is used.
+\begin{figure}
+\includegraphics[width=0.9\linewidth]{auxi/coordinatesystem.pdf}
+\end{figure}
+
+Remember, how the spring constant, $k$, can be inferred from the $F$-$x$ graph? It is the \uline{\hspace{1 in}} of the graph, apply the same method, A new physical quantities can be deduced - \emph{Young Modulus}.
+
+\begin{SummBox}
+Young Modulus is \uline{\hfill{}}.
+\[
+  E=\frac{}{\hspace{1in}} = \frac{F\cdot L}{A\cdot x}
+\]
+\end{SummBox}
+The unit for Young Modulus is \uline{\hspace{1in}}. and usually for metal materials, \si{\giga\Pascal} is more frequently used, the SI base unit is \uline{\hspace{1in}}. 
+
+\subsection{Plastic vs Elastic}
+Studying the graph of $\sigma$-$\epsilon$ of a wire, the following graph is often obtained.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/pve.png}
+\caption{A Stress-Strain Curve for a Ductile Material}
+\label{fig:pve}
+\end{figure}
+In elastic region, the wire actually obeys Hooke's Law; while in plastic region, some of the chemical bondings have been permanently destroyed, so deformation of the wire could not be reversed.
+\begin{TaskBox}
+In Fig.\ref{fig:pve}, label the \emph{limit of proportionality}
+\end{TaskBox}
+
+
+\section{Elastic Potential Energy}
+If elastic deformation happens in an object, the energy is stored in the object, and when the object restores to its original state, such energy is released.
+\begin{SummBox}
+Elastic Potential Energy is
+\vspace{0.5in}
+\end{SummBox}
+
+\subsection{e.p.e. in spring}
+Since work done by a force is defined as the area under $F$-$x$ graph.
+\begin{marginfigure}[h]
+\centering
+\includegraphics[width=5cm]{auxi/epe.jpg}
+\end{marginfigure}
+
+\begin{TaskBox}
+Calculate the work done by your hand when a spring with spring constant $k$ is stretched to $\Delta x$.
+\vspace{1in}
+\end{TaskBox}
+
+So the elastic potential energy stored in a spring is calcuated by
+\[
+  \text{e.p.e.}=\nicefrac{1}{2}\cdot k \Delta x^2
+\]
+
+\subsection{e.p.e. in wire}
+This section is no longer be required. If the same process is applied, what are the unit for $\nicefrac{1}{2}\cdot E \epsilon^2$?
+
+
+
+
+\end{document}

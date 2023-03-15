@@ -1,0 +1,419 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry}
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+
+\usepackage{siunitx}
+\usepackage[normalem]{ulem}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+
+
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=green,
+}
+
+
+
+% Set up the images/graphics package
+\usepackage{graphicx}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+%\graphicspath{{./auxi/}}
+
+\title{ALevel Physics}
+\author{Sanjin Zhao}
+\date{1st Jan 2023}  % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+
+% 国际制单位，使用有点问题好像
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+
+\usepackage{tikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+
+\begin{document}
+
+\maketitle% this prints the handout title, author, and date
+
+%\printclassoptions
+
+\section{SI system}
+\begin{todolist}
+  \item Understand that all physical quantities consist of a numerical magnitude and a unit.
+  \item Recall the following SI \textbf{base quantities} and their units:
+  \item Recall and use \textbf{prefixes} and their symbols
+  \item Make reasonable estimates of physical quantities included within the syllabus
+  \item Express \textbf{derived units} as products or quotients of the SI base units
+  \item Use SI base units to check the \emph{homogeneity}
+  % \item Understand the difference between scalar and vector quantities
+  % \item Add and subtract coplanar vectors
+  % \item Represent a vector as two perpendicular components
+\end{todolist}
+\clearpage
+
+\section{scalar v.s. vector}
+\begin{todolist}
+  \item Understand the difference between \emph{scalar and vector} quantities
+  \item \textbf{Add} and \textbf{subtract} coplanar vectors
+  \item Represent a vector as \textbf{two perpendicular components}
+  \item Using coordinate expression to calculate the scalar product
+\end{todolist}
+\clearpage
+
+\section{s.f.}
+\begin{todolist}
+  \item grasp \emph{Scientific Notation}
+  \item read and count significant figures
+  \item \emph{Mathematic Rules} for sig fig calculations
+  \item do \emph{Rounding} of values
+\end{todolist}
+\clearpage
+
+\section{Error and Uncertainty}
+\begin{todolist}
+  \item distinguish \textbf{true value} and readings.
+  \item know the difference between \emph{accuracy} and \emph{precision}
+  \item distinguish between \emph{Random Error} and \emph{Systematic Error}\footnote{def:}
+  \item state methods to minimize such errors
+  \item express uncertainty in both \emph{absolute} and \emph{relative} forms
+  \item grasp the operation rules for uncertainty
+\end{todolist}
+\clearpage
+
+\section{vernier and micrometer}
+\begin{todolist}
+	\item Learn to read \emph{verniers} and \emph{microscrew gauge}
+	\item Know the \emph{absolute uncertaity} of the device
+	\item Use verniers and microscrew gauge to \textbf{measure} tiny length
+	\item Know the common \emph{measuring equipment} in the lab
+\end{todolist}
+\clearpage
+
+
+\section{describe motion}
+\begin{todolist}
+  \item Define and use \emph{distance}, \emph{displacement}, \emph{speed}, \emph{velocity} and \emph{acceleration}.
+  \item Describe labratory methods for determining the speed of of an object
+  \item Use graphical methods to represent motional quantities, such as $d-t$ graph or $v-t$ graph
+  \item Determine displacement from the \textbf{area} under a \emph{velocity–time graph}.
+  \item Determine velocity using the \textbf{gradient} of a \emph{displacement–time graph}.
+  \item Determine acceleration using the \textbf{gradient} of a \emph{velocity–time graph}.
+\end{todolist}
+\clearpage
+
+
+\section{UAM}
+\begin{todolist}
+  \item Determine displacement from the \textbf{area} under a \emph{velocity–time graph}.
+  \item Determine velocity using the \textbf{gradient} of a \emph{displacement–time graph}.
+  \item Determine acceleration using the \textbf{gradient} of a \emph{velocity–time graph}.
+  \item Derive, from the definitions of velocity and acceleration, equations that represent uniformly accelerated motion in a straight line.
+  \item Solve problems using equations of uniformly accelerated motion. including free fall
+  \item Draw $d$-$t$, $v$-$t$ and $a$-$t$ for stationary, uniform motion, uniformly acclerated motion, free fall or thrown up. 
+  \item Describe an experiment to determine the acceleration of free fall using a falling object
+  \item Describe and explain motion due to a uniform velocity in one direction and a uniform acceleration in a perpendicular direction
+\end{todolist}
+\clearpage
+
+\section{free fall}
+\begin{todolist}
+  \item Recognize the kinematic characteristics of \emph{free fall}
+  \item Draw $v$-$t$ graph of free fall or thrown up
+  \item Deduce the equation of motion for the free falling object from the equation of motion of UAM
+  \item Using equations to solve free fall problems
+  \item Recognize the kinmatic characteristics of throwning upward
+  \item Using equations to solve upward throwing problems
+  % \item Recognize \emph{Projectile Motion}
+  % \item Grasp the decomposition of projectile motion
+  % \item Using equations to solve projectile motion
+\end{todolist}
+\clearpage
+
+
+\section{Projectile}
+\begin{todolist}
+  \item Recognize the kinematic characteristics of \emph{horizontal projectile motion} or \emph{projectile motion} 
+  \item Grasp the way to decompose vectors and analyze the \emph{Two Dimensional Motion}
+  \item Using equation of free fall to solve problems related to horizontal projectile motion or projectile motion
+\end{todolist}
+\clearpage
+
+\section{terminal velocity}
+\begin{todolist}
+  \item Understand the effect of drag force or air resistance
+  \item Define terminal velocity
+  \item Draw and interpret the $v$-$t$ graph of object moving through air or liquids with or without \emph{parachute}
+  \item Analyse the object's force in three stages, including accelerating, decelerating and terminal velocity.
+\end{todolist}
+\clearpage
+
+\section{forces}
+\begin{todolist}
+  \item Define and distinguish different types of forces
+  \item Use a vector triangle to represent coplanar forces in equilibrium
+  \item Add two or more coplanar forces
+  \item Resolve a force into perpendicular components
+  \item Recognise that mass is a property of an object that resists change in motion
+  \item Recall that the weight of a body is equal to the product of its mass and the acceleration of free fall
+  \item Represent the weight of a body as acting at a single point known as its centre of gravity
+\end{todolist}
+\clearpage
+
+
+\section{moment and torque}
+\begin{todolist}
+  \item Define and apply the \emph{moment}\footnote{def:} of a force and the \emph{torque of a couple}\footnote{def:}
+  \item State and apply the principle of moments
+  \item Use the idea that, when there is no resultant force and no resultant torque, a system is in equilibrium.
+  \item calculate the \emph{work done} by a torque or moment
+\end{todolist}
+\clearpage
+
+\section{work done by a force}
+\begin{todolist}
+  \item Use the concept of work and energy
+  \item Derive and use the formulae for \emph{kinetic energy}(k.e.) and \emph{gravitational potential energy}(g.p.e.).
+  \item Recall and apply the \emph{principle of conservation of energy}\footnote{conservation is a quite important law in physics}
+  %\item Recall and understand that the \emph{efficiency} of a system
+  %\item Use the concept of efficiency to solve problems
+\end{todolist}
+\clearpage
+
+\section{power and efficiency}
+\begin{todolist}
+  \item Define and use the equation for power using $P=\nicefrac{W}{t}$ and derive $P = Fv$
+  \item Recall and understand that the \emph{efficiency} of a system
+  \item Use the concept of efficiency to solve problems
+\end{todolist}
+\clearpage
+
+
+\section{linear momentum}
+\begin{todolist}
+  \item Define and use \emph{linear momentum}
+  \item Define and use \emph{impluse}\footnote{not required by CAIE but by me}
+  \item Recall and use that the \textbf{area} under $F$-$t$ graph equals to the \textbf{change of momentum}
+  \item Relate force to the rate of change of momentum and state Newton’s second law of motion
+\end{todolist}
+\clearpage
+
+\section{collision}
+\begin{todolist}
+  \item state and apply the principle of conservation of momentum to collisions in one and two dimensions
+  \item apply the principle of conservation of momentum to solve simple problems, including elastic and inelastic interactions between objects in both one and two dimensions\footnote{knowledge of the concept of \emph{coefficient of restitution} is not required. But Sanjin Zhao would be much happier if you dig into that.}
+  \item solve the velocity after elastic and total inelastic collision
+  \item recall that, for a perfectly elastic collision, the relative speed of approach is equal to the relative speed of separation
+  \item discuss energy changes in perfectly elastic and inelastic collisions
+\end{todolist}
+\clearpage
+
+\section{density and pressure}
+\begin{todolist}
+  \item define and use density
+  \item define and use pressure and calculate the pressure in a fluid
+  \item derive and use the equation: $\Delta p= \rho g h$
+  \item explain and use Achimedes' principle
+  \item use a difference in hydrostatic pressure to explain and calculate upthrust
+\end{todolist}
+\clearpage
+
+\section{spring}
+\begin{todolist}
+  \item explain how tensile and compressive forces cause deformation
+  \item describe the behavior of springs and use Hooke's Law\footnote{formula?}
+  \item distinguish between elastic and plastic deformation, limit of proportionality and the elastic limit
+  % \item define and use \emph{stress, strain} and the \emph{Young Modulus}
+  % \item describe an experiment to measure the Young Modulus
+  % \item calculate the energy stored in a deformed materials, from both Hooke's Law and Young Modulus perspective.
+\end{todolist}
+\clearpage
+
+\section{Young Modulus}
+\begin{todolist}
+  \item define and use \emph{stress, strain} and the \emph{Young Modulus}
+  \item describe an experiment to measure the Young Modulus
+  \item \emph{compare} Young Modulus and spring constant of a wire
+  \item calculate the energy stored in a deformed materials, from both Hooke's Law and Young Modulus perspective.
+\end{todolist}
+\clearpage
+
+\section{charges*}
+\begin{todolist}
+  \item understand that atoms has negative electron surrouding
+  \item explain the phenomenon of charge by friction
+  \item use electroscope to test whether an object is charged or not
+  \item understand that charge is quantised
+  \item memorize the elementary charge
+  \item understand the term charge and recognise its unit, the coulomb
+
+  % \item understand of the nature of electric current
+
+  % \item solve problems using the equation $Q = It$
+  % \item solve problems using the formula $I = nAve$
+  % \item solve problems involving the mean drift velocity of charge carriers
+\end{todolist}
+\clearpage
+
+\section{current}
+\begin{todolist}
+  \item understand of the nature of electric current
+  \item solve problems using the equation $Q = It$ or $I=\nicefrac{\Delta Q}{\Delta t}$
+  \item solve problems using the formula $I = nqvA$ or $I=nAve$
+  \item solve problems involving the mean drift velocity of charge carriers
+\end{todolist}
+\clearpage
+
+\section{p.d.}
+\begin{todolist}
+  \item define the potential difference across a component as the energy transferred per unit charge
+  \item understand the terms \emph{potential difference}, e.m.f. and the volt
+  \item use energy considerations to distinguish between p.d. and e.m.f. ($\mathcal{E}$)
+  \item recall and use $\Delta V=\nicefrac{W}{Q}$
+  \item recall and use $P = VI$
+\end{todolist}
+\clearpage
+
+\section{Ohm's Law}
+\begin{todolist}
+  \item state Ohm’s law
+  \item sketch and explain the $I$–$V$ characteristics for resistors
+  %\item sketch the temperature characteristic for an NTC thermistor
+  \item solve problems involving the resistivity of a material.
+\end{todolist}
+\clearpage
+
+\section{electric components}
+\begin{todolist}
+  \item understand that metals have \emph{delocalised electrons} to be conductive
+  \item explain why temeperature could change the resistance, and the phenomenon of \emph{superconducitiviy}
+  \item sketch and explain the $I$–$V$ characteristics for \emph{filament lamp}, \emph{diodes}, \emph{thermistor}
+  \item sketch the temperature characteristic for an NTC thermistor
+  \item sketch the light intensity characteristics for an light-dependent resistor(LDR)
+\end{todolist}
+\clearpage
+
+\section{Kirchhoff's Law}
+\begin{todolist}
+  \item recall and apply \emph{Kirchhoff’s laws}, KCL and KVL both
+  \item analyse the circuit using Kirchhoff's law
+  \item use Kirchhoff’s laws to derive the formulae for the combined resistance of two or more resistors \emph{in series and in parallel}
+  \item recognise that ammeters are connected in series within a circuit and therefore should have low resistance
+  \item recognise that voltmeters are connected in parallel across a component, or components, and therefore should have high resistance.
+\end{todolist}
+\clearpage
+
+\section{connection}
+\begin{todolist}
+  \item use Kirchhoff’s laws to derive the formulae for the combined resistance of two or more resistors \emph{in series and in parallel}
+  \item recognise that ammeters are connected in series within a circuit and therefore should have low resistance
+  \item recognise that voltmeters are connected in parallel across a component, or components, and therefore should have high resistance.
+\end{todolist}
+\clearpage
+
+\section{practical circuit}
+\begin{todolist}
+  \item explain the effects of \emph{internal resistance} on \emph{terminal p.d.} and power output of a source of e.m.f.
+  \item describe experiments to decide the e.m.f. and internal resistance of a source or battery
+  \item explain the use of \emph{potential divider}\footnote{def:} circuits
+  \item solve problems involving the potentiometeras a means of comparing voltage
+\end{todolist}
+\clearpage
+
+\section{describe waves}
+\begin{todolist}
+  \item describe a progressive wave
+  \item describe the motion of transverse and longitudinal waves
+  \item describe waves in terms of their wavelength, amplitude, frequency, speed, phase difference and intensity
+  \item use the time-base and y-gain of a cathode-ray oscilloscope (CRO) to determine frequency and amplitude
+  \item use the wave equation $v = f\cdot \lambda$ and $f =\nicefrac{1}{T}$
+  \item use the equations of intensity and its relationship with amplitude.
+\end{todolist}
+\clearpage
+
+\section{Doppler Effect}
+\begin{todolist}
+  \item describe the \emph{Doppler Effect} for sound waves and electromagnetic waves, intensity and frequency.
+  \item use the equation $f_0=\frac{f_s \cdot v}{v\pm v_s}$, know the conditions of when to use $+/-$
+\end{todolist}
+\clearpage
+
+
+\section{EM waves}
+\begin{todolist}
+  \item describe and understand \emph{electromagnetic waves}
+  \item recall that wavelengths in the range \SIrange{400}{700}{\nm} in free space are visible to the human eye
+  \item describe and understand \emph{polarisation}
+  \item use Malus’s law to determine the intensity of transmitted light through a polarising filter.
+\end{todolist}
+\clearpage
+
+

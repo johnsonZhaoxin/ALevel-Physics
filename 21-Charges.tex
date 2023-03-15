@@ -1,0 +1,233 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+
+
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry} %这个包已经在handout.cls使用过了，如果再调用一次会出问题
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+
+%\usepackage[LGR]{fontenc} %使用希腊字符。
+
+\usepackage{siunitx}
+\DeclareSIUnit\torr{torr} %声明新的单位torr
+
+\usepackage[normalem]{ulem}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+\usepackage[version=4]{mhchem}
+
+%定理的运用
+\usepackage[english]{babel}
+\newtheorem{theorem}{Theorem}[section]      %定理
+\newtheorem{corollary}{Corollary}[theorem]  %结论
+\newtheorem{lemma}[theorem]{Lemma}          %引理
+\newtheorem{definition}[theorem]{Definition}%定义
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=g1,
+}
+% Set up the images/graphics package
+\usepackage{graphicx}
+%\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+
+\title{Charges and Electricity}
+\author{Sanjin Zhao}
+\date{1st Oct, 2022}  % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+\usepackage{nicefrac} %比较好看的斜体分号
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$} %因为美元符号的问题。需要手动添加美元\square美元
+
+\usepackage{tikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+%\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+%\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+%\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+%\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+%\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item understand that atoms has negative electron surrouding
+  \item explain the phenomenon of charge by friction
+  \item use electroscope to test whether an object is charged or not
+  \item understand that charge is quantised
+  \item memorize the elementary charge
+  \item understand the term charge and recognise its unit, the coulomb
+
+  % \item understand of the nature of electric current
+
+  % \item solve problems using the equation $Q = It$
+  % \item solve problems using the formula $I = nAve$
+  % \item solve problems involving the mean drift velocity of charge carriers
+\end{todolist}
+\clearpage
+
+\section{Leadin}
+One of the most important application from physics must be the electricity. You've been in great debt to star physicists for bringing currents to daily life, such as Coulomb Faraday, Tesla, Guass, Ampere, Volta, etc. Without their theories and patents orginates from them, The modern life with convenience will never exsit.
+\begin{marginfigure}
+\centering
+\includegraphics[width=3.5cm]{auxi/components.jpg}
+\caption{resistors, fuses, capacitors, microchips(logic gates)}
+\end{marginfigure}
+
+\section{Discovery of charges}
+Before we investigate on the currents, let's look at how charges are discovered and defined.
+\subsection{Charge by friction}
+Around 600 BC, \href{https://www.britannica.com/biography/Thales-of-Miletus}{Thales of Miletus} rubbed \emph{amber}\footnote{exp:} with a cloth which caused attraction of lightweight particles, it is the basis for discovery of electric charges. and electricity comes from the greek word-``$\eta\lambda\epsilon\kappa\tau\rho o\nu$'', elektron in English, but stands for amber. 
+%泰勒斯，西方第一个哲学家
+\begin{figure}[h]
+\includegraphics[width=0.9\linewidth]{auxi/amberfriction.jpg}
+\caption{after rubbing amber with cloth, the amber will be charged.}
+\end{figure}
+\begin{TaskBox}
+Will the cloth be charged as well?
+\end{TaskBox}
+
+\subsection{Electroscope}
+By putting an object close to/ or touches the metal plate of the \href{https://orau.org/health-physics-museum/collection/electroscopes/electrostatic/beetz-cylindrical.html}{electroscope}, if the alumimum foil repels and expands, that shows the object is charged.
+\begin{marginfigure}
+\includegraphics[width=5cm]{auxi/electroscope.jpg}
+\caption{a cylindrical Beetz-type electroscope, inveted in 1873}
+\end{marginfigure}
+
+\begin{TaskBox}
+Instead of amber, we now use two types of rubbing pair, silk and glass rod; fur and plastic rod. Try to illustrate the two types of charging. And use electroscope to show that the materials carry charges. 
+\end{TaskBox}
+
+\subsection{Franklin's Contribution}
+\href{https://www.fi.edu/benjamin-franklin/kite-key-experiment}{Benjamin Franklin} is not only the founding father of USA, but also a great and adventurous physicist for his famous \href{https://history.howstuffworks.com/history-vs-myth/did-benjamin-franklin-use-kite-to-discover-electricity.htm}{kite experiment}. 
+\begin{figure}[h]
+\includegraphics[width=0.8\linewidth]{auxi/Franklin.jpg}
+\caption{Franklin, A man catching the lightning in 1752}
+\end{figure}
+And his observations and letters between him and Peter Collison was recorded in ``\href{http://www.benjamin-franklin-history.org/experiments-with-electricity/#:~:text=Experiments%20with%20electricity%201%20The%20Leyden%20Jar%20The,Franklin’s%20letters%20about%20his%20experiments%20with%20electricity%20}{Experiments and Observations on Electricity}''
+\begin{marginfigure}
+\includegraphics[width=5cm]{auxi/Experiments-and-Observation-on-Electricity.jpg}
+\caption{Coverpage of the Experiments and Observation on Electricity}
+\end{marginfigure}
+By conducting the kite experiment Franklin proved that lighting was an electrical discharge and realized that it can be charged over a conductor into the ground providing a safe alternative path and eliminating the risk of deadly fires.
+And that ``Philadelphia experiment'' has led to the invention of lightning rod, as well as the understanding of \textbf{postive} and \textbf{negative} charges.
+
+\subsection{Thomson's Contribution}
+Sir Joseph John Thomson, who also attended Trinity College from Cambridge University, won the 1906 Nobel Prize for his discovery of ``\emph{Cathode Ray}'' 
+\begin{marginfigure}[3cm] %offset 3cm
+\includegraphics[width=3.5cm]{auxi/thomson.jpg}
+\caption{J.J. Thomson\\1856-1920}
+\end{marginfigure}
+which has brought people to the way of dividing atoms into sub-atomic level. He was also famous for his ``\emph{plum pudding model}''\footnote{the model is not correct, but still meaningful}. Hence, the hero in explaining why objects are neutral, or why sometimes they can be charged, or why there are postive charges and negative charges is finally revealing its veils- the \emph{electron}.
+
+\subsection{Microscopic Explaination}
+Now,the explaination has finally comes:
+\begin{itemize}
+  \setlength{\parsep}{0pt}
+  \item Everything is consist of various \uline{\hspace{1in}}
+  \item any atom has \uline{\hspace{1in}}, and most importantly, in the outside, atom has lots electrons.
+  \item electron is \uline{(postively/negatively)} charged. while \uline{\hspace{1in}} is postively charged.
+  \item Both electron and proton has \uline{same amount of charge}, but one is negative the other is positve.
+  \item Task: Explain why most objects are neutral
+  \vspace{0.6in}
+  \item Electrons are easier to move away from the attraction of nucleus, provided enough energy is transferred to the atom, such energy can be obtained by \uline{rubbing the object}
+  \item Task: Explain why rubbing can cause charging.
+  \vspace{0.6in} 
+\end{itemize}
+
+\subsection{Charge Carriers}
+In a wire made of metal, the \uline{\hspace{1in}} are free to move, thus the charge carriers are the electrons.
+\begin{figure}[h]
+\includegraphics[width=0.9\linewidth]{auxi/seaofelectrons.png}
+\caption{Sea of electrons exist in metal}
+\end{figure}
+
+In a solution, it is not electron but the \emph{Cations} and \emph{Anions}\footnote{def:} can move if electric field\footnote{it is another topic} is applied. In this case, the ions are the charge carriers.
+\begin{figure}[h]
+\includegraphics{auxi/ions.jpg}
+\caption{ions are charge carriers in a solution}
+\end{figure}
+
+\begin{TaskBox}
+Using the concept of ions, explain why they can carry charges, and how to determine the amount of charges they carry accroding to the symbol? e.g. \ce{Mg^2+},\ce{Cl^-},\ce{CrO4^2-} etc.
+\vspace{1in} 
+\end{TaskBox}
+
+\subsection{Elementary Charge}
+\href{https://owlcation.com/stem/Millikans-Oil-Drop-Experiment#:~:text=Millikan%27s%20oil-drop%20experiment%20was%20performed%20by%20Robert%20Millikan,groups%20%28or%20the%20absence%20of%20groups%29%20of%20electrons.}{Millikan} has devised a delicate experiment\footnote{oil drop experiment, the result of which is not accurate at first, but has been greatly improved by other young scientists.} to deterimine the charge of electrons. And the amount of charge that an electron carries is \uline{\hspace{1in}}. The unit is \uline{\hspace{1in}}
+
+Such charge is called ``\emph{elemenatary charge}'' or ``\emph{fundamental charge}'' and is denoted as $-e$ and a proton has equal amount of charge but is positive, and therefore can be denoted as $+e$ or $e$.
+
+\begin{figure}[h]
+\includegraphics[width=0.3\linewidth]{auxi/Milikan.png}
+\includegraphics[width=0.6\linewidth]{auxi/oildrop.JPG}
+\end{figure}
+
+\end{document}

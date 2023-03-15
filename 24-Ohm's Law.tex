@@ -1,0 +1,252 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+
+
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry} %这个包已经在handout.cls使用过了，如果再调用一次会出问题
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+
+%\usepackage[LGR]{fontenc} %使用希腊字符。
+
+\usepackage{siunitx}
+\DeclareSIUnit\torr{torr} %声明新的单位torr
+
+
+\usepackage{BOONDOX-cal} %为了花体的emf符号
+\usepackage[normalem]{ulem} %下划线
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+\usepackage[version=4]{mhchem}
+
+%定理的运用
+\usepackage[english]{babel}
+\newtheorem{theorem}{Theorem}[section]      %定理
+\newtheorem{corollary}{Corollary}[theorem]  %结论
+\newtheorem{lemma}[theorem]{Lemma}          %引理
+\newtheorem{definition}[theorem]{Definition}%定义
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=g1,
+}
+% Set up the images/graphics package
+\usepackage{graphicx}
+%\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+\usepackage{nicefrac} %比较好看的斜体分号
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$} %因为美元符号的问题。需要手动添加美元\square美元
+
+\usepackage{tikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+%\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+%\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+%\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+%\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+%\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+\title{Ohm's Law}
+\author{Sanjin Zhao}
+\date{2nd Oct, 2022}  % if the \date{} command is left out, the current date will be used
+
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item state Ohm’s law
+  \item sketch and explain the $I$–$V$ characteristics for resistors
+  %\item sketch the temperature characteristic for an NTC thermistor
+  \item solve problems involving the resistivity of a material.
+\end{todolist}
+\clearpage
+
+\section{Leadin}
+\href{https://www.britannica.com/biography/Georg-Ohm}{Georg Simon Ohm} is a German physicist who is renowned for his great discover between the p.d. and the current in a \emph{resistor}.
+\begin{marginfigure}
+\includegraphics[width=3.5cm]{auxi/Ohm.jpg}
+\caption{Georg Ohm\\1789-1854}
+\end{marginfigure}
+And in memory of his contribution in this field, the law is called \emph{Ohm's Law} and moreover, his names has been lowercased in order to serve as the unit for the \emph{resistance}.
+
+\section{Ohm's Law}
+You might have already been familiar with Ohm's Law, but let's start from scratch in deciding the I-V characteristics of \emph{ohmic resistor}\footnote{def:most metal conductors may be regarded as ohmic resistors}. 
+\subsection{Experiment Setup}
+The circuit is set up as shown in Fig.\ref{fig:Ohm setup}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/OhmsLaw.png}
+\caption{Setup and circuit diagram of investigation on Ohm's Law}
+\label{fig:Ohm setup}
+\end{figure}
+
+The voltmeter measures the p.d. across the resistor, while the ammeter measures the current in the whole circuit. By \uline{sliding the \hspace{1in}}, the p.d. across the resistor can be changed, then the currents would change correspondingly. Thus, the $I$-$V$ graph could be drawn. 
+
+\subsection{I-V diagram}
+\begin{SummBox}
+The $I$-$V$ characteristics is a graph of currents against voltage for a particular component of an electrical circuit
+\end{SummBox}
+The experiment's results may looks like the following:
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/IVcharacteristic.png}
+\caption{The $I$-$V$ characteristics of a resistor}
+\end{figure}
+
+\begin{TaskBox}
+What does it means when the voltage is negative?
+\vspace{0.5in}
+\end{TaskBox}
+
+\subsection{Ohm's Law definition}
+Since the linearity between currents and voltagee could be found, the Ohm's Law is defined as the following:
+\begin{SummBox}
+Ohm's Law states that: A conductor(resistor) obeys Ohm's law if the \uline{\hspace{1in}} in it is \uline{directly proportional to} the \uline{\hspace{1in}} across its ends.
+
+If stated in mathematical formulas:
+\[
+  I\propto V
+\]
+\end{SummBox}
+
+\subsection{Resistance}
+According to Ohm's Law, due to the proportionality between the p.d.s and currents. Resistance of a material can now be defined.
+\begin{SummBox}
+Electrical Resistance, $R$ , of a resistor is the ratio of potential difference to current.
+
+\[
+   R = \nicefrac{V}{I} 
+\]
+\end{SummBox}
+The unit for resistance is \uline{\hspace{1in}}. and thus the SI base unit is \uline{\hspace{1in}}.
+
+\begin{TaskBox}
+Combining the definition and the $I$-$V$ characteristics, the gradient of the $I$-$V$ graph is \uline{\hspace{1in}}.
+\end{TaskBox}
+
+The relationship between \uline{resistance}, \uline{current}, \uline{voltage or p.d.} can be described humorously in Fig \ref{fig:humor}
+\begin{marginfigure}
+\centering
+\includegraphics[width=4cm]{auxi/humorOhm.png}
+\caption{A humorous way to memorize the Ohm's law}
+\label{fig:humor}
+\end{marginfigure}
+
+\subsection{Power Dissipated on Resistor}
+Since the electric power is $P=V\cdot I$ and $V=IR$, thus the power can also be calculated through
+\[
+   P = I^2\cdot R \qquad P=\nicefrac{V^2}{R}
+\]
+Any way would be feasible.
+
+
+\subsection{Resistivity}
+The resistance of a metal wire depneds on serveral factors:
+\begin{itemize}
+  \item length, $L$
+  \item cross-sectional area, $A$
+  \item the material the wire is made from
+  \item the temperature\footnote{this factor will be discussed when superconductivity are mentioned}
+\end{itemize}
+
+\subsection{resistivity of a material}
+Resistivity is a property of a material, which only changes based on the material itself. The lowest resistivity discovered is the silver, copper ranking the second, the values are (\SI{1.60e-8}{\ohm\m}) and (\SI{1.69e-6}{\ohm\cm})\footnote{Attention, I wrote it on purpose}. This means \uline{(silver/copper)} is the best metal to make conduting wire.
+
+\begin{marginfigure}[2cm]
+\includegraphics[width=4cm]{auxi/taobaosilver.png}
+\caption{is it an IQ tax when buying silver-coated wire}
+\end{marginfigure}
+
+
+\begin{TaskBox}
+Specify qualitatively the affect of each factors, for exmaple: \\
+if the length is increased, the wire's resistance will \uline{\hspace{0.5in}}.
+\vspace{0.6in}
+
+\tcblower
+
+How rheostat can change the resistance that are connected in a circuit.
+\vspace{0.6in}
+\end{TaskBox}
+
+
+\subsection{Determine the resistance}
+By controlling variables, the resitance of a wire resistor can be determined by the following formula:
+\begin{SummBox}
+\[
+  R=\frac{\rho L}{A}
+\]
+\end{SummBox}
+Alternatively, the resistivity actually comes from the such definition. 
+\[
+  \rho=\nicefrac{RA}{L}
+\]
+thus, the unit for resistivity is usually \uline{\hspace{1in}}. You can also change that unit to SI base unit. 
+\end{document}

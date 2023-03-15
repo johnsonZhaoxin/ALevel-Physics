@@ -1,0 +1,251 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+
+
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry} %这个包已经在handout.cls使用过了，如果再调用一次会出问题
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+
+%\usepackage[LGR]{fontenc} %使用希腊字符。
+
+\usepackage{siunitx}
+\DeclareSIUnit\torr{torr} %声明新的单位torr
+\usepackage{mhchem}
+
+\usepackage{BOONDOX-cal} %为了花体的emf符号
+\usepackage[normalem]{ulem} %下划线
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+
+%定理的运用
+\usepackage[english]{babel}
+\newtheorem{theorem}{Theorem}[section]      %定理
+\newtheorem{corollary}{Corollary}[theorem]  %结论
+\newtheorem{lemma}[theorem]{Lemma}          %引理
+\newtheorem{definition}[theorem]{Definition}%定义
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=g1,
+}
+% Set up the images/graphics package
+\usepackage{graphicx}
+%\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+\usepackage{nicefrac} %比较好看的斜体分号
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$} %因为美元符号的问题。需要手动添加美元\square美元
+
+\usepackage{tikz}
+\usepackage{circuitikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+%\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+%\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+%\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+%\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+%\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+\title{Doppler Effect}
+\author{Sanjin Zhao}
+\date{4th Oct, 2022}  % if the \date{} command is left out, the current date will be used
+
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item describe the \emph{Doppler Effect} for sound waves and electromagnetic waves, intensity and frequency.
+  \item use the equation $f_0=\frac{f_s \cdot v}{v\pm v_s}$, know the conditions of when to use $+/-$
+\end{todolist}
+\clearpage
+
+\section{Leadin}
+In the famous TV sitcom ``The Big Bang Theory'', Dr. Sheldon Cooper wears a costume representing doppler effect in \href{https://www.vulture.com/article/smartest-big-bang-theory-episodes-science.html}{The Middle-Earth Paradigm}, Season 1. Actually, the costume is hard to comprehand, but the doppler effect is common in our daily life, especially when an ambulance comes and leaves you. It is named after the Austrian physicist --- Christian Andreas Doppler who desribed such phenomenon in 1842. 
+\begin{marginfigure}[-3cm]
+\includegraphics[width=4cm]{auxi/Christian_Doppler.jpg}
+\caption{Christian Andreas Doppler\\1803-1853}
+\end{marginfigure}
+
+\section{Wavefront Model}
+In the \href{https://phet.colorado.edu/sims/html/waves-intro/latest/waves-intro_en.html}{wave intro} if all the crest in the space are connected, viewed from the top, the wave can be expressed by the \emph{wave front}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.6\linewidth]{auxi/wavefront.png}
+\caption{The black line is the wave front of the planar wave}
+\end{figure}
+
+A wavefront is a set or locus of all points at a particular instant of time, which have \textbf{the same phase}, but ususally, points at crest are choosen.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.6\linewidth]{auxi/twotypes.jpeg}
+\caption{Two types of wavefront.}
+\end{figure}
+
+And does the planar wavefront reminds you something? The wifi signal! yes, it is still a type of wave.
+\begin{marginfigure}
+\includegraphics[width=5cm]{auxi/wifisignal.png}
+\caption{nearly all wifi icon looks like this}
+\end{marginfigure}
+
+\begin{ExampleBox}
+\begin{itemize}
+  \item Is the wavefront model derived from a $d$-$t$ graph or $d$-$x$ graph?\\
+  \uline{\hfill}
+  \item What is the relationship between the wavefront and the direction of propagation of the wave?\\
+  \uline{\hfill}
+  \item What does the distance bewteen two consective wavefronts mean?\\
+  \uline{\hfill}
+  \item What is the phase difference bewteen two consective wavefronts?\\
+\end{itemize}
+\end{ExampleBox}
+
+\section{Doppler Effect}
+watch the \href{https://www.youtube.com/watch?v=1yECQ_kNwwM}{NorTek} detecting and using Doppler Effect. Generally speaking, when there is relation motion between the source and the observer, the obeserved frequency will changed accordingly. It does not equal to the real frequency of the source. 
+
+\begin{TaskBox}
+Watch the video, and state a qualitative conclusion about what have changed when the car with horn approach and leaves you.
+\tcblower
+As the source come closer, the sound intensity \uline{(increase/decreases)}, and the \emph{pitch}(frquency) of the sound seems \uline{(higher/lower)}.
+When the source leaves the observer, the sound intensity \uline{(increase/decreases)}, and the pitch(frquency) of the sound seems \uline{(higher/lower)}.
+\end{TaskBox}
+That is the \uline{Doppler Effect}, which summarises as below:
+\begin{SummBox}
+The freqency of a wave will change in relation to an observer who is moving relative to the wave source. 
+\end{SummBox}
+
+\section{Doppler Effect Formula}
+Now, let's deduce the formula from the illustration, suppose that the observer is stationary relative to the ground.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\linewidth]{auxi/doppler.jpg}
+\caption{For observe A, the source is approach; For observe B, the source is leaving}
+\end{figure}
+
+\subsection{Approaching}
+\begin{ExampleBox}
+Deriving the frequency of the sound from observer A, given that the speed of source is $v_s$, the speed of sound wave is $v$, and the orignal frequency is $f_s$ when the source is stationary.
+\tcblower
+The original wavelength is $\lambda_s = \nicefrac{v}{f_s}$, while for a time of $t=\nicefrac{1}{f_s}$, the distance that the source has moved is $d = v_s \cdot t = \hspace{1in}$. Thus, the new wavelength for observe A is $\lambda_o = \lambda_s - d$, which is \[
+  \lambda_o =\frac{v}{f_s} -\frac{v_s}{f_s}
+\]
+The most important thing is that, despite the source is moving, the speed of the sound wave does not change for observer. Thus, the new obserered frequency can be calculated through $f_o = \nicefrac{v}{\lambda_o}$. 
+\begin{align*}
+    f_o &=\frac{v}{\lambda_o}\\
+        &=\frac{v}{\lambda_s-d}\\
+        &=\frac{v}{\nicefrac{(v-v_s)}{f_s}}\\
+        &=f_s \cdot \frac{\hspace{0.7in}}{}
+\end{align*}
+\end{ExampleBox}
+
+\subsection{Leaving}
+\begin{ExampleBox}
+Deriving the frequency of the sound from observer B, given that the speed of source is $v_s$, the speed of sound wave is $v$, and the orignal frequency is $f_s$ when the source is stationary.
+\tcblower
+\vspace{1.5in}
+\end{ExampleBox}
+
+\subsection{Summary}
+Combining the two situations, the Formula for the Doppler Effect can be summarised into:
+\begin{SummBox}
+\[
+  f_o = f_s \cdot \frac{v}{v\pm v_s}
+\]
+State, when to use $+$ sign, and when to use $-$ sign.
+\end{SummBox}
+
+\subsection{Understand Relative Speed}
+If the source of a louderspeaker is moving in a circle with a constant speed of $v_s=\SI{20}{\m\per\s}$. The frquency of the louderspeaker is $f_s=\SI{1500}{\hertz}$. State at which point will the observer hear the highest and lowest frquency, and determine what are the frquencies respectively. Given that the sound velocity is \SI{330}{\m\per\s}.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\linewidth]{auxi/relativespeed.jpg}
+\caption{the observe is stationary}
+\end{figure}
+\vspace{2in}
+
+\section{Red Shift of spectrum}
+Doppler Effect is common to any \textbf{waves}, Thus, it is also common to electromagnetic waves or light. Astronomers has proved that the light emitted from other stars has the famous phenomenon of ``red shift'', as shown in the Fig.\ref{fig:comic redshift}:
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\linewidth]{auxi/shfit.png}
+\caption{Doppler Effect with light}
+\label{fig:comic redshift}
+\end{figure}
+But actually, the light would still be a ``white light''. Red shift does not mean that the light you receive become red. After the dispersion and absorption lines will appear, and compare the absorption lines with the white light from Sun, all wavelength tend to move to red region, which means the increase of wavelength, or equivalently, decrease of frequency, as shown in Fig.\ref{spectrum}. 
+
+A \emph{Spectrum}\footnote{def:} is a band of colors, as seen in a rainbow, produced by separation of the components of light by their different degrees of refraction according to wavelength.
+
+\begin{marginfigure}
+\includegraphics[width=5cm]{auxi/redshift.png}
+\caption{the move of abosorption lines in the spectrum shows red shift}
+\label{spectrum}
+\end{marginfigure}
+This means the star is \uline{(leaving/moving towards)} us.
+\end{document}
+

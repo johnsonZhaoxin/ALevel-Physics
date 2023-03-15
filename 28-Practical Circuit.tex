@@ -1,0 +1,251 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+
+
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry} %这个包已经在handout.cls使用过了，如果再调用一次会出问题
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+
+%\usepackage[LGR]{fontenc} %使用希腊字符。
+
+\usepackage{siunitx}
+\DeclareSIUnit\torr{torr} %声明新的单位torr
+
+
+\usepackage{BOONDOX-cal} %为了花体的emf符号
+\usepackage[normalem]{ulem} %下划线
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+\usepackage[version=4]{mhchem}
+
+%定理的运用
+\usepackage[english]{babel}
+\newtheorem{theorem}{Theorem}[section]      %定理
+\newtheorem{corollary}{Corollary}[theorem]  %结论
+\newtheorem{lemma}[theorem]{Lemma}          %引理
+\newtheorem{definition}[theorem]{Definition}%定义
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=g1,
+}
+% Set up the images/graphics package
+\usepackage{graphicx}
+%\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+\usepackage{nicefrac} %比较好看的斜体分号
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$} %因为美元符号的问题。需要手动添加美元\square美元
+
+\usepackage{tikz}
+\usepackage{circuitikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+%\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+%\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+%\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+%\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+%\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+\title{Consideration in Real Circuits}
+\author{Sanjin Zhao}
+\date{2nd Oct, 2022}  % if the \date{} command is left out, the current date will be used
+
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item explain the effects of \emph{internal resistance} on \emph{terminal p.d.} and power output of a source of e.m.f.
+  \item describe experiments to decide the e.m.f. and internal resistance of a source or battery
+  \item explain the use of \emph{potential divider}\footnote{def:} circuits
+  \item solve problems involving the potentiometeras a means of comparing voltage
+\end{todolist}
+\clearpage
+
+\section{Leadin}
+When a battery is short, huge currents will flow from the postive terminal to negative terminal, causing heating of battery. And such accumulation may even lead to explosion. Check the \href{https://www.bilibili.com/video/BV1FK4y1S7NM}{video}. Why we should treat battery so seriously?
+\begin{marginfigure}
+\centering
+\includegraphics[width=3cm]{auxi/shortbattery.png}
+\caption{when a battery is short, chemical energy is transformed into heat immediately}
+\end{marginfigure}
+
+\section{Internal Resistance}
+But how large is the current when the battery is short, could it be infinite ampere flowing in the battery? The answer is obviously \uline{NO!}, because realistic battery have its \textbf{internal resistance}
+
+\subsection{definition}
+The definition of the internal resistance is:
+\begin{SummBox}
+The resistance resistance \uline{inherent in the source itself} 
+\end{SummBox}
+Some energy is transferred into thermal energy as work is done in driving charges through the source itself.
+In order to distinguish the internal resistance with the ``external resistance'', the symbol for internal resistance is $r$. 
+
+\subsection{terminal p.d.}
+With the concept internal resistance, we can explain the phenomenon that when the battery is connected to single component like resistor, lamp or motor as shown in Fig.\ref{fig:pdcircuit}
+\begin{marginfigure}
+\centering
+\includegraphics[width=5cm]{auxi/pdcircuits.pdf}
+\caption{The voltmeter measures the p.d. across the component}
+\label{fig:pdcircuit}
+\end{marginfigure}
+\begin{TaskBox}
+Using Kirchhoff's Second Law, explain why the p.d. is less than the e.m.f. of the battery in Fig.\ref{fig:pdcircuit}.
+\vspace{1in}
+\end{TaskBox}
+Because the existance of internal resistance, the potential difference that can be consumed by the electric components are to be 
+\textbf{less than} the e.m.f. of the battery. Such potential difference can also been measured by connecting the voltmeter to the terminals of the battery, hence, it is called the \emph{terminal p.d. }(voltage)
+
+\subsection{Experiment}
+By adjusting the resistors connected in the circuit, the terminal p.d. and the current in the circuit will change in \uline{\hspace{1.5in}(same/opposite)} direction. 
+\begin{TaskBox}
+Draw a circuit diagram to show the experiment setup.
+\vspace{1in}  
+\end{TaskBox}
+
+Record the terminal p.d. and current respectively in the diagram below:
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\linewidth]{auxi/V-I.pdf}
+\caption{The result graph of determining the $\mathcal{E}$ of a battery}
+\end{figure}
+
+According to the Kirchhoff's second law:
+\[
+  \mathcal{E} = I\cdot r + V
+\]
+
+by rearranging the formula, making $V$  as $y$ and $I$ as $x$, you will arrive at:
+\begin{SummBox}
+\begin{align*}
+    V  &= -r\cdot \boxed{\phantom{I}} + \boxed{\phantom{\mathcal{E}}}\\
+    y  &= k\cdot x+b
+\end{align*}
+\end{SummBox} 
+
+\begin{TaskBox}
+According to the relationship between terminal voltage and current, state what does $y$-intercept and the gradient represent.
+\vspace{0.5in}
+\end{TaskBox}
+
+Here are some 
+\begin{SummBox}
+\begin{itemize}
+  \item terminal p.d. depends on the external resistance
+  \item the maximum currents occurs when the battery is short
+  \item the intercept is \uline{\hspace{0.8 in}} of the battery
+  \item the graident of $V$-$I$ function is the \uline{\hspace{1 in}} of the battery
+\end{itemize}
+\end{SummBox}
+
+\section{Potential Divider}
+The Fig.\ref{fig:potentialdivider} shows a potential divider circuits which can provide continous voltage output by connecting in parallel. 
+\begin{marginfigure}
+\includegraphics[width=5cm]{auxi/divider.png}
+\caption{a potential divider}
+\label{fig:potentialdivider}
+\end{marginfigure}
+\begin{TaskBox}
+Find the expression of the output voltage $V_{\text{out}}$ in terms of $V_{\text{in}}, R_1, R_2$
+\vspace{0.3 in}
+\end{TaskBox}
+
+\section{Sensors}
+According to KVL $\mathcal{E}=Ir+IR$, by measuring the current(or voltage), the external resistance can be calculated, and if some other factors, like the temperature, pressure, light, etc., may change the external resistance then the factor may be inferred from the resistance. Such device can be called \emph{sensors} or \emph{transducer}\footnote{def:}.
+
+\subsection{LDR as sensor}
+The resistance of LDR will vary with the change of light intensity, the circuit diagram and the variation of resistance with light are shown below:
+\begin{figure}[h]
+\includegraphics[width=0.45\linewidth]{auxi/LDRcircuit.jpg}
+\includegraphics[width=0.45\linewidth]{auxi/LDR_graph.jpg}
+\end{figure}
+
+\subsection{Thermistor as sensor}
+The resistance of NTC will vary with the change of temperature
+\begin{marginfigure}[-2cm]
+\includegraphics[width=5cm]{auxi/Themistor_graph.jpg}
+\caption{The variation of resistance of NTC thermistor with temperature}
+\end{marginfigure}
+
+\section{Potentiometer}
+Potentiometer applies generally same ciruit and rationale as the potential divider, the purpose of such device is to measure the unkown e.m.f. of a cell or battery with a driver cell with known e.m.f.
+\begin{marginfigure}
+\centering
+\includegraphics[width=5cm]{auxi/potentiometer.jpg}
+\caption{a potentiometer circuit setup}
+\end{marginfigure}
+
+\begin{SummBox}
+To find the e.m.f. of cell X, the reading of the galvanometer should be zero, such method is called \emph{null method}
+State what condition should be satisfied when the galvanometer has a reading of \SI{0}{\micro\ampere}.
+\vspace{0.5in}
+\end{SummBox}
+\end{document}
+

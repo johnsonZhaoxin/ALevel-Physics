@@ -1,0 +1,228 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry}
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+\usepackage{siunitx}
+\usepackage[normalem]{ulem}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+
+%定理的运用
+\usepackage[english]{babel}
+\newtheorem{theorem}{Theorem}[section]      %定理
+\newtheorem{corollary}{Corollary}[theorem]  %结论
+\newtheorem{lemma}[theorem]{Lemma}          %引理
+\newtheorem{definition}[theorem]{Definition}%定义
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=green,
+}
+% Set up the images/graphics package
+\usepackage{graphicx}
+\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+
+\title{Forces}
+\author{Sanjin Zhao}
+\date{12th Sep, 2022}  % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+\usepackage{nicefrac} %比较好看的斜体分号
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$} %因为美元符号的问题。需要手动添加美元\square美元
+
+\usepackage{tikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+%\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+%\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+%\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+%\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+%\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item State Newton's First Law of Motion, and explain related phenomena
+  \item State Newton's Second Law of Motion, grasp the relationship between mass, acceleration and resultant force
+  \item State Newton's Third Law of Motion, and distinguish pairs of action force and reaction force
+  \item Using $F=ma$ to solve kinematics problems
+  \item Solving problems by resolving forces and utilize common models.
+\end{todolist}
+\clearpage
+
+\section{Leadin}
+After the full study of kinematics, and basis concept of forces, \href{https://en.wikipedia.org/wiki/Isaac_Newton}{Sir Issac Newton}has set up the rule for the fundation of \emph{dynamics}, which has in turn elevated him to the summit of physics world.
+\begin{marginfigure}
+\centering
+\includegraphics[width=3cm]{Portrait_of_Sir_Isaac_Newton,_1689.jpg}
+\caption{Sir Issac Newton\\1643-1727}
+\end{marginfigure}
+Do you want to attend the same university/college\footnote{surf the internet} that Newton has acquired his bachelor? Actually, Newton does not major in physics at that time, it is called \emph{natural philosophy}.
+
+\section{NFL}
+Newton's First Law of motion is sometimes also refered to as the law of inertia. It states:
+\begin{definition}
+An object will remain at rest or in a state of uniform motion unless it is acted on by an external force.
+\end{definition}
+This is the first time that kinematics has been given a clear definition. NFL is a qualitative law but it's a huge step in the method of studying mechanics.
+
+\begin{SummBox}
+If the resultant force acting on an object is \textbf{zero}, then the object must be at rest or in uniform motion. We call this state \emph{Equilibrium}.
+\end{SummBox}
+
+\section{NSL}
+This is actually the most important law in the set of Newton's Law of Motion, and also a bridge that combines \emph{kinematics} with \emph{dynamics}\footnote{def:}.
+
+\subsection{Resultant Force}
+If several forces acting on the same object, due to the vector nature of forces, we can combine all the force into one single force which will have same motional effect on the object, this force is called \emph{Resutlant Force}. The advantage of using resultant force is quite obvious, so it is the most important technique whenever analysing the forces is required. 
+\begin{marginfigure}
+  \includegraphics[width=5cm]{Resusltant.jpg}
+\end{marginfigure}
+
+\subsection{Free-body Diagram}
+In order to learn physics better, you have to develop ability to draw various kinds of figures and graphs. For example, sketch the path of motion, the $v$-$t$ graph. Now a third type of graph is introduced - \emph{Free Body Diagram}. Such graphs can show all the forces acting on the object. 
+\begin{figure}[ht]
+\includegraphics{FBDboat.jpg}
+\caption{This is the FBD of a boat}
+\end{figure}
+
+\subsection{NSL}
+After all this preparation work, the Newton's Second Law of motion is finally presented to you:
+\begin{definition}
+For a body of constant mass, its acceleration is directly proportional to the resultant force applied to it.
+\end{definition}
+This law links the acceleration of an object and the resultant force acting on the object, thus making it a bridge to connect two topics. And this relationship can be written as:
+\[
+  a \propto F
+\]
+However, that's not the end of story, after carefully investigation, the measure of inertia would be a key factor when deciding the value of acceleration. And Newton found that, the mass is \textbf{inversely proportional} to the mass\footnote{or it is directly proportional to the reciprocal of mass}. Expressed in mathmematic language, it is 
+\[
+  a \propto \nicefrac{1}{m}
+\]
+
+Finally, the complete quantitative NSL can be written in the form of
+\begin{align}
+  F &= ma\\
+  a &=\nicefrac{F}{m}
+\end{align}
+Either form is correct. But one thing to mention is that because both acceleration and force are vectors, thus  this formula also implied that, the direction of acceleration is the same as the resultant force.
+
+\section{NTL}
+Netwon's Third Law is the last law, it is about interacting objects It states:
+\begin{definition}
+When two bodies interact, the forces they exert on each other are equal and opposite.
+\end{definition}
+Unlike the first and second law, Newton's Third Law does not focus on single object but on the interacting objects.
+\begin{figure}
+\includegraphics[width=0.9\linewidth]{forcepairs.jpg}
+\caption{Weight and Normal Contact Force are not `pairs of action and reaction force'}
+\label{fig:forcepairs}
+\end{figure}
+The two forces that make up a `Newton’s third law pair' have the following characteristics:
+\begin{itemize}
+  \item They act on \textbf{different} objects
+  \item They are \textbf{equal} in magnitude
+  \item They are \textbf{opposite} in direction
+  \item They are forces of the same type.\footnote{this is not hard to understand, but easy to dismiss}
+\end{itemize}
+
+\begin{TaskBox}
+In figure \ref{fig:forcepairs}, point out which two forces are a pair.
+\end{TaskBox}
+
+\section{Common Models}
+In this section, we are going to apply newton's law of motion to determine the dynamics or kinematics of objects.
+
+\subsection{Process of Anaylsing Forces}
+Usually, there exist a standard process when analyse the states of forces on the object.
+\begin{enumerate}
+  \item Any object with mass and is placed on Earth (or other celestial bodies) will subject to the gravity or weight, the formula is $W=\uline{\hspace{1 in}}$. Direction of weight is \uline{\hspace{2 in}}
+  \item Determine, whether the object is in \emph{contact} with other objects, if so \uline{\hspace{0.3 in}} contact forces may exist, the direction of such forces is always \uline{\hspace{2 in}}.
+  \item Check whether the object is partially or fully immersed in fluids, if so, upthrust\footnote{sometimes bouyance is used} should be considered. The formula for upthrust is 
+      \[F=\rho \uline{\hspace{0.3in}} \cdot  \uline{\hspace{0.3in}}\]
+  \item If resistance or friction can not be ignored, and the object has a tendency to move, or just in the state of moving, \emph{frcition, drag, resistance} should be taken into account.
+  \item If spring or rope is mentioned, \emph{Tension} might be considered. The direction of tension is alway \uline{\hspace{2in}}
+  \item Check any other clear articulation about pull or push from other objects like human hand or engine.
+\end{enumerate}
+
+\subsection{Incline Model}
+This model involves an object placed on an sloped incline, which makes an angle of $\theta$ with the horizontal. As shown in the following figure
+\begin{figure}[h]
+\includegraphics[width=0.6\linewidth]{inclinemodel.pdf}
+\caption{an incline with an object and its forces}
+\end{figure}
+
+\begin{TaskBox}
+State what forces are acting on the object, and their origins.
+\tcblower
+Resolve the Weight $W$ into the direction parallel to the plane and the direction perpendicular to the plane. State quantitatively the magnitude relationship between $R$ and $F$.
+\end{TaskBox}
+\end{document}

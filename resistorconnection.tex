@@ -1,0 +1,22 @@
+\documentclass[11pt,tikz,border=3.14mm]{standalone}
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+\usepackage{mathptmx}
+\usepackage{BOONDOX-cal} %使用花体emf
+\newcommand\EMF{\mathcal{E}} %\varepsilon}
+\usepackage[outline]{contour} % glow around text
+\contourlength{1.5pt}
+
+\usepackage[european]{circuitikz}
+
+\begin{document}
+\begin{tikzpicture}
+  \draw (0,0) to [R,color=b1](0,3);
+\end{tikzpicture}
+
+\end{document}

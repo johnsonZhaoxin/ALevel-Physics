@@ -1,0 +1,268 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry}
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+
+\usepackage{siunitx}
+\usepackage[normalem]{ulem}
+\usepackage{wrapfig}
+\usepackage{caption}
+
+
+
+
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=green,
+}
+
+
+
+% Set up the images/graphics package
+\usepackage{graphicx}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+%\graphicspath{{graphics/}}
+
+\title{Preparations for A-Level Physics}
+\author{Sanjin Zhao}
+\date{1th Sep 2022}  % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+
+% 国际制单位，使用有点问题好像
+\usepackage{siunitx}
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+
+\usepackage{tikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+
+\begin{document}
+
+\maketitle% this prints the handout title, author, and date
+
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the leanring objectives.
+
+\begin{todolist}
+	\item Understand the difference between \emph{scalar and vector} quantities\footnote{def:}
+	\item \textbf{Add} and \textbf{subtract} coplanar vectors
+	\item Represent a vector as \textbf{two perpendicular components}
+	\item Using coordinate expression to calculate the scalar product
+\end{todolist}
+\clearpage
+
+\section{Scalar and Vector}
+For physic quantities, an important properties of which is the vector nature or scalar nature.\footnote{Despite work and torque shares same dimension, they are completely different two physical quantities due to their natures}. 
+
+To distinguish whether a quantities is vector or scalar, the most important way is evaluating whether you need to specify the \uline{\hspace{1 in}}.
+
+\begin{TaskBox}
+Determine whether the following common physical quantities are vectors or scalars
+\begin{itemize}
+	\item velocity
+	\item speed
+	\item acceleration
+	\item time
+	\item current \footnote{this is tricky}
+	\item magnetic field
+	\item distance travelled
+\end{itemize}
+\end{TaskBox}
+
+\section{Operation Rules}
+Vectors can be added or subtracted, it must follows some specified laws or rules. there are basically two rules.
+\subsection{Triangle Rules}
+The first principles is \textbf{Triangle Rule}, which states the following steps:\\
+\uline{\hspace{3.5 in}}
+
+You can demonstrate triangle rule using figure \ref{fig:triangle}.
+\begin{marginfigure}
+	\includegraphics{trianglerule.png}
+	\caption{triangle rules addition}
+	\label{fig:triangle}
+\end{marginfigure}
+
+\subsection*{Parallelogram Rule}
+Second way to add vectors are \textbf{Parallelogram Rule}, which states the following steps:\\
+\uline{\hspace{3.5 in}}
+
+You can demonstrate parallelogram rule using figure \ref{fig:parallelogram}.
+\begin{marginfigure}
+	\includegraphics{parallelogram.png}
+	\caption{parallelogram rules addition}
+	\label{fig:parallelogram}
+\end{marginfigure}
+
+\begin{SummBox}
+Triangle Rules and Parallogram Rules will always leads to the same resultant vectors, but what are the differences between them?
+\end{SummBox}
+
+\subsection*{Substraction}
+The first step to carry out the substraction of vectors is to understand the opposite vector.
+if $\vec{b}$ is a vector shown below, try to label $-\vec{b}$ starting from the same origin.\\
+\vspace{1in}
+\begin{figure}
+\centering
+\begin{tikzpicture}
+	\draw [-latex,thick,r1] (-2.5,0.375) -- (-1.5,0.993) node[midway, sloped, above]{$\vec{b}$};
+	\draw [-latex,thick,b1] (-2.5,0.375) -- (-2,0) node[midway,sloped, above]{$\vec{a}$};
+\end{tikzpicture}
+\caption{Two vectors starting from same point}
+\label{fig:two vectors}
+\end{figure}
+\vspace{1in}
+
+If you can undertand the equivalence between negative vector and opposite vector. then the subtraction $\vec{a}-\vec{b}$ can be effectively changed into:
+\begin{equation*}
+	\vec{a}-\vec{b} = \vec{a}+ (-\vec{b})
+\end{equation*}
+Then, the subtraction is easily changed into addition.
+\begin{TaskBox}
+	Show the resultant of $\vec{a}-\vec{b}$ in the figure \ref{fig:two vectors}.
+\end{TaskBox}
+
+\subsection*{Numerical Multiplication}
+What does $3 \vec{a}$ means in terms of $\vec{a}$. if a vector is multiplied by a scalar(magnitude), the resultant has the same direction as the vector, but the magntidue is a multiple of the origin one.
+\begin{equation}
+	|n \cdot \vec{a}| = n |\vec{a}| \footnote{$|\vec{a}|$ means the magnitude of vector $\vec{a}$}
+\end{equation}
+
+\begin{TaskBox}
+	Show the resultant of $3\vec{a}$,$2\vec{b}$ and $3\vec{a}+2\vec{b}$ in the previous diagram.
+\end{TaskBox}
+
+\subsection*{Scalar Product}
+A vector can be multiplied by another vector, but the resultant would be quite differnt based on the way it is multiplied. There are two ways: \emph{scalar product} \footnote{sometimes it is also referred to as dot product} and \emph{vector product}. And scalar product is discussed in this subsidary section. Usually the scalar product is connected by a $\cdot$, just like the following:
+\[
+	\vec{a} \cdot \vec{b}
+\]
+
+Because the final product would be a scalar, that's why such multiplication is called scalar product. The rules of scalar multiplication is defined as following:
+\begin{equation}
+	\vec{a} \cdot \vec{b} = |\vec{a}|\times |\vec{b}|\times \cos (\theta_{<\vec{a},\vec{b}>})
+\end{equation}
+This is key to understanding \textbf{work done by a force}
+\begin{figure}
+\includegraphics{workdone.png}
+\caption{work done by a constant force}
+\end{figure}
+And we will discuss about the scalar product in another way.
+
+\subsection*{Vector Product}
+In mathematics world. $\cdot$ and $\times$ are equivalent operations for numbers, but this is completely different for vectors. If $\vec{a} \times \vec{b}$ that means vector product\footnote{sometimes it is also referred to as cross multiplication} of the two vectors. And the result is completely different. 
+The first thing to notice is that, the result would be a \textbf{vector}, which means apart from the magnitude, you shall also descibe the direction, which is to be determined by the \textbf{Right Hand Rule} \footnote{state the rule here:}. The magnitude is calcualated by the following:
+\begin{equation}
+	|\vec{a} \times \vec{b}| = |\vec{a}| \cdot |\vec{b}| \cdot \sin (\theta_{<\vec{a},\vec{b}>})
+\end{equation}
+
+\begin{marginfigure}
+\includegraphics{crossproduct.png}
+\caption{cross product of two vectors}
+\end{marginfigure}
+
+\begin{marginfigure}
+\includegraphics{righthandrule.png}
+\caption{right hand rule}
+\end{marginfigure}
+
+\section{Decomposition of vectors}
+The ultimate way to study vectors is using \textbf{coordinate geometry}. Setting up a coordinate system, stating two \textbf{unit vectors}\footnote{def:}, $\vec{i}$ for positve $x$ direction and $\vec{j}$ for positve $y$ direction. Then any vectors in that coordinate plane can be expressed by the \textbf{linear combination} of $\vec{i}$ and $\vec{j}$. The graph shows the principle behind it.
+\begin{marginfigure}
+\includegraphics{decomposition.png}
+\caption{decomposition of vectors}
+\end{marginfigure}
+
+As seen in the picture, the vector $\vec{a}$ can be viewed as the sum of two \textbf{components}\footnote{def: in Chinese} $\vec{a_x}$ and $\vec{a_y}$ using triangle rule. If you treat $a_x$ and $a_y$ as magnitude, then the vector is decomposed into:
+\[
+	\vec{a}= a_x \vec{i} + a_y \vec{j}
+\]
+\begin{SummBox}
+How to find the value of $a_x$ and $a_y$ given the magnitude of $\vec{a}$ and the angle $\theta$ that $\vec{a}$ makes with the horizontal axis?\\
+How to determine the magnitude of $\vec{a}$ and direction vise and versa?
+\end{SummBox}
+
+Thus a much more simplied notation of vector if the underlying coordinates has already been setup. it is denoted as:
+\[
+	\vec{a}=\irow{a_x}{a_y} \quad  \text{or} \quad  \vec{a}= \icol{a_x\\a_y}
+\]
+
+\section*{Multiplication Using Coordinates}
+With the aid of coordinate system, one way to determine the scalar product is quite easy and simple in math. You will never be bothered to measure the magnitude and the angle. Before reaching the conclusion, determine the following scalar product:
+\begin{align*}
+\vec{i}\cdot\vec{i} &=|\vec{i}|\cdot|\vec{i}|\cos{0\si{\degree}} =1 \\
+\vec{i}\cdot\vec{j} &=|\vec{i}|\cdot|\vec{j}|\cos{\square \si{\degree}} = \uline{\hspace{0.5 in}} \\
+\vec{j}\cdot\vec{j} &=|\vec{i}|\cdot|\vec{j}|\cos{\square \si{\degree}} =\uline{\hspace{0.5 in}} \\
+\vec{j}\cdot\vec{i} &=|\vec{i}|\cdot|\vec{j}|\cos{\square \si{\degree}} =\uline{\hspace{0.5 in}}
+\end{align*}
+
+so what happens when two vectors are being dot multiplied. Try to expand the following dot product
+\begin{equation}
+	(\irow{a_x}{a_y})\cdot (\irow{b_x}{b_y})= 	
+\end{equation}
+
+\end{document}

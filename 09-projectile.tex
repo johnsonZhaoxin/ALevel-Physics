@@ -1,0 +1,267 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry}
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+\usepackage{siunitx}
+\usepackage[normalem]{ulem}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=green,
+}
+% Set up the images/graphics package
+\usepackage{graphicx}
+\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+
+\title{Projectile Motion}
+\author{Sanjin Zhao}
+\date{5th Sep, 2022}  % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+\usepackage{nicefrac} %比较好看的斜体分号
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$} %因为美元符号的问题。需要手动添加美元\square美元
+
+\usepackage{tikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+%\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+%\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+%\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+%\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+%\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item Recognize the kinematic characteristics of \emph{horizontal projectile motion} or \emph{projectile motion} 
+  \item Grasp the way to decompose vectors and analyze the \emph{Two Dimensional Motion}
+  \item Using equation of free fall to solve problems related to horizontal projectile motion or projectile motion
+\end{todolist}
+\clearpage
+
+\section{Leadin}
+Life is so hard, how could every motion in the real world always be straight or linear? The investigate should be furthered, at least into two dimensional or \emph{planar motion}.
+\begin{marginfigure}
+\includegraphics[width=5cm]{Projectile-Motion.jpeg}
+\caption{The multiflash photo of a motor racer}
+\label{fig:motorcycle}
+\end{marginfigure}
+
+\section{Horizontal Projectile}
+One of the most frequently studied two dimensional motion is \emph{projectile}\footnote{def:}, in which the object has an initial \textbf{velocity} and is subject only to \textbf{gravity}. The moving path is shown below:
+\begin{figure}[h]
+\includegraphics{horiproj.pdf}
+\caption{The path of an object's \emph{horizontal projectile motion}}
+\label{fig:parabola}
+\end{figure}
+
+You can click on this \href{https://phet.colorado.edu/sims/html/projectile-motion/latest/projectile-motion_en.html}{Phet} simulation to understand projectile better. 
+
+\subsection{Decompose vectors}
+Recall that the displacement and vectors are vectors. Which means it can be viewed as a combination of two perpendicular components.
+\begin{TaskBox}
+In figure \ref{fig:parabola}, label the displacement of the final position, and decompose it into horizontal displacement $\vec{x}$ and vertical displacement$\vec{y}$
+\end{TaskBox}
+
+Just as the displacement, the velocity at any position can be decomposed into horizontal and vertical components $\vec{v_x}$ and $v_y$. In figure \ref{fig:parabola}. The blue arrow represent the \uline{\hspace{0.5 in}} and the green arrow represent the \uline{\hspace{0.5 in}}. The black arrow is the resultant instantaneous and the true velocity of such motion. 
+\begin{TaskBox}
+\includegraphics[width=0.5\linewidth]{vector.pdf}\\
+Try to decompose the velocity vector above, and using trigonometrical ratio to express the magnitude of horizontal and vertical component.
+\vspace{0.5\in}
+\end{TaskBox}
+
+\subsection{Final Conclusion}
+Check the \href{https://phet.colorado.edu/sims/html/projectile-motion/latest/projectile-motion_en.html}{Phet} simulation, and turn on the components visualizaiton? What do you find?
+\begin{SummBox}
+The horizontal velocity \uline{\hspace{2in}}\\
+The vertical velocity \uline{\hfill}.\\
+Thus:\\
+If viewed only in the vertical direction, the object experiencing horizontal projectile will be exactly the same as another object which experience free fall.
+If viewed only in the horizontal direction, the horizontal projectile motion will experience uniform motion
+\end{SummBox}
+
+Check this \href{https://www.bilibili.com/video/BV1Bz4y167as/}{video} to validate our conclusions.
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.9\linewidth]{comparison.png}
+\caption{Two balls will have exactly same \emph{veritcal displacement}}
+\end{figure}
+
+\subsection{Quantitative Equations}
+Horizontal Projectile Motion will be better investigated through the view of decomposition and component. Again, acceleration, velocity, and displacement will be studied.
+
+\textbf{Acceleraiton in HP}\\
+The horizontal acceleration is \SI{0}{\m\per\square\s}. or we'll say the horizontal motion is uniform motion
+The vertical acceleration is \SI{9.81}{\m\per\square\s}, that's why the two balls will have same motion states. Because they are both subject to the \textbf{WEIGHT}
+
+\textbf{Velocity in HP}\\
+If the initial velocity is $v$ then, the horizontal component is always:
+\begin{equation}
+  v_x = v
+\end{equation}
+While, the vertical can be analyzed as a free fall motion, the vertical component can be calculated as \footnote{assuming downward is positive direction}:
+\begin{equation}
+  v_y = 0+gt =gt
+\end{equation}
+
+If the total velcoity are required, using the vector addtion rule, but don't forget to specify the direction, which is proxied by the angle relative to the horizontal. The formula is:
+\begin{align}
+  v = \sqrt{v_x^2+v_y^2} &= \sqrt{v^2+(gt)^2}\\
+  \theta &= \arctan\left({\frac{v_y}{v_x}}\right)
+\end{align}
+
+\textbf{Displacement in HP}\\
+Again, calculating the components will be much simpler. The horizontal displacement is:
+\begin{equation}
+  x = v_x \cdot t  = vt
+\end{equation}
+The vertical displacement is:
+\begin{equation}
+  y = \nicefrac{1}{2} \cdot gt^2
+\end{equation}
+\begin{marginfigure}
+\includegraphics{canon.pdf}
+\caption{a canon being fired from a cliff}
+\label{fig:canon ball}
+\end{marginfigure}
+
+If the total displacement\footnote{The path is a curve, thus the distance travelled is a little bit complicated. But with the invention of Calculus, it has become nothing but a mathematical computation problem. If you are interested in this, please contact me} are required, using the vector addition rule, but don't forget to specify the direction, which is proxied by the angle relative to the horizontal. The formula is:
+\begin{align}
+  s = \sqrt{x^2+y^2} &= \sqrt{(vt)^2+(\nicefrac{1}{2}gt^2)^2}\\
+  \alpha &= \arctan\left({\frac{y}{x}}\right)
+\end{align}
+
+%visit \href{http://calculuscourse.maa.org/sample/Chapter8/Projects/Length%20of%20a%20curve/length1.html}{Lenght of Curve}
+With this, you are ready to solve anything in horizontal projectiles. Let's check one example.
+\begin{ExampleBox}
+A canon in figure \ref{fig:canon ball} from the top of a cliff, which is \SI{176.58}{\m} high, fires a projectile horizontally with an initial velocity of \SI{75}{\m\per\s}. Find: 
+a) The time for which the canon travelled before hitting the ground\\
+b) The Horizontal distance travelled.
+\tcblower
+a) $y=\nicefrac{1}{2} gt^2$, $t=\sqrt{\nicefrac{2h}{g}}=\sqrt{\nicefrac{2\times 176.58}{9.81}}= \SI{6}{\s}$\\
+b) $x= vt = 75\times 6 =\SI{450}{\m}$
+\end{ExampleBox}
+
+\section{Projectile}
+Think about the figure \ref{fig:motorcycle}, the racer and his motor are actually launching with an initial velocity which is \textbf{NOT} horizontal. That seems make things a little bit confusing. But what's important here is to apply the process being utlized to another similar motion process.
+
+\subsection{Decompose the Initial Velocity}
+Suppose the racer has an initial velocity of $u$, and it makes an angle of $\theta$ with horizontal. Such initial velocity can be decomposed into two components.
+\begin{align}
+  u_x &= u\cdot \cos\theta\\
+  u_y &= u\cdot \sin\theta
+\end{align}
+
+\subsection{Analyze the Process}
+In the horizontal direction, the racer will still move in uniform motion with a velocity of $u_x$.
+
+In the vertical direction, the racer will resemble a thrown up motion, which decelerates to maximum height, and then accelerates downward. The initial vertical velocity is $u_y$. the acceleration\footnote{Why using negative sign here? What is the difference with horizontal projectile} is $-g$.
+
+\subsection{Quantitative Equations}
+\textbf{Acceleraiton in Projectile}\\
+The horizontal acceleration is \SI{0}{\m\per\square\s}. or we'll say the horizontal motion is uniform motion
+The vertical acceleration is \SI{-9.81}{\m\per\square\s}
+
+\textbf{Velocity in HP}\\
+If the initial velocity is $u$, the angle it makes with the horizontal is $\theta$ then, the horizontal component is \textbf{always}:
+\begin{equation}
+  v_x = u_x = u\cos\theta
+\end{equation}
+While, the vertical can be analyzed as a thrown up motion, the vertical component can be calculated as \footnote{assuming upward is postive direction}:
+\begin{equation}
+  v_y = u_y+(-g)t = u\sin\theta - gt
+\end{equation}
+
+If the total velcoity are required, using the vector addtion rule, but don't forget to specify the direction, which is proxied by the angle relative to the horizontal. The formula is:
+\begin{align}
+  v &= \sqrt{v_x^2+v_y^2} = \sqrt{(u\cos\theta)^2+(u\sin\theta - gt)^2}\\
+  \theta &= \arctan\left({\frac{v_y}{v_x}}\right)
+\end{align}
+
+\textbf{Displacement in HP}\\
+Again, calculating the components will be much simpler. The horizontal displacement is:
+\begin{equation}
+  x = v_x \cdot t  = (u\cos\theta) \cdot t
+\end{equation}
+The vertical displacement is:
+\begin{equation}
+  y = u_yt+\nicefrac{1}{2}\cdot(-g)t^2 = (u\sin\theta)-\nicefrac{1}{2}\cdot gt^2
+\end{equation}
+
+The \emph{displacement} is calculated as
+\begin{align}
+  s &= \sqrt{x^2+y^2}\\
+  \alpha &= \arctan{\left(\frac{y}{x}\right)}
+\end{align}
+
+\end{document}

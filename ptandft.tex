@@ -1,0 +1,36 @@
+\documentclass[11pt,tikz,border=3.14mm]{standalone}
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+\usepackage{mathptmx}
+
+
+\begin{document}
+\begin{tikzpicture}
+	\begin{scope}[xshift=-4cm]
+		\draw[<->] (0,3) node[left]{$p$} -- (0,0) -- (4,0) node[below]{$t$};
+		\draw[thick,b1] (0,0) parabola[bend at end] (1.2,1) -- (2.4,1) parabola (3.6,2.7);
+		\draw[dashed] (1.2,0) node[below]{$t_1$} -- (1.2,1) (2.4,0) node[below]{$t_2$} -- (2.4,1);
+	\end{scope}
+	\begin{scope}[xshift=2cm]
+		\draw[<->] (0,3) node[left]{$F$} -- (0,0) -- (4,0) node[below]{$t$};
+		\draw[thick,r1] (0,1.4) -- (1.2,0) -- (2.4,0) -- (3.6,1.4*1.7);
+		\draw[dashed] (1.2,0) node[below]{$t_1$} (2.4,0) node[below]{$t_2$} ;
+	\end{scope}
+	% \begin{minipage}{0.32\textwidth}
+	% 	\centering
+	% 	\begin{tikzpi`cture}
+	% 	\draw[<->] (0,3) node[left]{$a$} -- (0,0) -- (4,0) node[below]{$t$};
+	% 	\draw[thick,red] (0,1.4) -- (1.2,0) -- (2.4,0) -- (3.6,1.4*1.7);
+	% 	\draw[dashed] (1.2,0) node[below]{$t_1$} (2.4,0) node[below]{$t_2$} ;
+	% 	\end{tikzpicture}
+	% \end{minipage}
+\end{tikzpicture}
+\end{document}
+
+
+
+	

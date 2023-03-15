@@ -1,0 +1,32 @@
+\documentclass[11pt,tikz,border=3.14mm]{standalone}
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+\usepackage{circuitikz}
+\usepackage{siunitx}
+\usepackage{BOONDOX-cal}
+
+
+\begin{document}
+  \begin{circuitikz}[european]
+      \draw (0,0)
+      to[battery,v=\SI{12}{\volt}] (0,3) % The voltage source
+      to[short] (2,3)
+      to[R=$R_1$] (2,0) % The resistor
+      to[short] (0,0);
+      
+      \draw (2,3)
+      to[short] (4,3)
+      to[L=$L_1$] (4,0)
+      to[short] (2,0);
+      
+      \draw (4,3)
+      to[short] (6,3)
+      to[C=$C_1$] (6,0)
+      to[short] (4,0);
+  \end{circuitikz}
+\end{document}

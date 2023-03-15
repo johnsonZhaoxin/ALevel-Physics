@@ -1,0 +1,229 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+
+
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry} %这个包已经在handout.cls使用过了，如果再调用一次会出问题
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+
+%\usepackage[LGR]{fontenc} %使用希腊字符。
+
+\usepackage{siunitx}
+\DeclareSIUnit\torr{torr} %声明新的单位torr
+
+
+\usepackage{BOONDOX-cal} %为了花体的emf符号
+\usepackage[normalem]{ulem} %下划线
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+\usepackage[version=4]{mhchem}
+
+%定理的运用
+\usepackage[english]{babel}
+\newtheorem{theorem}{Theorem}[section]      %定理
+\newtheorem{corollary}{Corollary}[theorem]  %结论
+\newtheorem{lemma}[theorem]{Lemma}          %引理
+\newtheorem{definition}[theorem]{Definition}%定义
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=g1,
+}
+% Set up the images/graphics package
+\usepackage{graphicx}
+%\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+\usepackage{nicefrac} %比较好看的斜体分号
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$} %因为美元符号的问题。需要手动添加美元\square美元
+
+\usepackage{tikz}
+\usepackage{circuitikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+%\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+%\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+%\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+%\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+%\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+\title{Series and Parallel}
+\author{Sanjin Zhao}
+\date{2nd Oct, 2022}  % if the \date{} command is left out, the current date will be used
+
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item use Kirchhoff’s laws to derive the formulae for the combined resistance of two or more resistors \emph{in series and in parallel}
+  \item recognise that ammeters are connected in series within a circuit and therefore should have low resistance
+  \item recognise that voltmeters are connected in parallel across a component, or components, and therefore should have high resistance.
+\end{todolist}
+\clearpage
+
+\section{Leadin}
+In mechanics, if two springs with spring constant $k_1$ and $k_2$ are connected in parallel, the equivalent spring constant $k_{eq}=k_1+k_2$. If connected in series, the equivalent spring consant can be determined by this formula:\uline{\hspace{1in}}.
+\begin{marginfigure}
+\includegraphics[width=5cm]{auxi/connectionofspring.jpg}
+\caption{Specify the connection types}
+\end{marginfigure}
+Now we are going to discuss the connection of two resistors.
+
+\section{Series Connection}
+Two resistors are connected in series if one resistor is connected one after another, as shown in the Fig.\ref{fig:series}. 
+\begin{marginfigure}
+\includegraphics[width=5cm]{auxi/seriesconnection.jpg}
+\caption{Two resistors in series}
+\label{fig:series}
+\end{marginfigure}
+The current flows out of $R_1$ and then flows into $R_2$, since there is just one junction between $R_1$ and $R_2$, based on KCL, the conclusion in series circuits are:
+\begin{center}
+currents are equal in all resistors in series
+\end{center}
+
+If one equivalent resistor are used to replace the combination of the two resistors, the requirements should be the following:
+\begin{itemize}
+  \item p.d. across the equivalent resistor should be equal to the \textsc{total} p.d.s of the two
+  \item the current flowing in the equivalent resistor should be equal to that of two resistors.
+\end{itemize}
+
+\begin{ExampleBox}
+According to the requirement and Fig.\ref{fig:series}, deduce the $R_{eq}$ in terms of $R_1$ and $R_2$
+\tcblower
+$V=I\cdot R_1+I\cdot R_2$, and in the equivalent resistor, $V=I\cdot R_{eq}$, thus
+\[
+  R_{eq} =\frac{V}{I}= \frac{I\cdot R_1+I\cdot R_2}{I} = \uline{\hspace{1in}}
+\]
+\end{ExampleBox} 
+
+And this rule can be applied further, if more than two resistors are connected in the circuits\footnote{Three laws are applied in determining this, state which laws they are.}, such process can be repeated. 
+
+\section{Parallel Connection}
+Two resistors are connected in parallel if the wire seems parallel, or they are connected to the same junctions in the circuits, as shown in the Fig.\ref{fig:parallel}. 
+\begin{marginfigure}
+\includegraphics[width=5cm]{auxi/parallelconnection.jpg}
+\caption{Two resistors in parallel}
+\label{fig:parallel}
+\end{marginfigure}
+
+The currents will seprate into two individual ways, one flows into $R_1$,denoting it as $I_1$, and one flows into $R_2$, denoting it as $I_2$. since the two resistors are using common junctions, the potential difference no matter viewed from either resistor.   
+\begin{center}
+p.d.s are equal in all resistors in parallel
+\end{center}
+
+Again, if one equivalent resistor are used to replace the combination of the two resistors, the requirements should be the following:
+\begin{itemize}
+  \item p.d. across the equivalent resistor should be equal to the \textsc{total} p.d.s of the two
+  \item the current flowing in the equivalent resistor should be equal to that of two resistors.
+\end{itemize}
+
+\begin{ExampleBox}
+According to the requirement and Fig.\ref{fig:parallel}, deduce the $R_{eq}$ in terms of $R_1$ and $R_2$
+\tcblower
+$V=I_1\cdot R_1=I_2\cdot R_2$, and in the equivalent resistor, $V=I\cdot R_{eq}$, thus
+\[
+  R_{eq} =\frac{V}{I}= \frac{V}{I_1+I_2} = \uline{\hspace{1in}}
+\]
+\end{ExampleBox} 
+
+
+\begin{SummBox}
+Total(equivalent) resistance in series connection is given by the equation:
+\[
+  R_{eq} = R_1+ R_2 +R_3+\ldots
+\]
+Total(equivalent) resistance in parallel connection is given by the equation:
+\[
+  \frac{1}{R_{eq}} = \frac{1}{R_{1}}+\frac{1}{R_{2}}+\frac{1}{R_{3}}+\ldots
+\]
+\end{SummBox}
+
+\begin{TaskBox}
+Compare that to the connection types of spring, think why similarities exsit. 
+\end{TaskBox}
+
+\section{Summary}
+In a more complex circuits, resistors are connected in various types, the most important thing is the find the \uline{smallest unit of connection}.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\linewidth]{auxi/bonuscircuit.png}
+\caption{a more complicated circuits}
+\end{figure}
+
+\begin{ExampleBox}
+Without using Kirchhoff's Law, Find the total resistance between P and Q.
+\tcblower
+The smallest unit of connection is \uline{\hspace{1in}}, and the equivalent resistance is \SI{3}{\ohm}, then the circuit diagram can be simplified into the following
+\vspace{1in}
+Then, repeat the procedure. 
+\end{ExampleBox}
+
+
+\end{document}

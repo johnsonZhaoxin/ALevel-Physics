@@ -1,0 +1,288 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+
+
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry} %这个包已经在handout.cls使用过了，如果再调用一次会出问题
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+
+%\usepackage[LGR]{fontenc} %使用希腊字符。
+
+\usepackage{siunitx}
+\DeclareSIUnit\torr{torr} %声明新的单位torr
+\usepackage[version=4]{mhchem}
+
+\usepackage{BOONDOX-cal} %为了花体的emf符号
+\usepackage[normalem]{ulem} %下划线
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+
+%定理的运用
+\usepackage[english]{babel}
+\newtheorem{theorem}{Theorem}[section]      %定理
+\newtheorem{corollary}{Corollary}[theorem]  %结论
+\newtheorem{lemma}[theorem]{Lemma}          %引理
+\newtheorem{definition}[theorem]{Definition}%定义
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=g1,
+}
+% Set up the images/graphics package
+\usepackage{graphicx}
+%\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+\usepackage{nicefrac} %比较好看的斜体分号
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$} %因为美元符号的问题。需要手动添加美元\square美元
+
+\usepackage{tikz}
+\usepackage{circuitikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+%\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+%\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+%\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+%\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+%\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+\title{Radiation}
+\author{Sanjin Zhao}
+\date{22th Nov, 2022}  % if the \date{} command is left out, the current date will be used
+
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item understand and interpret the standard notation of nuclide
+  \item understand the unified atomic mass unit
+  \item recall that strong nuclear force exists in nuclei
+  \item understand that some isotopes of elements are not stable and will undergo radioactive decay
+  \item show an understanding of the nature and properties of $\alpha$-, $\beta$- and $\gamma$- decay
+  \item understand that in $\alpha$- and $\beta$- decay, a nuclide will changes into a different nuclide
+  \item write and interpret the nuclear reaction equations
+\end{todolist}
+\clearpage
+
+\section{Leadin}
+Everything starts from the $\alpha-$ particle that Rutherford has used to explore the inner structure. \href{https://www.britannica.com/science/alpha-particle}{$\alpha$ particle} is in essece a helium neclues. How does it come from, what is inside the source that emit $\alpha$ particle. 
+\begin{marginfigure}
+\centering
+\includegraphics[width=5cm]{auxi/alphaparticle.png}
+\caption{$\alpha$ particle is emitted}
+\label{fig:alpha particle}
+\end{marginfigure}
+
+\section{amu}
+As a matter of fact, single atom has quite small mass, let alone the \emph{protons}, \emph{nutrons} and \emph{electrons} which is consist the atoms. 
+
+In order to measure the tiny particles\footnote{definitely not in \si{\kg}}, the \textbf{Unfied Atomic Mass Unit}-amu is adopted.
+\begin{SummBox}
+Define what is amu
+\vspace{0.5in} 
+\end{SummBox}
+
+So the basic principle is that dividing the mass of any atoms by the mass,in \si{\kg}, of amu. Then, you will get the \uline{\hspace{1in}} of the atoms\footnote{It is quite common that the value is not an integer.}.
+
+\begin{table}[h]
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+name    & symbol & mass/\si{\kg} & mass/\si{\amu} \\ \hline
+proton   &        &      &        \\ \hline
+neutron  &        &      &        \\ \hline
+electron &        &      &        \\ \hline
+\end{tabular}
+\end{table}
+
+Here, this is the interesting appears.
+Calculate the total sum of 6 protons and 6 neutrons and 6 electrons, The result is:\uline{\hspace{1in}}. You might find it does not equal to 12, which by definition should be the relative atomic mass of carbon-12. Why is that\footnote{Have you ever got any ideas, if so please write down your guess in the margin}?! If you are interested in that, refer to Einstein's \href{https://www.atomicarchive.com/science/physics/einsteins-equation.html}{mass-energy equation}. 
+
+
+\section{Strong Nuclear Force}
+As previously described, \textcolor{r1}{Strong Nuclear Force} or \textbf{Strong Interaction} acts between the \uline{\hspace{1in}} and \uline{\hspace{1in}}, which can hold nucleus together tightly.
+
+Strong Nuclear Force is one the four \textbf{fundamental forces}. It will only act over short distance (approximately \SIrange{1e-15}{1e-14}{\m})
+
+\subsection{Unstability in larger nuclei}
+Protons are born to be repulsive when they are close to each other, this force is called coloumb force or \textbf{Electromagnetism force}. Neutrons, in such cirumstance, could be used to be an `glue' to seperate the protons and make the nuclei possible.
+
+However, different isotopes will show different stabilities due to the competition between the strong interaction and the electromagnetism replusion\footnote{This is a simple explanation, not quite accurate}. Hence, a lot of isotopes will undergo \textbf{radioactive decay} to transform into a more stable states.
+
+\section{Radioactive Decay}
+In this section, three types of decays is introduced, they are $\alpha$-, $\beta$- and $\gamma$-decay. 
+
+\subsection{Henri Becquerel}
+\href{https://www.britannica.com/biography/Henri-Becquerel}{Henri Becquerel} shared the Nobel Prize with Pierre and Marie Curie for their discovery of radioactivity. For his contribution, his name become lowercased and turned into the unit - `becquerel' which measure the radioactivity of substance. 
+\begin{marginfigure}
+\centering
+\includegraphics[width=3cm]{auxi/becquerel.jpg}
+\caption{Henri Becquerel 1852-1908}
+\end{marginfigure}
+
+\subsection{$\alpha$-decay}
+\begin{marginfigure}
+\includegraphics[width=4cm]{auxi/ionization.jpg}
+\caption{$\alpha$ particle can cause ionization of atoms}
+\end{marginfigure}
+
+A nucleus in \ref{fig:alpha particle} undergoes $\alpha$-decay, and emits $\alpha$-particles. These $\alpha$-particle - in other form, the helium nucleus - will travel in relatively low speed and due to its large mass and size, energy of these particles will cause \textbf{ionization} of neighbouring atoms.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/alphatrack.jpg}
+\caption{the tracks of moving $\alpha$ particles in cloud chamber}
+\end{figure}
+
+\begin{TaskBox}
+An nucleus emitting $\alpha$ particle will lose \uline{\hspace{4em}} protons and \uline{\hspace{4em}} neutrons and \uline{\hspace{4em}} electron(s). And due to the change of number of protons, the original nucleus will turn into a new nucleus of another element.
+\end{TaskBox}
+
+\subsection{$\beta$-decay}
+Two types of $\beta$ particles will form when a nucleus undergo $\beta$-decay. $\beta^+$ and $\beta^-$ particle, which are actually \uline{\hspace{4em}} and \uline{positron} respectively\footnote{you can memorize positron as `posi'tive elec`tron'}. Positron is the \textbf{antimatter} of electron, which is made up of by antipartiples of that which electron include.
+
+In $\beta^-$ decay, the \uline{neutron} in the nucleus will decay into a proton, and hence generating an electron. The electron, aka $\beta^-$ particle will run out of the nucleus. 
+
+\begin{TaskBox}
+Explain the $\beta^+$ decay:
+\vspace{1.5in}
+\end{TaskBox}
+
+\begin{marginfigure}
+\centering
+\includegraphics[height=5cm]{auxi/betatrack.png}
+\caption{the track of $\beta^-$ particle in cloud chamber}
+\end{marginfigure}
+
+One thing to mention is that, in $\beta$ decay, there exist another type of particle are emitted, but such particle barely interacts with matters at all, has little or no rest mass, no charge. It was not until 1956 
+that such particle were discovered. The name for them are \href{https://www.scientificamerican.com/article/what-is-a-neutrino/}{neutrino}, we will discuss this more in particle physics.
+
+
+\subsection{$\gamma$ decay}
+You might noticed that we don't talk about $\gamma$ particles, since the result of $\gamma$ decay is not particle\footnote{wave-particle duality is not breakable} but a $\gamma$ ray.
+
+Therefore, unlike $\alpha$ decay and $\beta$ decay, the nuclues does not change, it is the electron outside will release energy, transforming atoms at excited states to lower states. Those energy is transformed into the energy of $\gamma$ ray.
+
+One thing to mention, usually $\gamma$ radiation can occur in company with $\beta$ radiation.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/betagamma.jpg}
+\end{figure}
+Since it is `factotum' for the energy to be released.
+
+\subsection{Penetrating Ability}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/RadiationPenetration.jpg}
+\end{figure}
+
+Due the quick loss in energy, $\alpha$ particles does not show a strong penetration. Pieces of paper with thickness up to \uline{\hspace{1in}} would be enough to block the particles.
+
+While, since $\beta^-$ and $\beta^+$ particles are small in mass, large in speed. An aluminum foil with thickness \uline{\hspace{1in}} will totally abosorb the radiation. 
+
+For the $\gamma$ ray emitted from $\gamma$ radiation, since it is in the form of EM wave, and moving at the speed of light. To fully prevent the radiation. A \uline{lead} wall with thickness of \uline{\hspace{1in}} would be enough. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/hulk.jpg}
+\caption{Nobody knows gamma ray better than me - Bruce Banner}
+\end{figure}
+Read the story of \href{https://www.marvel.com/characters/hulk-bruce-banner/on-screen/profile}{Bruce Banner} to discover the damage that $\gamma$ ray does to human body.
+
+\section{Equation for Radiation}
+With the standard notation, we can now transform the picture depiction of radiaton to symbol system 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{auxi/Alpha-Decay.png}
+\caption{$alpha$ decay of Uranium-238}
+\label{fig:alpha decay of U238}
+\end{figure}
+
+In Fig.\ref{fig:alpha decay of U238}, the process can be expressed as following:
+\begin{center}
+  $\ce{^{238}_{92}U ->^{234}_{90}Th + ^{4}_{2}\alpha}$
+\end{center}
+or the $^{4}_{2}\alpha$ can be interchangeable as $\ce{^{4}_{2}He}$.
+
+This equation shows what happens for the $\ce{^{238}_{92}U}$ nucleus, which is called the parent nucleus, and the $\ce{^{234}_{90}Th}$ is called the daughter nucleus.
+
+\begin{TaskBox}
+what is the relationship between the nucleon number and the atomic number of the parent and daughter nuclei?
+\vspace{0.5in}
+\end{TaskBox}
+
+The equation for three types of radiation are summarised below:
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{auxi/radiationsummary.jpg}
+\caption{The reactant and product of radiation}
+\label{fig:summ}
+\end{figure}
+
+In Fig.\ref{fig:summ}, $\beta^+$ decay is not shown, please finish it. 
+\end{document}

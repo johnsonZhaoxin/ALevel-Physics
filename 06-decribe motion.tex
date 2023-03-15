@@ -1,0 +1,333 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry}
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+\usepackage{siunitx}
+\usepackage[normalem]{ulem}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+
+
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=green,
+}
+
+
+
+% Set up the images/graphics package
+\usepackage{graphicx}
+\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+%\graphicspath{{graphics/}}
+
+\title{Describe Motion}
+\author{Sanjin Zhao}
+\date{5th Sep 2022}  % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+
+% 国际制单位，使用有点问题好像
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+
+\usepackage{tikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+	\item Define and use \emph{distance}, \emph{displacement}, \emph{speed}, \emph{velocity} and \emph{acceleration}.
+  \item Describe labratory methods for determining the speed of of an object
+  \item Use graphical methods to represent motional quantities, such as $d-t$ graph or $v-t$ graph
+  % \item Determine displacement from the \textbf{area} under a \emph{velocity–time graph}.
+  % \item Determine velocity using the \textbf{gradient} of a \emph{displacement–time graph}.
+  % \item Determine acceleration using the \textbf{gradient} of a \emph{velocity–time graph}.
+\end{todolist}
+\clearpage
+
+\section*{Leadin}
+The first and easiest subject to study in physics is the kinematics, And the quantitative way to investigate on this topic is?
+
+\section{Several Quantities}
+In the learning objective, the quantities has been discussed. They are:
+\begin{enumerate}
+  \item distance:\uline{\hfill}
+  \item displacement:\uline{\hfill}
+  \item speed:\uline{\hfill}
+  \item velocity:\uline{\hfill}
+  \item acceleration:\uline{\hfill}
+\end{enumerate}
+\subsection{Distance vs Displacement}
+Distance of a motion is the total length of the path, it is a scalar quantity, you have no need to specify the direction and usually unable to specify due to the fact that motion in real life cannot keep single direction due to the whole period.
+
+Displacement is, on the contrary, an vector in nature, it relates only the start of motion and the final position of the motion. connected by an artificial arrow to represent the displacement.
+
+\subsection{Vector nature of displacement}
+Because displacement is defined as the vector, thus displacement can be added using vector operation rules. For example,
+\begin{figure*}
+\includegraphics[width=22 in]{movingpath.pdf}
+\end{figure*}
+The pictures shows the difference between distance and displacement. Can you list some?
+
+
+\subsection{linear motion}
+Think, which type of motion can be called \emph{linear} motion\footnote{def:}. What is the characteristic of the displacement?
+
+\subsection{$d-t$ graph}
+$d-t$ graph is a good utilization of coordinate system, if an object experience linear motion, the time and corresponding displacement can be recorded, and thus the graph can convey all the information about any single time and displacement it travels.
+
+Play the \href{https://phet.colorado.edu/en/simulations/legacy/moving-man/:simulation}{moving man} or \href{https://teacher.desmos.com}{moving turtle} simulation and draw the $d-t$ graph.
+
+\subsection{Speed vs Velocity}
+Those two quantities can be used to describe how fast an object is moving, but they are derived from different quantities.
+For speed:
+\[
+  \text{speed} = \frac{\hspace{2in}}{}
+\]
+For velocity:
+\[
+  \text{velocity} = \frac{\hspace{2in}}{}
+\]
+The SI unit for speed and velocity is \uline{\hspace{0.2 in}}. However, several other units can be used as well, such as the knot, mph, mach, etc. 
+
+Thus \uline{\hspace{0.5 in}} are born with vector nature, while the other is not.
+
+\begin{marginfigure}
+\includegraphics[width=5cm]{speedometerinplane.jpg}
+\caption{which one is show speed?}
+\end{marginfigure}
+
+\begin{TaskBox}
+If Sanjin Zhao can run one cycle of the running track in BSWFL within \SI{108}{\s}. What is the velocity and speed respectively? One Cycle of the track is \SI{300}{\m}.
+\end{TaskBox}
+
+\subsection{Instantaneous or Average?}
+Since you haven't started with your calculus journey, we will not talk more about the complicated limit definition of speed or velocity. However, one thing to remember is that in a more realistic moddel, an object may not maintain same velocity for the whole time. Just think about the speedometer in the car.
+The important thing comes, what does the following equation 
+\begin{equation*}
+  \text{speed} = \frac{\text{total distance}}{\text{moving time}} \qquad  \text{velocity} = \frac{\text{total displacement}}{\text{moving time}}
+\end{equation*}
+mean in the this formula?
+
+What if we want to discuss the \textbf{INSTANTANEOUS}\footnote{def:} speed or velocity at the start or the end or even any time during the moving process? That's where calculus from Sir Isaac Newton came up with.
+\begin{TaskBox}
+Search the internet to find the limit definition of velocity and speed. Try to understand. 
+\vspace{0.4 in}
+\end{TaskBox}
+
+\subsection{Acceleration}
+Acceleration has always been one of the car's hype points. Espeically with the help of electric motor, an economic vehicle might match a super sport car. 
+\begin{marginfigure}
+\includegraphics[width=5cm]{carsacceleration.png}
+\caption{Acceleration of two Cars}
+\end{marginfigure}
+But in the figure, the physical quantity is not specified, instead of saying acceleration, the manufacturer use the time. The real definition of \emph{acceleration} is defined as:
+\begin{center}
+\uline{\hfill}
+\end{center}
+or in terms of formula:
+\begin{equation}
+  a = \frac{\Delta v}{\Delta t} = \frac{v-u}{\Delta t}
+\end{equation}
+The unit for acceleration is \uline{\hspace{0.4 in}}. Two aspects in which acceleration resembles velocity are that:
+\begin{itemize}
+   \item they are both \uline{\hspace{0.4 in}} physical quantities, not scalar quantities.
+   \item they can expressed both in \uline{\hspace{0.4 in}} or average terms
+\end{itemize}
+
+\begin{SummBox}
+What is the difference in 1) distance and displacement, 2)speed and velocity?
+\tcblower
+What is the relationship in 1) distance and speed, 2) displacement and velocity, 3) velocity and speed.
+\end{SummBox}
+
+
+\section{Measurement}
+Once we set up the quantities needed to be studied, The next step is to find the value thereof.
+\subsection{Ticker-Timer}
+With the utilization of AC and electro-magnetics, \textbf{Ticker Timer} can record the distance(displacement of a moving object) with a frequency of \SI{50}{\hertz}\footnote{consistent with the frequency of the AC supply}.
+\begin{TaskBox}
+\SI{50}{\hertz} mean that the tick-timer can record the motion 50 times per second. What is the time period(interval)? 
+\vspace{0.1 in}
+\end{TaskBox}
+\begin{marginfigure}
+\includegraphics[width=5cm]{ticktimer.png}
+\caption{a tickertimer and the result it generated}
+\end{marginfigure}
+But due to the friction and delay, and you will need to measure the distance by yourselves. Tickertimer now has not been adopted as an accurate measurement equipment.
+\begin{TaskBox}
+Extended Task(Optional):\\
+What is the rationale of tickertimer? You shall find the answer by yourselves. 
+\end{TaskBox}
+
+\subsection{Light Gate}
+Light gate\footnote{sometimes it is also referred to as photogate} is a more complicated instrument, it does not record the velocity acutally, it just measures the time.
+\begin{figure}
+\includegraphics{lightgate-vernier.png}
+\caption{a light gate from vernier}
+\end{figure}
+It record the time period for which the light is being blocked by the card.
+\begin{TaskBox}
+State how the speed can be measured if the time is known?\\
+Distinguish whether the speed is instantaneous or average?\\
+What is the drawback in light gates?
+\end{TaskBox}
+
+
+\subsection{Motion Sensor}
+Nowadays, digital devices has become a popular trend in scientific research. The most convenient way to monitor the motion of any object is the motion sensor, which can record all the information
+\begin{marginfigure}
+\includegraphics{motionsensor.png}
+\caption{Unfriendly to Intensive phobia}
+\end{marginfigure}
+A \href{https://www.vernier.com/product/motion-detector/#:~:text=The%20Motion%20Detector%20uses%20ultrasound%20to%20measure%20the,quality%20data%20for%20studying%20dynamics%20carts%20on%20tracks.}{motion sensor} can record the displacement at a much higer frequency than the tickertimer. Far beyond this, it can also derive the velocity at certain time, acceleration can also be derived from this.
+\begin{figure}[h]
+\includegraphics{resultofsensor.png}
+\caption{velocity graph}
+\label{fig:sensor result}
+\end{figure}
+
+\begin{TaskBox}
+Extended Task:\\
+Usually, the motion sensor will emit ultrasonic waves. Based on this, try to explain the rationale of the motion sensor. 
+\end{TaskBox}
+
+\section{Mathematic Analysis}
+The reason why motion sensor can give the information of instantaneous velocity is no different from the tickertimer, thanks to the higher frequency, it can store more information of displacement and time. We will discuss the hidden mathematic principles behind this.
+
+\subsection{$d-t$ graph}
+Since any devices would record the time and correspoding distance (displacement). These information can be integrated on the $d-t$ graph.
+\begin{figure*}[h]
+\includegraphics{d-tgraph.pdf}
+\caption{three kinds of d-t}
+\label{fig:3 motions}
+\end{figure*}
+
+\begin{TaskBox}
+Choose the picture(s) which represent 1).a stationary object; 2).uniform motion; 3) changing velocity.
+\end{TaskBox}
+
+
+d-t graph records the displacement of any time. It is a perfect information carrier, but even the most advanced motion sensor is not able to do this, if you zoom in the figure \ref{fig:sensor result}, you will find that the $d-t$ is not a continuous curve but a lot of \emph{discrete scatter point}\footnote{Think why}. But that would not be a big problem if the time interval is small enough. 
+
+\subsection{Gradient as the velocity}
+Here, the calculus comes, since
+\begin{equation*}
+  v = \lim_{\Delta t\to 0 } \frac{\Delta x}{\Delta t}
+\end{equation*}
+which is quite similar to the \emph{graident formula} of a linear function:
+\begin{equation*}
+ m = \frac{\Delta y}{\Delta x}
+\end{equation*}
+If the concept of \emph{derivative} is applied in analyzing the $d-t$ graph, we will arrive at the most important conclusion:
+\begin{SummBox}
+average velocity is the graident of line connecting the starting postion and final position in d-t graph\\
+instantaneous velocity at certain time (position) is the graident of \textbf{tangent line} to the d-t graph.
+\end{SummBox}
+That's why the first subgraph in figure \ref{fig:3 motions} represent a uniform motion; Once Newton invented the calculus, there is no obstacles in kinematics. 
+
+\subsection{$v-t$ graph}
+The second subgraph in figure \ref{fig:sensor result} is called $v-t$ graph, basically the information of velocity is calculated from the $d-t$ graph.
+\begin{TaskBox}
+Draw the corresponding $v-t$ graph from the third subgraph in figure \ref{fig:3 motions}
+\end{TaskBox}
+
+\subsection{Graident as the acceleration}
+Recall the defining formula for acceleration:
+\begin{equation*}
+  a= \frac{\Delta v}{\Delta t} \quad \text{or} \quad = \lim_{\Delta t\to 0}\frac{\Delta v}{\Delta t}
+\end{equation*}
+How the process of determining velocity from $d-t$ graph can be applied in determining the acceleration from $v-t$ graph?
+
+\begin{SummBox}
+average acceleration is the graident of line \uline{\hfill}\\
+instantaneous \uline{\hspace{0.5 in}} at certain time (position) is the graident of \textbf{tangent line} to the \uline{\hspace{0.5 in}} graph.
+\end{SummBox}
+
+
+\subsection{Area under the $v-t$ graph}
+Calculus consists of Differentiation and Integration, Differentiation is the process of finding derivative which can be utilized to derive velocity from displacement or derive acceleration from velocity. Now the intergation can be used in the opposite direction.
+\begin{SummBox}
+Displacement is the area under the $v-t$ graph.
+\end{SummBox}
+This has been a quite important analysis in auto-driving.
+\begin{figure*}[h]
+\includegraphics{v-tgraph.pdf}
+\caption{some v-t graphs}
+\end{figure*}
+
+\end{document}

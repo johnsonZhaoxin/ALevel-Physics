@@ -1,0 +1,228 @@
+\documentclass[12pt,a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\usepackage{siunitx}
+\usepackage[normalem]{ulem}
+
+
+
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=green,
+}
+
+
+
+% Set up the images/graphics package
+\usepackage{graphicx}
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+%\graphicspath{{graphics/}}
+
+\title{Preparations for A-Level Physics}
+\author{Sanjin Zhao}
+\date{1th Sep 2022}  % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+
+% 国际制单位，使用有点问题好像
+\usepackage{siunitx}
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+
+\usepackage{tikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+
+\begin{document}
+
+\maketitle% this prints the handout title, author, and date
+
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the leanring objectives.
+
+\begin{todolist}
+	\item Understand that all physical quantities consist of a numerical magnitude and a unit.
+	\item Recall the following SI \textbf{base quantities} and their units:
+	\item Recall and use \textbf{prefixes} and their symbols
+	\item Make reasonable estimates of physical quantities included within the syllabus
+	\item Express \textbf{derived units} as products or quotients of the SI base units
+	\item Use SI base units to check the \emph{homogeneity}\footnote{def:}
+	% \item Understand the difference between scalar and vector quantities
+	% \item Add and subtract coplanar vectors
+	% \item Represent a vector as two perpendicular components
+\end{todolist}
+\clearpage
+
+
+\section{Leadin}
+Watch the \href{https://www.youtube.com/watch?v=Xpn9eTNZiCs}{videos} and try to answer the following questions:
+\begin{marginfigure}
+	\includegraphics{SI logo.png}
+	\caption{SI logo}
+\end{marginfigure}
+\begin{TaskBox}
+\begin{enumerate}
+	\item what is the meaning of unifying the measuring system?
+	\item any revolution happens when defining the base units? If so, what is the change?
+\end{enumerate}
+\end{TaskBox}
+
+\section{SI system}
+\subsection*{Base Unit}
+\href{https://www.bipm.org/en/measurement-units}{BIPM} has established the decimal as the common system and defined the orginal three \emph{base units} in 1875. And with the development of science and technology, 4 more base units are included into the system and finally become the \emph{Le Système international d’unités}\footnote{from French}. What are they?
+\begin{TaskBox}
+Finish the 7 base units in the following, stating what they measures and the units.
+\begin{table}
+\centering
+\begin{tabular}{|l|c|l|c|}
+\hline
+\multicolumn{2}{|l|}{Base Quantity}   & \multicolumn{2}{l|}{Base Unit} \\ \hline
+name                      & symbol    & name             & unit        \\ \hline
+                      & $t$         &            &            \\ \hline
+                    &  & meter            &           \\ \hline
+Mass                      & $m$         &         &           \\ \hline
+         & $I$,$i$      &            &           \\ \hline
+ & $T$         &           &            \\ \hline
+       & $n$         &             &          \\ \hline
+Luminous intensity        & $I_v$      &           &           \\ \hline
+\end{tabular}
+\end{table}
+\tcblower
+Extended Questions:\\
+Why using constants rather than realistic items to define 1 base unit?
+\end{TaskBox}
+
+\subsection*{Prefix of SI}
+However, one base unit may not always suitable to measure tiny or larger objects. For example, 1 metre may not be appropriate to measure the distance a train travels, and neither suitable for the length of a bacterium.
+\begin{marginfigure}
+	\includegraphics{scanning electroscope.jpeg}
+	\caption{Electroscope of bacteria}
+\end{marginfigure}
+there are several prefix either enlarge or minimize the base unit, most common among which are kilo and centi.
+You have to memorize the conversion factor and symbol of them.
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+Factor    & Name  & Symbol & Factor    & Name  & Symbol \\ \hline
+$10^{\square}$ &   & T      & $10^{\square}$ & deci  &       \\ \hline
+$10^{\square}$    &   & G      & $10^{\square}$ & centi &       \\ \hline
+$10^{\square}$    &   & M      & $10^{\square}$ & milli & m      \\ \hline
+$10^{\square}$    &   & k      & $10^{\square}$ &  & $\mu$   \\ \hline
+$10^{\square}$    &  & h      & $10^{\square}$ & nano  & n      \\ \hline
+$10^{\square}$ &   & da     & $10^{\square}$ &   & p      \\ \hline
+\end{tabular}
+\end{table}
+
+
+\subsection*{Derived Units}
+Apparently, 7 base unit would not be enough to measuring every quantities in the physics world. Other units are also important, for example, newton\footnote{not CAPITALIZE, to show that it is a unit not a person} is the most common units when measuring forces. So why only the 7 units are called `\emph{BASE UNIT}', it is because that all other units can be \textbf{derived} from them. Such units are called derived units.
+
+The principle that the derived units can de deduced is that:\\
+\uline{\hspace{5 in}}
+
+Find formula of common derived units:
+\begin{table}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+Quantity  & \multicolumn{1}{l|}{name} & \multicolumn{1}{l|}{unit} & \multicolumn{1}{l|}{dimension} & \multicolumn{1}{l|}{formula} \\ \hline
+Force     & newton                    & N                         &$\si{kg.m.s^{-2}}$                                &   $F=ma$                           \\ \hline
+Pressure  &  \hspace{0.7 in}      &                           &                                &   \hspace{0.7 in}                \\ \hline
+Energy    &                           &                           &                                &                              \\ \hline
+Frequency &                           &                           &                                &                              \\ \hline
+Power     &                           &                           &                                &                              \\ \hline
+Momentum  &                           &                           &                                &                              \\ \hline
+Impulse   &                           &                           &                                &                              \\ \hline
+Torque    &                           &                           &                                &                              \\ \hline
+\end{tabular}
+\end{table}
+
+
+\subsection*{Conversion and Dimension Analysis}
+What if I want to change the distance that a Tesla Model 3 can travel from \emph{Metric System}\footnote{def:} into the \emph{Imperial System}?
+\begin{marginfigure}
+	\includegraphics{Tesla Model3.png}
+	\caption{Lying Travel Distance}
+\end{marginfigure}
+A common way to convert is using fraction multiplication.
+
+
+\subsection*{Approximate values of common objects}
+Try to finish the following tables to memorize the common estimated phyical quantities.
+\begin{table}[t]
+\begin{tabular}{|l|l|}
+\hline
+Mass of a person                             & \uline{\hspace{1 in}} \\ \hline
+Height of a person                           & \uline{\hspace{1 in}} \\ \hline
+Walking speed                          	   & \uline{\hspace{1 in}} \\ \hline
+Speed of a car on the motorway 		   & \uline{\hspace{1 in}} \\ \hline
+Volume of a can of a drink                   & \uline{\hspace{1 in}} \\ \hline
+Density of water                             & \uline{\hspace{1 in}} \\ \hline
+Density of air                               & \uline{\hspace{1 in}} \\ \hline
+Mass of an apple                             & \uline{\hspace{1 in}} \\ \hline
+e.m.f of a car battery                       & \uline{\hspace{1 in}} \\ \hline
+e.m.f of a AA battery                        & \uline{\hspace{1 in}} \\ \hline
+Current in a domestic appliance              & \uline{\hspace{1 in}} \\ \hline
+Hearing range                                & \uline{\hspace{1 in}} \\ \hline
+Young’s Modulus of a material                & \uline{\hspace{1 in}} \\ \hline
+\end{tabular}
+\end{table}
+
+
+\end{document}

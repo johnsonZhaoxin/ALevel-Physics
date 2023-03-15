@@ -1,0 +1,256 @@
+\documentclass[a4paper]{tufte-handout}
+% for debugging purposes -- displays the margins
+%\geometry{showframe}
+%\usepackage{float} %不知道和什么冲突了。
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+
+\newenvironment{pagefigure}{%
+    \begin{figure}[h]
+    \classiccaptionstyle
+  }{\end{figure}}
+
+\newcommand{\irow}[2]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}%+#3\mathbf{k}
+}
+% \usepackage{geometry}
+% \geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+\usepackage{siunitx}
+\DeclareSIUnit\torr{torr} %声明新的单位torr
+
+\usepackage[normalem]{ulem}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{float}
+
+%定理的运用
+\usepackage[english]{babel}
+\newtheorem{theorem}{Theorem}[section]      %定理
+\newtheorem{corollary}{Corollary}[theorem]  %结论
+\newtheorem{lemma}[theorem]{Lemma}          %引理
+\newtheorem{definition}[theorem]{Definition}%定义
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{r1}{HTML}{FF8674}
+\definecolor{b1}{HTML}{17ABDD}
+\definecolor{p1}{HTML}{D4B6D6}
+\definecolor{g1}{HTML}{70E2CB}
+\definecolor{o1}{HTML}{DFA743}
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=g1,
+}
+% Set up the images/graphics package
+\usepackage{graphicx}
+\graphicspath{{./auxi/}}
+\setkeys{Gin}{width=0.7\linewidth,totalheight=0.3\textheight,keepaspectratio}
+
+\title{Materials}
+\author{Sanjin Zhao}
+\date{20th Sep, 2022}  % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+\usepackage{nicefrac} %比较好看的斜体分号
+\usepackage{siunitx}
+\sisetup{separate-uncertainty}%产生的效果是是20+3cm 这样
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Better variable font
+\usepackage{mathptmx}
+
+% todolist
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$} %因为美元符号的问题。需要手动添加美元\square美元
+
+\usepackage{tikz}
+
+%beautifulbox
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+% These commands are used to pretty-print LaTeX commands
+%\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+%\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+%\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+%\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+%\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\def\d{{\mathrm{d}}}
+
+% 强制所有段落不缩进
+\setlength{\parindent}{0pt}%没有起作用，日
+
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+%\printclassoptions
+\section*{Learning Outcome}
+I highly recommend you to finish this checklist to determine whether you've achieved the learning objectives.
+\begin{todolist}
+  \item define and use density
+  \item define and use pressure and calculate the pressure in a fluid
+  \item derive and use the equation: $\Delta p= \rho g h$
+  \item explain and use Achimedes' principle
+  \item use a difference in hydrostatic pressure to explain and calculate upthrust
+\end{todolist}
+\clearpage
+
+\section{Leadin}
+Everyone seems to hear about the story about how Archimedes weighed the king's crown. And the famous word `Eureka', you can even find the line in ``\href{https://www.bilibili.com/bangumi/play/ep285026?theme=movie%3Ffrom%3Dsearch&seid=11436052995014682450&spm_id_from=333.337.0.0}{Interstellar}\footnote{Bilibili Unlimited Mining Co.}''. The physical principles behind it was really astonishing.
+\begin{marginfigure}
+\includegraphics[width=4cm]{Archimedes.png}
+\caption{Archimedes\\287BC-272BC} %西西里岛叙古拉，但是Syracuse也有翻译成为雪城的
+\end{marginfigure}
+
+\begin{pagefigure}
+\includegraphics{Eureka.png}
+\caption{2:33:07 in the movie}
+\end{pagefigure}
+
+
+\section{Density}
+You've already know the density of an object is expressed as the mass per unit volume. 
+\begin{SummBox}
+\begin{center} 
+$\rho = \frac{}{\hspace{1in}}$
+\end{center}
+\end{SummBox}
+One thing to mention is to care for the SI unit. Although \si{kg.m^{-3}} is the most standard one, but \si{g.cm^{-3}} or \si{kg.L^{-1}} are still common, even for same materials, if expressed in different unit, the values would differ. For example: water is \uline{\hspace{1in}} \si{kg.m^{-3}} or \uline{\hspace{1in}} \si{\kg\per\litre} or \uline{\hspace{1in}}\si{\gram\per\cubic\centi\metre}.
+
+\begin{TaskBox}
+Refer to any resources taht are accessible to you to find the density of the following materials (in both \si{g.cm^{-3}} and \si{kg.m^{-3}} ).
+\begin{itemize}
+  \item air
+  \item hydrogen gas
+  \item helium gas
+  \item ice
+  \item water
+  \item olive oil
+  \item mercury(liquid)
+  \item wood
+  \item glass
+  \item steel
+  \item silver
+  \item gold
+\end{itemize}
+\end{TaskBox}
+
+\section{Pressure}
+\subsection{definition of pressure}
+Pressure is the normal (or perpendicular) force acting per unit cross-sectional area, the defining formula for pressure is:
+\begin{SummBox}
+\begin{center}
+$ p = \frac{}{\hspace{1in}}$
+\end{center}
+\end{SummBox}
+Several things to notice are that:
+\begin{enumerate}
+  \item Pressure is a \uline{scalar/vector} quantity
+  \item the unit for pressure is \uline{pascal}, \si{\pascal}. The SI base unit is \uline{\hspace{2in}}.
+\end{enumerate}
+
+
+\subsection{Pressure in liquid}
+This is also the content that you've already learned, the pressure from a liquid is determined by the following factors: \uline{\hspace{1 in}}, \uline{\hspace{1 in}} and \uline{\hspace{1 in}}. The formula for hydraulic pressure is
+\begin{SummBox}
+\begin{center}
+$\Delta p = \hspace{2in}$
+\end{center}
+\end{SummBox}
+Let's deduce the thing using the figure \ref{fig:water pressure}
+\begin{marginfigure}
+\includegraphics{hydraulicpressure.jpg}
+\caption{A simple model to derive the hydraulic pressure in water}
+\label{fig:water pressure}
+\end{marginfigure}
+\vspace{2in}
+
+And the most interesting thing about the liquid pressure is that, the hydraulic pressure at certain depth has nothing to do with the shape of the liquid, which means the pressures in the figure \ref{fig:shapes} are all the same despite the shapes of container are different.
+\begin{pagefigure}
+\centering
+\includegraphics{shapes.jpg} %shapes.png是一个虚拟的不如jpg是真实液体
+\caption{all the pressure are same}
+\label{fig:shapes}
+\end{pagefigure}
+
+And a famous application of hydraulic pressure is communicating vessels as shown in figure \ref{fig:vessels}.
+\begin{pagefigure}
+\centering
+\includegraphics{vessels.jpeg}
+\caption{The height of the water will be exactly the same}
+\label{fig:vessels}
+\end{pagefigure}
+
+\subsection{Manometer and Barometer}
+Using the principle of hydraulic pressure, manometer and barometer was created to measure gas or liquid  pressure\footnote{the formation of gas presssure is different from that of the hydraulic pressure, we will talk about it in Ideal Gases}.
+\begin{pagefigure}
+\centering
+\includegraphics{manometer.png}
+\caption{Try to explain why the difference between two coloumn are becoming larger}
+\end{pagefigure}
+
+The second equipment is called barometer which is invented by Evangelista Torricelli\footnote{Guess his country?}. He is famous for measuring the atmospheric pressure using barometer, and in momerial of his great devotion, the unit torr is used when measuring the atmospheric pressure. The diagram of a barometer is shown as in figure \ref{fig:barometer}.
+\begin{marginfigure}
+\includegraphics[width=5cm]{MercuryBarometer.png}
+\caption{A quite simple mercury barometer}
+\label{fig:barometer}
+\end{marginfigure}
+
+\begin{TaskBox}
+Explain the rationale of manometer and barometer.
+\tcblower
+Convert \SI{1}{\torr} to \si{\pascal}
+\end{TaskBox}
+
+\section{Archimedes Principle}
+Now, Archimedes principle finally comes, it states as following:
+\begin{SummBox}
+The upthrust acting on a body is equal to the weight of the liquid or gas that it displaces.
+\[
+  F_{\text{upthrust}} = \rho g V
+\]
+\end{SummBox}
+
+\begin{pagefigure}
+\includegraphics[width=0.9\linewidth]{bouyance.jpg}
+\caption{Difference in the pressure at different depth cause upthrust of the object}
+\label{fig:bouyance}
+\end{pagefigure}
+
+\begin{TaskBox}
+Using the figure \ref{fig:bouyance} to deduce the formula of Archimedes Principle
+\tcblower
+Explain how this principle can be used to tell whether the crown is mixed with silver given that the crown has the equal mass as if it is made purely of gold.
+\end{TaskBox}
+\end{document}
